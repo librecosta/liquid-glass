@@ -1,0 +1,35 @@
+/* Explicit opt-in. :where keeps these defaults easy to override with application CSS. */
+:where(.liquid-glass) {
+  background: var(--liquid-glass-background, transparent);
+  backdrop-filter: var(--hyalite, blur(1px));
+  -webkit-backdrop-filter: var(--hyalite, blur(1px));
+  box-shadow: var(--hyalite-edge, none);
+}
+:where(.liquid-glass[data-liquid-glass-self]) {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  filter: var(--hyalite, none);
+}
+:where(.liquid-glass-input) {
+  position: relative;
+  display: inline-grid;
+  min-width: 0;
+  vertical-align: middle;
+  border-radius: var(--liquid-glass-radius, 0);
+}
+:where(.liquid-glass-input__surface) {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+:where(.liquid-glass-input__field) {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  border-radius: inherit;
+}

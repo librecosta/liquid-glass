@@ -1,0 +1,86 @@
+body {
+  margin: 0;
+  background: #edf1f4;
+  color: #293c49;
+  font:
+    15px/1.6 "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+}
+.component-demo {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 24px;
+}
+.component-demo header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.component-demo h1 {
+  font-size: 28px;
+}
+.component-demo > label {
+  display: block;
+  margin: 14px 0;
+}
+.component-demo a {
+  color: #316580;
+}
+.demo-scene {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 42px 24px;
+  background:
+    radial-gradient(circle at 20% 45%, #ee5d70 0 12%, transparent 12.3%),
+    radial-gradient(circle at 80% 60%, #f4cd59 0 15%, transparent 15.3%),
+    repeating-linear-gradient(45deg, #101a2b 0 14px, #2b3d5c 14px 28px);
+  color: white;
+}
+.demo-card {
+  box-sizing: border-box;
+  min-width: 220px;
+  flex: 1;
+  padding: 28px;
+  border-radius: 32px;
+}
+.demo-card h2 {
+  font-size: 19px;
+}
+.demo-scene form {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+.demo-input {
+  border-radius: 16px;
+}
+.demo-input input,
+.demo-button {
+  font: inherit;
+  color: inherit;
+  padding: 12px 18px;
+  border: 1px solid #ffffff77;
+  border-radius: inherit;
+}
+.demo-button {
+  border-radius: 999px;
+  cursor: pointer;
+}
+.demo-button:hover {
+  background: #ffffff20;
+}
+.demo-button:active {
+  color: #ffdf81;
+}
+.demo-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.component-demo :focus-visible {
+  outline: 3px solid #68baf0;
+  outline-offset: 3px;
+}

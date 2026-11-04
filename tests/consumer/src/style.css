@@ -1,0 +1,67 @@
+body {
+  font: 16px/1.5 sans-serif;
+  background: repeating-linear-gradient(
+    45deg,
+    #23334b 0 14px,
+    #2b4f6f 14px 28px
+  );
+  color: white;
+  margin: 20px;
+}
+nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+nav button {
+  padding: 8px;
+}
+#subjects {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.sample {
+  box-sizing: border-box;
+  width: 260px;
+  height: 120px;
+  border-radius: 20px;
+  padding: 20px;
+}
+.alternate {
+  border-radius: 42px 12px 30px 4px;
+}
+form {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+.action {
+  font: inherit;
+  color: inherit;
+  height: 60px;
+  border: 1px solid #fff8;
+}
+.action:hover {
+  color: #ffdf80;
+  background: #ffffff10;
+}
+.action:active {
+  color: #e6acff;
+}
+.input-wrapper {
+  border-radius: 18px;
+}
+.input-wrapper input {
+  font: inherit;
+  padding: 14px;
+  color: inherit;
+  border: 1px solid #fff9;
+}
+:focus-visible {
+  outline: 3px solid #facd65;
+  outline-offset: 3px;
+}

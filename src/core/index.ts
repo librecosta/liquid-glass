@@ -145,8 +145,10 @@ import type {
   HyaliteShape,
   ResolvedOptions,
   Radii,
-} from "./types.ts";
-export type * from "./types.ts";
+  LiquidGlassInstance,
+  LiquidGlassOptions,
+} from "./types.js";
+export type * from "./types.js";
 
 type GlassElement = HTMLElement | SVGElement;
 interface MapData {
@@ -173,6 +175,8 @@ interface Watcher {
   mo: MutationObserver | null;
 }
 interface State {
+  instance?: boolean;
+  fallback?: boolean;
   key: string;
   opts: ResolvedOptions;
   ro: ResizeObserver | null;
@@ -1025,6 +1029,15 @@ const reducedMotion = () => {
 function apply(el: Element, ramp: number) {
   const st = bound.get(el);
   if (!st) return;
+  if (st.fallback) {
+    cancelRamp(st);
+    setFallback(el, st);
+    (el as GlassElement).style.setProperty(
+      VAR_EDGE,
+      st.opts.self ? "none" : edgeShadow(st.opts),
+    );
+    return;
+  }
   const [W, H] = sizeOf(el);
   if (W < 4 || H < 4) return; // not laid out yet / hidden
   const radii = radiiOf(el, W, H);
@@ -1143,8 +1156,19 @@ function schedule(el: Element) {
 }
 
 function attach(el: Element, opts?: HyaliteOptions, watcher?: Watcher) {
-  if (bound.has(el) || !supported()) return; // unsupported: write nothing, the CSS fallback wins
+  bind(el, opts, watcher);
+}
+
+function bind(
+  el: Element,
+  opts?: HyaliteOptions,
+  watcher?: Watcher,
+  instance = false,
+) {
+  if (bound.has(el) || (!instance && !supported())) return; // legacy unsupported: write nothing
   const st: State = {
+    instance,
+    fallback: instance && !supported(),
     key: "",
     opts: sanitize(Object.assign({}, DEFAULTS, opts || {})),
     ro: null,
@@ -1157,8 +1181,91 @@ function attach(el: Element, opts?: HyaliteOptions, watcher?: Watcher) {
   };
   bound.set(el, st);
   apply(el, st.opts.materialize);
-  st.ro = new ResizeObserver(() => onResize(el));
-  st.ro.observe(el);
+  if (!st.fallback) {
+    st.ro = new ResizeObserver(() => onResize(el));
+    st.ro.observe(el);
+  }
+}
+
+/** One owner per element; all owners in this module share the original caches/host. */
+export function createLiquidGlass(
+  el: HTMLElement | SVGElement,
+  options: LiquidGlassOptions = {},
+): LiquidGlassInstance {
+  if (bound.has(el))
+    throw new Error("Liquid glass is already attached to this element");
+  const previous = [VAR, VAR_EDGE].map((name) => ({
+    name,
+    value: el.style.getPropertyValue(name),
+    priority: el.style.getPropertyPriority(name),
+  }));
+  bind(el, options, undefined, true);
+  const st = bound.get(el)!;
+  let destroyed = false;
+  const owns = () => !destroyed && bound.get(el) === st;
+  const radiusSignature = () => {
+    const cs = getComputedStyle(el);
+    return [
+      cs.borderTopLeftRadius,
+      cs.borderTopRightRadius,
+      cs.borderBottomRightRadius,
+      cs.borderBottomLeftRadius,
+    ].join("|");
+  };
+  let radii = radiusSignature();
+  // Filter custom-property writes also mutate style. Compare computed radii to avoid a loop,
+  // and avoid map work for hover/active classes which only change color or shadows.
+  const observer = new MutationObserver(() => {
+    if (!owns()) return;
+    const next = radiusSignature();
+    if (next !== radii) {
+      radii = next;
+      cancelRamp(st);
+      refresh(el);
+    }
+  });
+  observer.observe(el, {
+    attributes: true,
+    attributeFilter: ["class", "style"],
+  });
+  return {
+    setOptions(next) {
+      if (!owns()) return;
+      const patch = sanitize(next);
+      const changed = (Object.keys(patch) as (keyof HyaliteOptions)[]).some(
+        (key) => key !== "onBuild" && st.opts[key] !== patch[key],
+      );
+      Object.assign(st.opts, patch);
+      if (!changed) return;
+      if (st.timer) clearTimeout(st.timer);
+      st.timer = 0;
+      st.pending = false;
+      cancelRamp(st);
+      apply(el, 0);
+    },
+    refresh() {
+      if (owns()) {
+        radii = radiusSignature();
+        cancelRamp(st);
+        refresh(el);
+      }
+    },
+    destroy() {
+      if (destroyed) return;
+      observer.disconnect();
+      if (owns()) {
+        detach(el);
+        for (const { name, value, priority } of previous) {
+          if (value) el.style.setProperty(name, value, priority);
+        }
+      }
+      destroyed = true;
+      if (host && !host.childElementCount) {
+        host.remove();
+        host = null;
+      }
+    },
+  };
 }
 function detach(el: Element) {
   const st = bound.get(el);
@@ -1282,7 +1389,7 @@ function unwatch() {
 function setOpts(opts: HyaliteOptions) {
   const s = sanitize(opts || {});
   watchers.forEach((w) => Object.assign(w.opts, s));
-  const els = Array.from(bound.keys());
+  const els = Array.from(bound.keys()).filter((el) => !bound.get(el)!.instance);
   els.forEach((el) => Object.assign(bound.get(el)!.opts, s));
   const gen = ++optsGen;
   return new Promise<void>((resolve) => {

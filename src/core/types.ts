@@ -80,3 +80,14 @@ export interface HyaliteAPI {
 export type ResolvedOptions = Required<Omit<HyaliteOptions, "onBuild">> &
   Pick<HyaliteOptions, "onBuild">;
 export type Radii = [number, number, number, number];
+
+export type LiquidGlassOptions = HyaliteOptions;
+
+export interface LiquidGlassInstance {
+  /** Merge a local patch synchronously. Updates never replay materialize. */
+  setOptions(next: LiquidGlassOptions): void;
+  /** Re-read geometry, e.g. after a stylesheet or ancestor class changes. */
+  refresh(): void;
+  /** Idempotent; subsequent updates/refreshes are no-ops. */
+  destroy(): void;
+}

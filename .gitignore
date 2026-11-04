@@ -151,3 +151,4 @@ vite.config.ts.timestamp-*
 # Local Chromium comparison artifacts
 test-results/
 playwright-report/
+dist-playground/

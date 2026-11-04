@@ -1,5 +1,5 @@
 {
-  "name": "liquid-glass",
+  "name": "@librecosta/liquid-glass",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,15 +9,15 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && npm run build:lib && npm run build:playground",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
-    "check": "npm test && npm run build && npm run test:browser"
-  },
-  "dependencies": {
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "check": "npm test && npm run build && npm run test:browser && npm run test:consumer",
+    "build:lib": "node scripts/build-lib.mjs",
+    "build:playground": "vite build",
+    "prepack": "npm run build:lib",
+    "test:consumer": "node scripts/verify-consumer.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
@@ -28,6 +28,34 @@
     "pixelmatch": "7.1.0",
     "pngjs": "7.0.0",
     "typescript": "5.9.3",
-    "vite": "6.4.5"
+    "vite": "6.4.5",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "reference/hyalite-v0.5.0/LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

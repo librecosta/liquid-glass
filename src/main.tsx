@@ -85,6 +85,7 @@ function App() {
         >
           独立原版基准 ↗
         </a>
+        <a href="/components.html">React API 示例 ↗</a>
       </header>
       <div className="workspace">
         <section className="comparison" aria-label="双版本对照">

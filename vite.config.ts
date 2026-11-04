@@ -34,16 +34,25 @@ export default defineConfig({
       },
       closeBundle() {
         // Keep the frozen engine and its standalone demos available in the built playground.
-        cpSync("reference/hyalite-v0.5.0", "dist/reference/hyalite-v0.5.0", {
-          recursive: true,
-        });
+        cpSync(
+          "reference/hyalite-v0.5.0",
+          "dist-playground/reference/hyalite-v0.5.0",
+          {
+            recursive: true,
+          },
+        );
       },
     },
   ],
   build: {
+    outDir: "dist-playground",
     target: "esnext",
     rollupOptions: {
-      input: { main: resolve("index.html"), frame: resolve("frame.html") },
+      input: {
+        main: resolve("index.html"),
+        frame: resolve("frame.html"),
+        components: resolve("components.html"),
+      },
     },
   },
 });
