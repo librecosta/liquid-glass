@@ -3,6 +3,8 @@ import {
   createLiquidGlass,
   type LiquidGlassOptions,
   type LiquidGlassInstance,
+  QUALITY_PRESETS,
+  type LiquidGlassQuality,
 } from "@librecosta/liquid-glass";
 import {
   LiquidGlass,
@@ -13,6 +15,9 @@ import {
 
 // This file is typechecked against the installed declarations, not repository source aliases.
 const options: LiquidGlassOptions = { bevel: 37, shape: "squircle" };
+const quality: LiquidGlassQuality = "Reference";
+const experimental: LiquidGlassOptions = QUALITY_PRESETS[quality];
+void experimental;
 const make: (el: HTMLElement) => LiquidGlassInstance = (el) =>
   createLiquidGlass(el, options);
 void make;

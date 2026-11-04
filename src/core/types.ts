@@ -1,4 +1,4 @@
-/* Adapted from Hyalite v0.5.0, MIT © 2026 VII-Cae. See reference/hyalite-v0.5.0/LICENSE. */
+/* Adapted from Hyalite v0.5.0, MIT © 2026 VII-Cae. See licenses/Hyalite-MIT.txt. */
 /** The bevel's cross-section. `squircle` meets the slab more gently than a quarter circle; `lip` is
  *  raised at the rim and dipped behind it, which reverses the tilt in the middle and adds a second
  *  pair of light/dark bands. */

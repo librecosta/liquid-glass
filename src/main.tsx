@@ -1,7 +1,18 @@
+declare global {
+  interface Window {
+    __engine: typeof api;
+    __scene: Scene;
+    __configure: (patch: Partial<Scene>) => void;
+    __ready: boolean;
+  }
+}
 import { StrictMode, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { DEFAULTS, type HyaliteOptions } from "./core/index.ts";
 import { initialScene, type Scene } from "./scene.ts";
+import { SceneView } from "./scene-view.tsx";
+import { QUALITY_PRESETS, QUALITY_NOTES } from "./quality.ts";
+import api from "./core/index.ts";
 import "./style.css";
 
 const sliders = [
@@ -22,46 +33,26 @@ const sliders = [
 ] as const;
 
 function App() {
-  const [scene, setScene] = useState<Scene>(initialScene);
-  const [view, setView] = useState("both");
-  const [environment, setEnvironment] = useState("正在检测浏览器…");
-  const frames = useRef<(HTMLIFrameElement | null)[]>([]);
+  const [scene, setScene] = useState<Scene>(() => {
+    const quality = new URLSearchParams(location.search).get("quality");
+    return {
+      ...initialScene,
+      quality:
+        quality === "Balanced" || quality === "Fast" ? quality : "Reference",
+    };
+  });
+  const [environment, setEnvironment] = useState("");
   const imageUrl = useRef("");
-  const current = useRef(scene);
-  current.current = scene;
-  const send = (frame: HTMLIFrameElement | null) =>
-    frame?.contentWindow?.postMessage(
-      { type: "scene", scene: current.current },
-      location.origin,
-    );
-  useEffect(() => {
-    frames.current.forEach(send);
-  }, [scene]);
   useEffect(() => {
     setEnvironment(
       `${navigator.userAgent.match(/(?:Chrome|Edg)\/[\d.]+/)?.[0] ?? navigator.userAgent} / DPR ${devicePixelRatio}`,
     );
-    const receive = (e: MessageEvent) => {
-      if (
-        e.origin !== location.origin ||
-        !frames.current.some((f) => f?.contentWindow === e.source)
-      )
-        return;
-      if (e.data?.type === "drag")
-        setScene((s) => ({ ...s, x: e.data.x, y: e.data.y }));
-      if (e.data?.type === "ready") frames.current.forEach(send);
-    };
-    window.addEventListener("message", receive);
+    window.__engine = api;
+    window.__configure = (patch) => setScene((s) => ({ ...s, ...patch }));
     return () => {
-      window.removeEventListener("message", receive);
+      if (imageUrl.current) URL.revokeObjectURL(imageUrl.current);
     };
   }, []);
-  useEffect(
-    () => () => {
-      if (imageUrl.current) URL.revokeObjectURL(imageUrl.current);
-    },
-    [],
-  );
   const change = (patch: Partial<Scene>) =>
     setScene((s) => {
       const next = { ...s, ...patch };
@@ -71,72 +62,45 @@ function App() {
     });
   const option = (patch: HyaliteOptions) =>
     setScene((s) => ({ ...s, opts: { ...s.opts, ...patch } }));
+  const position = (x: number, y: number) => setScene((s) => ({ ...s, x, y }));
+  if (new URLSearchParams(location.search).has("fixture"))
+    return <SceneView scene={scene} onPosition={position} />;
   return (
     <main>
       <header>
         <div>
           <h1>Liquid Glass</h1>
-          <p>0.5.0 原版与 TypeScript 等价移植对照</p>
+          <p>单引擎折射实验 / Reference 默认画质</p>
         </div>
-        <a
-          href="/reference/hyalite-v0.5.0/demo/cases.html"
-          target="_blank"
-          rel="noreferrer"
-        >
-          独立原版基准 ↗
-        </a>
         <a href="/components.html">React API 示例 ↗</a>
       </header>
       <div className="workspace">
-        <section className="comparison" aria-label="双版本对照">
+        <section className="comparison" aria-label="LibreCosta Playground">
           <div className="toolbar">
-            <div className="segments" aria-label="显示版本">
-              {[
-                ["both", "并排"],
-                ["original", "Original"],
-                ["port", "TypeScript"],
-              ].map(([v, label]) => (
+            <div className="segments" aria-label="画质">
+              {Object.keys(QUALITY_PRESETS).map((q) => (
                 <button
-                  key={v}
-                  aria-pressed={view === v}
-                  onClick={() => setView(v)}
+                  key={q}
+                  aria-pressed={scene.quality === q}
+                  onClick={() =>
+                    change({ quality: q as Scene["quality"], opts: {} })
+                  }
                 >
-                  {label}
+                  {q}
+                  {q === "Reference" ? "" : "（实验）"}
                 </button>
               ))}
             </div>
-            <span>
-              {scene.fallback ? "强制 CSS fallback" : "SVG backdrop refraction"}
-            </span>
           </div>
-          <div className={`panes ${view}`}>
-            {["original", "port"].map((engine, i) => (
-              <article
-                className={`pane ${engine}`}
-                key={engine}
-                hidden={view !== "both" && view !== engine}
-              >
-                <h2>
-                  {i === 0 ? "Original 0.5.0" : "TypeScript Port"}
-                  <span>{i === 0 ? "冻结源码" : "TS ESM 核心"}</span>
-                </h2>
-                <div className="frame-scroll">
-                  <iframe
-                    title={i === 0 ? "Original 0.5.0" : "TypeScript Port"}
-                    ref={(el) => {
-                      frames.current[i] = el;
-                    }}
-                    src={`/frame.html?engine=${engine}`}
-                    onLoad={() => send(frames.current[i])}
-                  />
-                </div>
-              </article>
-            ))}
+          <p className="quality-note">
+            {QUALITY_NOTES[scene.quality]} 切换档位会清除参数覆盖。
+          </p>
+          <div className="scene-viewport">
+            <SceneView scene={scene} onPosition={position} />
           </div>
           <div className="footnote">
             <span>
-              拖动玻璃卡片，两个视图同步。场景固定为 500 ×
-              480，避免窗口宽度影响比较。
+              鼠标或触摸拖动；聚焦拖动柄后可用方向键移动。场景 500 × 480。
             </span>
             <span>{environment}</span>
           </div>
@@ -160,7 +124,7 @@ function App() {
                 change({ background: e.target.value as Scene["background"] })
               }
             >
-              <option value="stripes">深色斜纹 / 彩色圆形</option>
+              <option value="forest">森林（本地）</option>
               <option value="grid">网格</option>
               <option value="image">本地图片</option>
             </select>
@@ -182,6 +146,18 @@ function App() {
               <small>仅在当前浏览器内使用</small>
             </label>
           )}
+          <label>
+            实例数
+            <select
+              aria-label="实例数"
+              value={scene.instances}
+              onChange={(e) => change({ instances: +e.target.value })}
+            >
+              {[1, 5, 20].map((n) => (
+                <option key={n}>{n}</option>
+              ))}
+            </select>
+          </label>
           <label>
             样例
             <select
@@ -252,14 +228,20 @@ function App() {
             {sliders.map(([key, label, min, max, step]) => (
               <label key={key}>
                 {label}
-                <output>{scene.opts[key] ?? DEFAULTS[key]}</output>
+                <output>
+                  {scene.opts[key] ??
+                    { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }[key]}
+                </output>
                 <input
                   aria-label={label}
                   type="range"
                   min={min}
                   max={max}
                   step={step}
-                  value={scene.opts[key] ?? DEFAULTS[key]}
+                  value={
+                    scene.opts[key] ??
+                    { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }[key]
+                  }
                   onChange={(e) => option({ [key]: +e.target.value })}
                 />
               </label>

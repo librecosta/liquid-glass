@@ -1,0 +1,11 @@
+{
+  "source": "https://github.com/gofurry/wails-v3-vue-starter/blob/43d4b9782e4f90e5dda449cd0f69c32e83506316/frontend/src/assets/images/forest.jpg",
+  "sha256": "164dee65d752ca0a975b3f0fc6ca35727b5d9fce2788f9e86e304fc58b9f6813",
+  "dimensions": [
+    3840,
+    2160
+  ],
+  "bytes": 3245572,
+  "license": "CC0 as reported by repository owner on 2026-11-05",
+  "provenance_limit": "Original photo landing page and photographer were not retained; no independent original-source verification. Source repository MIT is not treated as photo permission."
+}

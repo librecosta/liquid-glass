@@ -1,10 +1,7 @@
 body {
   font: 16px/1.5 sans-serif;
-  background: repeating-linear-gradient(
-    45deg,
-    #23334b 0 14px,
-    #2b4f6f 14px 28px
-  );
+  background: linear-gradient(#ffffff33 1px,transparent 1px),linear-gradient(90deg,#ffffff33 1px,transparent 1px),#23334b;
+  background-size:26px 26px;
   color: white;
   margin: 20px;
 }

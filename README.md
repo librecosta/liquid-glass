@@ -6,9 +6,9 @@ An independent [LibreCosta](https://github.com/librecosta) project.
 
 ## Status
 
-**LG-B experimental, local consumption only.** The package is private and has not been published to npm. Node 24+, npm and a React 19 + TypeScript app are the current validation targets.
+**LG-C experimental, local consumption only.** The package is private and has not been published to npm. Node 24+, npm and a React 19 + TypeScript app are the current validation targets.
 
-[LG-A](docs/lg-a-baseline.md) freezes Hyalite v0.5.0 and its visual defaults. [LG-B](docs/lg-b-validation.md) adds independent instances, shared caches, React controls and standard package exports without optical tuning or performance optimization.
+[LG-A](docs/lg-a-baseline.md) established the faithful Hyalite v0.5.0 port; [LG-B](docs/lg-b-validation.md) added independent instances and React/ESM consumption. [LG-C](docs/lg-c-performance.md) removes the upstream runtime and dual iframes, uses a local forest background and measures startup, dragging, resize and 1/5/20 instances. Reference keeps the accepted optical defaults and Chrome pixels. Balanced and Fast are explicitly lossy experiments; Reference remains the default.
 
 ## Local consumption
 
@@ -46,7 +46,9 @@ glass.refresh();
 glass.destroy(); // idempotent
 ```
 
-One owner per element; a duplicate binding throws. Instances share map/filter caches and a hidden SVG host. Updating or destroying one leaves others intact. The legacy Hyalite API remains available for baseline comparisons; its global `setOpts` affects legacy attachments only. React `options` are a complete prop value (omitted fields reset to defaults); instance `setOptions` merges a patch. Materialize plays only on binding. Reserved `--hyalite`/`--hyalite-edge` properties are restored on instance destruction. Imports and React server rendering are SSR-safe; actual binding is client-only.
+One owner per element; a duplicate binding throws. Instances share map/filter caches and a hidden SVG host. Updating or destroying one leaves others intact. The legacy Hyalite API is a compatibility facade over the same TS engine; its global `setOpts` affects legacy attachments only. React `options` are a complete prop value (omitted fields reset to defaults); instance `setOptions` merges a patch. Materialize plays only on binding. Reserved `--hyalite`/`--hyalite-edge` properties are restored on instance destruction. Imports and React server rendering are SSR-safe; actual binding is client-only.
+
+Optional `QUALITY_PRESETS` and `LiquidGlassQuality` are exported from the core entry. Pass a preset as ordinary instance/React options to opt in. Balanced uses dispersion 0.8 and `sat=1`; Fast uses dispersion 0 and `sat=1`, losing chromatic separation. Both skip edge desaturation. Neither changes SDF, map resolution or quantization. See the measured comparison and images in [LG-C](docs/lg-c-performance.md).
 
 ## Run and verify
 
@@ -58,16 +60,17 @@ npm run dev
 npm run check
 ```
 
-Open `/` for the preserved Original/TS comparison and `/components.html` for the actual React APIs. `npm run build` produces `dist/` (library) and `dist-playground/` (demo). `npm test` runs Node contracts; `npm run test:browser` runs the LG-A Chromium baseline; `npm run test:consumer` installs a tarball into a separate temporary React + Vite + strict TS project and verifies SSR, dev StrictMode and production rendering. Run `npm run build:lib` before an isolated consumer check. Test artifacts are in ignored `test-results/`; the external project is retained in the printed temporary path for inspection. Its first dependency installation requires access to npm's registry.
+Open `/` for the single-engine playground and `/components.html` for the actual React APIs. Both default to Reference over the local forest photo. The playground also supports a precise grid and local image uploads. Move the card by dragging or focusing its handle and using arrow keys. Quality switching clears parameter overrides; reset restores Reference.
 
-The frozen original also runs independently: serve `reference/hyalite-v0.5.0/` as static files and open `demo/index.html` or `demo/cases.html`. Its unmodified runner accepts `node reference/hyalite-v0.5.0/demo/run-cases.mjs --browser <chrome-path>`.
+`npm run build` produces `dist/` (library) and `dist-playground/` (demo). `npm test` runs frozen math/default and SSR contracts; `npm run test:browser` verifies LibreCosta Reference gold, dragging, cache/lifecycle and fallback. `npm run test:consumer` installs a tarball into a separate temporary React + Vite + strict TS project and verifies SSR, dev StrictMode and production rendering. Run `npm run build:lib` before an isolated consumer check. Test artifacts are in ignored `test-results/`; performance traces are in ignored `performance-results/`. The external project is retained at its printed temporary path. Its first dependency installation requires the npm registry. Performance commands, environment and reviewed data are in [LG-C](docs/lg-c-performance.md).
 
 ## Support
 
 SVG backdrop refraction targets Chromium. Other engines receive CSS blur/edge fallback; actual Safari/Firefox rendering has not been validated. A strict CSP must allow `img-src data:` for displacement maps (and `blob:` if the playground uses local pictures). The original percentage/elliptical-radius rules and folded-field limitations remain unchanged. Input background and text are separate layers; standard native keyboard, focus, selection and forms are retained. Autofill attributes are forwarded; password-manager/autofill UI and assistive-technology combinations have not been exhaustively tested. `self` displaces the bound element itself; on an empty input background it has no foreground to displace.
 
-Performance optimization, npm publication and further UI families remain out of scope. See the [LG-B validation record](docs/lg-b-validation.md).
+Reference still has Chromium SVG compositing costs, especially at high DPR or with overlapping glass. Frame timing in one machine's headless Chrome is not a universal FPS guarantee or GPU utilization measurement. No new renderer, optical algorithm optimization, npm publication or large UI library was added.
 
 ## License
 
 MIT; adapted portions retain the notices described in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The demo forest photo is owner-reported CC0, with the original photo page still unverified; [provenance](src/assets/forest.provenance.json) records that limit. It is bundled only with the playground, never the library.

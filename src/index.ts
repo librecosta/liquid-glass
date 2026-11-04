@@ -23,3 +23,6 @@ export type {
   HyaliteShape,
   HyaliteWatcher,
 } from "./core/types.js";
+
+export { QUALITY_PRESETS } from "./quality.js";
+export type { LiquidGlassQuality } from "./quality.js";

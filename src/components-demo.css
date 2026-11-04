@@ -32,10 +32,7 @@ body {
   flex-wrap: wrap;
   gap: 24px;
   padding: 42px 24px;
-  background:
-    radial-gradient(circle at 20% 45%, #ee5d70 0 12%, transparent 12.3%),
-    radial-gradient(circle at 80% 60%, #f4cd59 0 15%, transparent 15.3%),
-    repeating-linear-gradient(45deg, #101a2b 0 14px, #2b3d5c 14px 28px);
+  background: linear-gradient(#0003,#0003), url("./assets/forest.jpg") center / cover no-repeat;
   color: white;
 }
 .demo-card {

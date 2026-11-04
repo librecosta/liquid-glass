@@ -34,9 +34,15 @@ const packed = JSON.parse(
   ),
 )[0];
 if (
-  packed.files.some((f) => /^(src|node_modules|dist-playground)\//.test(f.path))
+  packed.files.some(
+    (f) =>
+      /^(src|node_modules|dist-playground)\//.test(f.path) ||
+      /forest|\.(jpg|png)$/.test(f.path),
+  )
 )
   throw Error("Unexpected package contents");
+if (!packed.files.some((f) => f.path === "licenses/Hyalite-MIT.txt"))
+  throw Error("Missing adapted-code MIT license");
 cpSync(resolve(root, "tests/consumer"), directory, { recursive: true });
 const pkgPath = join(directory, "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));

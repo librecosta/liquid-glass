@@ -1,13 +1,14 @@
 # Liquid Glass
 
-Current scope is [Issue #2](https://github.com/librecosta/liquid-glass/issues/2), LG-B, preserving the accepted LG-A baseline.
+Current scope: [Issue #3](https://github.com/librecosta/liquid-glass/issues/3), LG-C, on `dev`.
 
-- `reference/hyalite-v0.5.0/`: frozen upstream files; do not edit. `UPSTREAM.json` pins commit and SHA-256 hashes.
-- `src/core/`: framework-independent TS ESM port. Keep optical math, defaults, cache and resize semantics equivalent to the reference. No browser globals at import time.
-- `src/index.ts`, `src/react/`, `src/styles.css`: core, four React APIs and explicit opt-in CSS; one package, two ESM entries.
-- `src/main.tsx`, `src/frame.tsx`: preserved LG-A comparison. `components.html` demonstrates the actual React APIs.
-- `tests/`: Node contracts plus adapted upstream Chromium cases, exact visual comparisons and measurement-only performance baseline.
-- `docs/lg-a-baseline.md`: verification results and deliberate integration differences.
-- `tests/consumer/`, `scripts/verify-consumer.mjs`: standalone tarball consumption, strict TS, SSR, dev StrictMode and production browser verification, without repository aliases or links.
+- `src/core/`: the only rendering engine; framework-independent TypeScript ESM. Reference optical math, defaults, map encoding, buckets, cache and resize rules remain frozen at `b257c17`.
+- `src/index.ts`, `src/react/`, `src/styles.css`: core, four React APIs, explicit opt-in CSS. Instances are independent; maps and SVG host are shared. Imports must remain SSR-safe.
+- `src/main.tsx`, `src/scene-view.tsx`, `src/drag.ts`: single-engine playground, DOM position updates coalesced per frame, final React state on release/cancel. `/components.html` exercises real React APIs.
+- `src/quality.ts`: Reference default; Balanced/Fast are explicit lossy experiments on the same engine. Never silently lower Reference quality.
+- `src/assets/forest.jpg`: local playground-only photo. Permission/provenance and SHA are in its JSON and `THIRD_PARTY_NOTICES.md`. Do not bundle it into the library.
+- `tests/golden/`: frozen LibreCosta math, map/SVG digests and Chrome pixels captured from `b257c17`; do not regenerate gold to conceal regressions. Upstream source snapshots/runner were deliberately removed. Preserve the full `licenses/Hyalite-MIT.txt` in tarballs.
+- `tests/consumer/`, `scripts/verify-consumer.mjs`: independent tarball, strict TS, SSR, dev StrictMode, production, forms, lifecycle/cache and fallback checks without source aliases.
+- `docs/lg-c-performance.md`: measurement method, actual results, quality images, limitations. `scripts/benchmark.mjs` reproduces measurements; historical BEFORE worktrees stay outside this repository.
 
-Use Node 24+, `npm ci`, then `npm run check` (Chrome required; `LG_CHROME` accepts an executable path). Instance updates must remain local while caches/host stay shared; preserve the legacy baseline API. Never optimize optical algorithms, publish npm, merge main or add a large UI system in LG-B. Keep MIT notices with adapted code. `dist/` is the library output; `dist-playground/` is the demo output.
+Use Node 24+, `npm ci`, then `npm run check` (Chrome required; `LG_CHROME` selects an executable). `dist/` is library output; `dist-playground/` is the demo. Optimize only evidenced overhead; do not retune optical algorithms or introduce a renderer/Worker without measurements. No npm publication, main merge, Release or large UI library in LG-C. Keep adapted MIT notices.

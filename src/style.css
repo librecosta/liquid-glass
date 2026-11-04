@@ -38,7 +38,7 @@ a:focus-visible {
   outline-offset: 3px;
 }
 main {
-  max-width: 1480px;
+  max-width: 1120px;
   margin: auto;
   padding: 30px 32px;
 }
@@ -96,43 +96,6 @@ a {
 .segments button[aria-pressed="true"] {
   background: #fff;
   border-color: #bbc8d1;
-}
-.panes {
-  display: flex;
-  gap: 18px;
-}
-.pane {
-  min-width: 0;
-  flex: 1;
-}
-.pane h2 {
-  margin: 0 0 10px;
-  font-size: 15px;
-  font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-.pane h2 span {
-  font-size: 11px;
-  font-weight: 400;
-  color: #647b89;
-}
-.frame-scroll {
-  overflow: auto;
-  border-radius: 9px;
-  background: #232529;
-  box-shadow: 0 3px 15px #132d4214;
-}
-iframe {
-  width: 500px;
-  height: 516px;
-  border: 0;
-  display: block;
-  margin: auto;
-}
-.panes:not(.both) .pane {
-  max-width: 100%;
 }
 .footnote {
   display: flex;
@@ -221,17 +184,6 @@ output {
   color: #647b89;
   margin: 12px 0 0;
 }
-@media (max-width: 1380px) {
-  .panes {
-    flex-wrap: wrap;
-  }
-  .pane {
-    flex-basis: 100%;
-  }
-  .frame-scroll {
-    max-width: 100%;
-  }
-}
 @media (max-width: 720px) {
   main {
     padding: 20px 14px;
@@ -250,10 +202,19 @@ output {
   .toolbar {
     flex-wrap: wrap;
   }
-  .pane h2 {
-    max-width: 500px;
-  }
-  .panes {
-    gap: 24px;
-  }
+}
+
+.scene-viewport {
+  overflow: auto;
+  border-radius: 9px;
+  max-width: 100%;
+}
+.quality-note {
+  font-size: 12px;
+  color: #576c7a;
+  line-height: 1.8;
+  max-width: 500px;
+}
+.segments {
+  flex-wrap: wrap;
 }

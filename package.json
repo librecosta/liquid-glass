@@ -49,7 +49,7 @@
     "dist",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "reference/hyalite-v0.5.0/LICENSE"
+    "licenses/Hyalite-MIT.txt"
   ],
   "sideEffects": [
     "**/*.css"
