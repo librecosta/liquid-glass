@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/VII-Cae/hyalite--liquid-glass",
+  "tag": "v0.5.0",
+  "commit": "3c7eb86d7457b437013c5e9579e9c2d6fe713f2d",
+  "sha256": {
+    "LICENSE": "59fa67606c447f38b8b9318161df07bb802e5b4008d4dba4def3baa518767aad",
+    "README.md": "0bc4f6d853978e676ba6bdbcb7897e1aa36918243b88f8bb6bc0b63aeb0ca110",
+    "README.zh-CN.md": "52fba5260c0148ca99795d8fae0778e2e9e16d7eeeca063c505be615f2138567",
+    "demo/card.html": "9f3f8ccbbc74979fe9468e0c678ece343a88e8b9593bbb4214207a86a321f3c8",
+    "demo/cases.html": "33a45938c87c1bbfa44e9e9e3aae730de708b95bb47d234c85303935df97e137",
+    "demo/edge-lab.html": "edaf80cd47f4010664fc9f2e138acc1698f0a23230e29e69727b0d6414a739f6",
+    "demo/index.html": "011f6c8f4210f3ceb99adaeb30249faeb33aa097bed50042dee57fee86bab548",
+    "demo/legacy/hyalite-0.1.0.js": "f68a85cfc9adf13ef7f84355671f2b538ef67a78945100f45ba7885272aca6d7",
+    "demo/legacy/hyalite-0.2.0.js": "671ddc20e0b7d87791d145ded86e8c96db34d1fa151db23716d16881bccdb567",
+    "demo/legacy/hyalite-0.3.1.js": "ff971fc18dec1d6cbd9ffd417789aaf3e8e42f4a1cd6e1b6e0700a134bc8aa81",
+    "demo/og.html": "66aaad2870a992e60dceec11063c03337aa9679556fc1b99c6850b00359306e6",
+    "demo/run-cases.mjs": "1594460ea9d85c302b6ca5f61aa09405bf55b1a62193e8467aafffbbdcb7effd",
+    "demo/shots/card.jpg": "c7a4fc5686cd5a1e7c1b9835c18596cf26f0f856b798e9082d9a692e6827a610",
+    "demo/shots/circle-fix.jpg": "48d880f23e574712728f14958a3521dd868ecdd8a0d24f5d9e3f5948133b57a1",
+    "demo/shots/og-card.png": "f04f6794b2128928ed3bdf6368e973dae5afa6adc6cb3384f775f0f58a5c0167",
+    "hyalite.d.ts": "e30f345cf7bc95b2e5a5713aeb03f08d9b2e53955c168fe0ac7fa7486874f883",
+    "hyalite.js": "199d431b6b89ca9cdc00b7924f2fbae113f3c4f94cd1eb1b718c8aceee3af906",
+    "package.json": "fd550aff4df42d7bcd704e9ea26a8b132a67da7bd2ce090132997827b1141866"
+  }
+}
