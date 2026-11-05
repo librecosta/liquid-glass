@@ -302,12 +302,19 @@ for (const path of [
   "LICENSE",
   "THIRD_PARTY_NOTICES.md",
   "licenses/Hyalite-MIT.txt",
-])
-  assert.deepEqual(
-    readFileSync(join(installed, path)),
-    readFileSync(join(root, path)),
-    `Installed license: ${path}`,
-  );
+]) {
+  const actual = readFileSync(join(installed, path));
+  const expected = readFileSync(join(root, path));
+  // A Registry package may come from an LF checkout while Windows uses CRLF.
+  // Require the complete license text; local tarballs still compare raw bytes.
+  if (registryMode)
+    assert.equal(
+      actual.toString("utf8").replaceAll("\r\n", "\n"),
+      expected.toString("utf8").replaceAll("\r\n", "\n"),
+      `Installed license text: ${path}`,
+    );
+  else assert.deepEqual(actual, expected, `Installed license: ${path}`);
+}
 assert.deepEqual(Object.keys(installedPackage.exports).sort(), [
   ".",
   "./react",
