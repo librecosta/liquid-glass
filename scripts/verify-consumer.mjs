@@ -28,6 +28,29 @@ assert.equal(sourceLock.packages[""].version, sourcePackage.version);
 const directory = mkdtempSync(join(tmpdir(), "liquid-glass-consumer-"));
 const npm = process.env.npm_execpath;
 if (!npm) throw Error("Run through npm run test:consumer");
+// Explicit post-publication mode: install the exact version from the official
+// Registry in fresh projects, never substitute the local tarball.
+const registryMode = process.argv.includes("--registry");
+const registry = "https://registry.npmjs.org";
+let registryManifest;
+if (registryMode) {
+  const response = await fetch(
+    `${registry}/@librecosta%2Fliquid-glass/${sourcePackage.version}`,
+  );
+  assert.equal(response.status, 200, "Published Registry version exists");
+  registryManifest = await response.json();
+  const revision = spawnSync("git", ["rev-parse", "HEAD"], {
+    cwd: root,
+    encoding: "utf8",
+    windowsHide: true,
+  });
+  assert.equal(revision.status, 0, revision.stderr);
+  assert.equal(
+    registryManifest.gitHead,
+    revision.stdout.trim(),
+    "Registry gitHead matches the verified release source",
+  );
+}
 function run(args, cwd = directory) {
   const r = spawnSync(process.execPath, [npm, ...args], {
     cwd,
@@ -39,7 +62,19 @@ function run(args, cwd = directory) {
 }
 const packed = JSON.parse(
   run(
-    ["pack", "--ignore-scripts", "--json", "--pack-destination", directory],
+    [
+      "pack",
+      ...(registryMode
+        ? [
+            `${sourcePackage.name}@${sourcePackage.version}`,
+            `--registry=${registry}`,
+          ]
+        : []),
+      "--ignore-scripts",
+      "--json",
+      "--pack-destination",
+      directory,
+    ],
     root,
   ),
 )[0];
@@ -72,6 +107,12 @@ for (const path of packageDocs)
   assert.ok(fileNames(packed).includes(path), `Missing ${path}`);
 assert.equal(packed.name, "@librecosta/liquid-glass");
 assert.equal(packed.version, sourcePackage.version);
+if (registryMode)
+  assert.equal(
+    packed.integrity,
+    registryManifest.dist.integrity,
+    "Downloaded Registry tarball integrity",
+  );
 // A real default npm install of only the core must not pull in React or tools.
 const coreOnly = join(directory, "core-only");
 mkdirSync(coreOnly);
@@ -80,7 +121,11 @@ writeFileSync(
   JSON.stringify({
     private: true,
     type: "module",
-    dependencies: { "@librecosta/liquid-glass": `file:../${packed.filename}` },
+    dependencies: {
+      "@librecosta/liquid-glass": registryMode
+        ? sourcePackage.version
+        : `file:../${packed.filename}`,
+    },
   }),
 );
 run(
@@ -100,6 +145,11 @@ assert.deepEqual(Object.keys(coreLock.packages).sort(), [
   "",
   "node_modules/@librecosta/liquid-glass",
 ]);
+if (registryMode) {
+  const entry = coreLock.packages["node_modules/@librecosta/liquid-glass"];
+  assert.equal(entry.resolved, registryManifest.dist.tarball);
+  assert.equal(entry.integrity, registryManifest.dist.integrity);
+}
 for (const name of ["react", "react-dom", "@playwright", "vite"])
   assert.equal(
     existsSync(join(coreOnly, "node_modules", name)),
@@ -153,7 +203,7 @@ if(JSON.stringify(Object.keys(core).sort())!==JSON.stringify(['DEFAULTS','QUALIT
 );
 assert.equal(coreSSR.status, 0, coreSSR.stderr);
 console.log(
-  `Tarball ${packed.filename}: ${packed.files.length} allowlisted files, ${packed.size} bytes; core-only install/types/SSR without React passed`,
+  `${registryMode ? "Registry" : "Tarball"} ${packed.filename}: ${packed.files.length} allowlisted files, ${packed.size} bytes; core-only install/types/SSR without React passed`,
 );
 cpSync(resolve(root, "tests/consumer"), directory, { recursive: true });
 // Compile the actual bilingual Quick Starts against the installed package.
@@ -179,9 +229,13 @@ for (const [file, language] of [
 }
 const pkgPath = join(directory, "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-pkg.dependencies["@librecosta/liquid-glass"] = "file:./" + packed.filename;
+pkg.dependencies["@librecosta/liquid-glass"] = registryMode
+  ? sourcePackage.version
+  : "file:./" + packed.filename;
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-console.log("Independent tarball consumer: " + directory);
+console.log(
+  `Independent ${registryMode ? "Registry" : "tarball"} consumer: ${directory}`,
+);
 run([
   "install",
   "--prefer-offline",
@@ -195,6 +249,20 @@ const installed = join(directory, "node_modules/@librecosta/liquid-glass");
 const installedPackage = JSON.parse(
   readFileSync(join(installed, "package.json"), "utf8"),
 );
+if (registryMode) {
+  const lock = JSON.parse(
+    readFileSync(join(directory, "package-lock.json"), "utf8"),
+  );
+  const entry = lock.packages["node_modules/@librecosta/liquid-glass"];
+  assert.equal(entry.resolved, registryManifest.dist.tarball);
+  assert.equal(entry.integrity, registryManifest.dist.integrity);
+  for (const { path } of packed.files.filter((f) => f.path.startsWith("dist/")))
+    assert.deepEqual(
+      readFileSync(join(installed, path)),
+      readFileSync(join(root, path)),
+      `Registry runtime/types/CSS match release source: ${path}`,
+    );
+}
 assert.equal(installedPackage.version, sourcePackage.version);
 assert.equal(
   installedPackage.private,
@@ -318,10 +386,16 @@ try {
   }
   mkdirSync(resolve(root, "test-results"), { recursive: true });
   writeFileSync(
-    resolve(root, "test-results/consumer.json"),
+    resolve(
+      root,
+      `test-results/${registryMode ? "registry" : "consumer"}.json`,
+    ),
     JSON.stringify(
       {
         browser: browser.version(),
+        source: registryMode ? "official Registry" : "local tarball",
+        gitHead: registryManifest?.gitHead,
+        registryTarball: registryManifest?.dist.tarball,
         directory,
         tarball: packed.filename,
         version: packed.version,

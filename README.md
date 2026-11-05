@@ -4,9 +4,9 @@
 
 A headless liquid-glass renderer with a native TypeScript core and one React Hook. Bind real refraction to your own HTML. Keep complete control of your CSS, layout and native interactions.
 
-**v0.1.0 release candidate on `dev`; not published to npm.** See the [release checklist](docs/v0.1.0-release-checklist.md) for the remaining owner actions.
+**v0.1.0** · [npm](https://www.npmjs.com/package/@librecosta/liquid-glass) · [Release notes](https://github.com/librecosta/liquid-glass/releases/tag/v0.1.0)
 
-![The Liquid Glass Playground: an interactive glass card over a local forest, with a dark property editor](https://raw.githubusercontent.com/librecosta/liquid-glass/dev/docs/playground.webp)
+![The Liquid Glass Playground: an interactive glass card over a local forest, with a dark property editor](https://raw.githubusercontent.com/librecosta/liquid-glass/main/docs/playground.webp)
 
 ## Features
 
@@ -18,26 +18,11 @@ A headless liquid-glass renderer with a native TypeScript core and one React Hoo
 
 ## Installation
 
-**The package is not published to npm yet.** Build a local tarball from `dev` using Node 24+:
-
 ```sh
-git clone https://github.com/librecosta/liquid-glass.git
-cd liquid-glass
-git switch dev
-npm ci
-npm pack
+npm install @librecosta/liquid-glass@0.1.0
 ```
 
-This creates `librecosta-liquid-glass-0.1.0.tgz`. In an existing app located next to the repository, install the real file:
-
-```sh
-# Run from your app directory, alongside liquid-glass/
-npm install ../liquid-glass/librecosta-liquid-glass-0.1.0.tgz
-```
-
-For another directory layout, use the tarball's absolute path. The core has no runtime dependencies and installs without React. React `^19.0.0` is an optional peer required only by `/react`; a React DOM app supplies its own React DOM. The independent consumer check tests real installation outside the repository, without aliases or symlinks, including a core-only app without React and a React/React DOM 19.2.0 app.
-
-After a future public npm release, installation will be `npm install @librecosta/liquid-glass`. That registry command is not available yet. The RC deliberately retains `private: true` as a publish lock until the owner verifies the npm scope, account/2FA and separately approves publication.
+The core has no runtime dependencies and installs without React. React `^19.0.0` is an optional peer required only by `/react`; a React DOM app supplies its own React DOM. Validation uses independent projects without aliases or symlinks, including a core-only app and a React/React DOM 19.2.0 app.
 
 ## Quick Start
 
@@ -97,7 +82,7 @@ export function MyButton({ fast = false, disabled = false }) {
 
 Define `.my-button` with your own spacing, radius, colors and focus state. `useLiquidGlass()` without configuration uses Balanced. The Hook returns `ref` and `refresh`; `enabled` controls the effect independently of native `disabled`. A state/prop change updates the existing binding without remounting.
 
-For inputs, bind the glass to a decorative `pointer-events:none` background layer and place a transparent native input above it. Text, caret, selection and forms remain native. See the runnable [Hook examples](https://github.com/librecosta/liquid-glass/blob/dev/src/components-demo.tsx) for controlled email input, independent instances and native buttons.
+For inputs, bind the glass to a decorative `pointer-events:none` background layer and place a transparent native input above it. Text, caret, selection and forms remain native. See the runnable [Hook examples](https://github.com/librecosta/liquid-glass/blob/main/src/components-demo.tsx) for controlled email input, independent instances and native buttons.
 
 ## Configuration
 
@@ -132,6 +117,8 @@ npm run check     # Node, types/builds, browsers, tarball apps, production root/
 npm run build     # dist/ library + dist-playground/ website
 ```
 
+To test a local package, run `npm pack` after `npm ci`, then install the resulting `librecosta-liquid-glass-0.1.0.tgz` by its file path in another app. After publication, `npm run test:consumer -- --registry` validates the exact Registry version against the checked-out release commit, including its integrity, core, Hook, types and licenses.
+
 Use `/` for the Playground and `/components.html` for Hook examples. English is the default; language persists locally and can be shared with `?lang=en` or `?lang=zh-CN`. Quality links accept `?quality=Fast` or `?quality=Reference`. Images never leave the browser.
 
 For a local production build at the GitHub Pages project path:
@@ -143,11 +130,11 @@ npm run preview:pages -- --port 4175
 # http://127.0.0.1:4175/liquid-glass/components.html?lang=zh-CN
 ```
 
-This creates `dist-pages/` for local review; public hosting is not enabled. Confirm the photo's original rights or replace it before hosting. The [release checklist](docs/v0.1.0-release-checklist.md) records the exact Pages settings and publication gates.
+This creates `dist-pages/` for local review; public hosting is not enabled. Confirm the photo's original rights or replace it before hosting. The [release checklist](docs/v0.1.0-release-checklist.md) records the verification process and remaining photo/hosting limits.
 
 Local checks use installed Chrome (`LG_CHROME` can select an executable). CI uses the Chromium revision pinned by Playwright: `npx playwright install --with-deps chromium`, then set `LG_BROWSER=chromium`. Ubuntu runs all behavior, SSR and consumer checks, original exact Node math, and decoded map/SVG contracts. Windows Chrome pixel goldens stay unchanged and run on their compatible capture environment; Ubuntu explicitly skips those two platform-specific screenshot tests. `LG_EXACT_PIXELS=1` opts into the exact screenshots; `0` skips them. Stable `?fixture=1` remains a separate 500×480 regression scene, independent of the responsive website and UI language.
 
-CI validates pushes to `dev`/`main` and pull requests, including both production entries at `/` and `/liquid-glass/`. It does not publish, deploy, tag or create Releases. See the [RC checklist](docs/v0.1.0-release-checklist.md) for acceptance and [LG-D notes](docs/lg-d-validation.md) for the website baseline; earlier experiments remain historical records.
+CI validates pushes to `dev`/`main` and pull requests, including both production entries at `/` and `/liquid-glass/`. It does not publish, deploy, tag or create Releases. See the [release checklist](docs/v0.1.0-release-checklist.md) for verification and [LG-D notes](docs/lg-d-validation.md) for the website baseline; earlier experiments remain historical records.
 
 ## License
 

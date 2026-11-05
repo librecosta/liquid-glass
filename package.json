@@ -1,7 +1,6 @@
 {
   "name": "@librecosta/liquid-glass",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "license": "MIT",
   "description": "Headless SVG liquid-glass refraction for native HTML, with a TypeScript core and one React Hook.",
@@ -48,10 +47,10 @@
     "@vitejs/plugin-react": "5.0.4",
     "pixelmatch": "7.1.0",
     "pngjs": "7.0.0",
-    "typescript": "5.9.3",
-    "vite": "6.4.5",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "typescript": "5.9.3",
+    "vite": "6.4.5"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
