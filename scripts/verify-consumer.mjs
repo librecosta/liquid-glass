@@ -33,6 +33,7 @@ if (!npm) throw Error("Run through npm run test:consumer");
 const registryMode = process.argv.includes("--registry");
 const registry = "https://registry.npmjs.org";
 let registryManifest;
+let sourceRevision;
 if (registryMode) {
   const response = await fetch(
     `${registry}/@librecosta%2Fliquid-glass/${sourcePackage.version}`,
@@ -45,11 +46,17 @@ if (registryMode) {
     windowsHide: true,
   });
   assert.equal(revision.status, 0, revision.stderr);
-  assert.equal(
-    registryManifest.gitHead,
-    revision.stdout.trim(),
-    "Registry gitHead matches the verified release source",
-  );
+  sourceRevision = revision.stdout.trim();
+  if (registryManifest.gitHead !== undefined)
+    assert.equal(
+      registryManifest.gitHead,
+      sourceRevision,
+      "Registry gitHead matches the verified release source",
+    );
+  else
+    console.log(
+      "Registry omits optional gitHead; verifying installed package files against source instead",
+    );
 }
 function run(args, cwd = directory) {
   const r = spawnSync(process.execPath, [npm, ...args], {
@@ -250,6 +257,11 @@ const installedPackage = JSON.parse(
   readFileSync(join(installed, "package.json"), "utf8"),
 );
 if (registryMode) {
+  assert.deepEqual(
+    installedPackage,
+    sourcePackage,
+    "Registry package metadata matches release source",
+  );
   const lock = JSON.parse(
     readFileSync(join(directory, "package-lock.json"), "utf8"),
   );
@@ -261,6 +273,12 @@ if (registryMode) {
       readFileSync(join(installed, path)),
       readFileSync(join(root, path)),
       `Registry runtime/types/CSS match release source: ${path}`,
+    );
+  for (const path of ["README.md", "README.zh-CN.md", "THIRD_PARTY_NOTICES.md"])
+    assert.equal(
+      readFileSync(join(installed, path), "utf8").replaceAll("\r\n", "\n"),
+      readFileSync(join(root, path), "utf8").replaceAll("\r\n", "\n"),
+      `Registry documentation matches release source: ${path}`,
     );
 }
 assert.equal(installedPackage.version, sourcePackage.version);
@@ -394,7 +412,12 @@ try {
       {
         browser: browser.version(),
         source: registryMode ? "official Registry" : "local tarball",
-        gitHead: registryManifest?.gitHead,
+        sourceRevision,
+        gitHead: registryManifest?.gitHead ?? null,
+        sourceTarballIntegrity: registryMode ? dryRun.integrity : undefined,
+        archiveMatchesSource: registryMode
+          ? packed.integrity === dryRun.integrity
+          : undefined,
         registryTarball: registryManifest?.dist.tarball,
         directory,
         tarball: packed.filename,
