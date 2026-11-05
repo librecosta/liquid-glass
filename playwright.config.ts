@@ -13,9 +13,10 @@ export default defineConfig({
     launchOptions: {
       ...(process.env.LG_CHROME
         ? { executablePath: process.env.LG_CHROME }
-        : { channel: "chrome" }),
+        : process.env.LG_BROWSER === "chromium" ? {} : { channel: "chrome" }),
       args: ["--disable-background-networking"],
     },
+    trace: "retain-on-failure",
   },
   webServer: {
     command: "npm run dev -- --port 5173 --strictPort",

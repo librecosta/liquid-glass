@@ -1,5 +1,7 @@
 # LG-C3 — Balanced default & Fast switching
 
+Historical report for `b6d8875` and its recorded fixed 500×480 UI. To reproduce the measurement script, serve that commit; LG-D's responsive public stage is a different workload. Current website acceptance is in [LG-D validation](lg-d-validation.md). The optical defaults and regression fixtures below remain protected.
+
 Issue [#5](https://github.com/librecosta/liquid-glass/issues/5), based on `56fc13c`. The approved core defaults are now Balanced: **dispersion=0.8, sat=1, edge=0, rim=0.80**. Fast explicitly changes dispersion to 0 and repeats the other three values. Other defaults and all rendering algorithms remain unchanged. Core without options, Hook without config, Playground first paint/Reset and Hook DIY agree.
 
 Reference is historical regression only. Its named, frozen `REFERENCE_DEFAULTS` object in `src/quality.ts` pins every original parameter independently of the new defaults. `QUALITY_PRESETS.Reference` exposes that complete configuration; the old math/map/SVG/pixel gold files are untouched. Optical Balanced is labeled an LG-C2 experimental comparison with its original dispersion=1.6/sat=1/edge=0/rim=1.76, never another default.

@@ -5,9 +5,10 @@ export function useDrag(
   node: React.RefObject<HTMLDivElement | null>,
   size: { width: number; height: number; x: number; y: number },
   commit: (x: number, y: number) => void,
+  bounds = {width: 500, height: 480},
 ) {
-  const latest = useRef({ size, commit });
-  latest.current = { size, commit };
+  const latest = useRef({ size, commit, bounds });
+  latest.current = { size, commit, bounds };
   const state = useRef<{
     pointer: number;
     target: HTMLElement;
@@ -23,8 +24,8 @@ export function useDrag(
     position.current = { x: size.x, y: size.y };
   }, [size.x, size.y]);
   const clamp = (x: number, y: number) => ({
-    x: Math.round(Math.max(0, Math.min(500 - latest.current.size.width, x))),
-    y: Math.round(Math.max(0, Math.min(480 - latest.current.size.height, y))),
+    x: Math.round(Math.max(0, Math.min(latest.current.bounds.width - latest.current.size.width, x))),
+    y: Math.round(Math.max(0, Math.min(latest.current.bounds.height - latest.current.size.height, y))),
   });
   const flush = () => {
     frame.current = 0;

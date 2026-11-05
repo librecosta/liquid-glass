@@ -1,0 +1,86 @@
+{
+  "baseline": "LG-D, verified against unchanged b257c17 Reference and b6d8875 C3 fixtures on Windows Chrome 156.0.8078.80",
+  "method": "Exact decoded PNG map RGBA/dimensions and SVG graph, excluding PNG compression, generated IDs, text/backdrop rasterization and diagnostic raw profiles/maxDisplacement (V8 last-bit differences). No pixel/SVG tolerance. Original exact Node math and Windows Chrome full-state/pixel gold remain unchanged.",
+  "results": [
+    {
+      "name": "Reference/forest",
+      "patch": {},
+      "digest": "e77e8b0261c44dfda0d4281f573a4a1c32ece46bd3ebe928f152e9dcba5090b7"
+    },
+    {
+      "name": "Reference/grid",
+      "patch": {
+        "background": "grid"
+      },
+      "digest": "e77e8b0261c44dfda0d4281f573a4a1c32ece46bd3ebe928f152e9dcba5090b7"
+    },
+    {
+      "name": "Reference/asymmetric",
+      "patch": {
+        "radius": "48px 12px 64px 4px"
+      },
+      "digest": "fae701f5d1e145abebf7414211c1a3ca6c0a31ab9eef4606c0ccbed490c6b3ef"
+    },
+    {
+      "name": "Reference/circle",
+      "patch": {
+        "radius": "50%",
+        "width": 220,
+        "height": 220
+      },
+      "digest": "81ffb5085db1aa9d0825ea43222221312d438b7daba1403a969ce98b6723e7cd"
+    },
+    {
+      "name": "Reference/overlap",
+      "patch": {
+        "width": 320,
+        "height": 40,
+        "radius": "24px 24px 0 0"
+      },
+      "digest": "af51be3d6742d3d45ba96a6d9dde467b4356604440f72dc997c2f3c41c3db67e"
+    },
+    {
+      "name": "Reference/nonfolding",
+      "patch": {
+        "width": 300,
+        "height": 220,
+        "radius": "30px / 50px",
+        "opts": {
+          "slope": 0.85,
+          "dispersion": 0.5
+        }
+      },
+      "digest": "54573c0e46e324b389a679e23024e7d5f80ab46b32e54350e85930c0dae2e015"
+    },
+    {
+      "name": "Balanced",
+      "patch": {
+        "quality": "Balanced",
+        "opts": {},
+        "width": 300,
+        "height": 220,
+        "radius": "42px",
+        "x": 100,
+        "y": 142,
+        "instances": 1,
+        "background": "grid"
+      },
+      "digest": "737431d566eb5a15c47486edc74469c202e5db7386a6a1d070be64d35e73c71e"
+    },
+    {
+      "name": "Fast",
+      "patch": {
+        "quality": "Fast",
+        "opts": {},
+        "width": 300,
+        "height": 220,
+        "radius": "42px",
+        "x": 100,
+        "y": 142,
+        "instances": 1,
+        "background": "grid"
+      },
+      "digest": "61e6c54a86ea67f8c8c73da3a1b44032ea12f534259ddcd1937b63b7141ed0f7"
+    }
+  ]
+}

@@ -126,7 +126,7 @@ async function startServer(preview) {
 const browser = await chromium.launch(
   process.env.LG_CHROME
     ? { executablePath: process.env.LG_CHROME }
-    : { channel: "chrome" },
+    : process.env.LG_BROWSER === "chromium" ? {} : { channel: "chrome" },
 );
 const phases = [];
 try {

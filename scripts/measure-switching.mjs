@@ -1,4 +1,6 @@
-// LG-C3 production smoke sample: warm quality switching, then genuine five-card drag.
+// Historical LG-C3 production smoke sample: run against the UI at b6d8875
+// (and 56fc13c for the paired baseline), not the responsive LG-D website.
+// Warm quality switching, then genuine five-card drag. Keep recorded results intact.
 import { chromium } from "@playwright/test";
 import { writeFileSync } from "node:fs";
 import { QUALITY_PRESETS, QUALITY_LABELS } from "../src/quality.ts";

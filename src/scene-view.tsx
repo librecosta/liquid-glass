@@ -7,14 +7,19 @@ import { QUALITY_PRESETS } from "./quality.ts";
 import type { Scene } from "./scene.ts";
 import { useDrag } from "./drag.ts";
 import forest from "./assets/forest.jpg";
+import type { Translator } from "./i18n.ts";
 import "./scene.css";
 
 export function SceneView({
   scene,
   onPosition,
+  canvas = {width: 500, height: 480},
+  t,
 }: {
   scene: Scene;
   onPosition: (x: number, y: number) => void;
+  canvas?: {width: number; height: number};
+  t?: Translator;
 }) {
   const surface = useRef<HTMLDivElement>(null),
     position = useRef<HTMLDivElement>(null);
@@ -34,7 +39,7 @@ export function SceneView({
     count.current++;
     setBuilds(count.current);
   }).current;
-  const drag = useDrag(position, scene, onPosition);
+  const drag = useDrag(position, scene, onPosition, canvas);
   useLayoutEffect(() => {
     setSupported(api.force(scene.fallback ? false : null));
     bindings.current = Array.from(
@@ -56,18 +61,15 @@ export function SceneView({
     window.__scene = scene;
   }, [scene]);
   return (
-    <div className="scene-shell">
+    <div className={`scene-shell${t ? " public-scene" : ""}`}>
       <div
         id="scene"
         ref={surface}
         className={`scene ${scene.background}`}
-        style={
-          scene.background === "grid"
-            ? undefined
-            : {
-                backgroundImage: `url("${scene.background === "forest" ? forest : scene.image}")`,
-              }
-        }
+        style={{
+          ...(t ? {width: canvas.width, height: canvas.height} : {}),
+          ...(scene.background === "grid" ? {} : {backgroundImage: `url("${scene.background === "forest" ? forest : scene.image}")`}),
+        }}
       >
         {Array.from({ length: scene.instances }, (_, i) => (
           // Translate an unbound wrapper so movement cannot trigger the glass's
@@ -82,7 +84,7 @@ export function SceneView({
               height: scene.height,
               borderRadius: scene.radius,
               zIndex: i === 0 && scene.instances > 1 ? 1 : undefined,
-              transform: `translate(${i === 0 ? scene.x : (scene.x + i * 13) % Math.max(1, 500 - scene.width)}px, ${i === 0 ? scene.y : (scene.y + i * 17) % Math.max(1, 480 - scene.height)}px)`,
+              transform: `translate(${i === 0 ? scene.x : (scene.x + i * 13) % Math.max(1, canvas.width - scene.width)}px, ${i === 0 ? scene.y : (scene.y + i * 17) % Math.max(1, canvas.height - scene.height)}px)`,
             }}
           >
             <div
@@ -99,28 +101,32 @@ export function SceneView({
                   className="drag-handle"
                   role="button"
                   tabIndex={0}
-                  aria-label="移动卡片"
+                  aria-label={t ? t("move") : "移动卡片"}
                   {...drag}
                 >
-                  ⠿ <span>拖动卡片</span>
+                  ⠿ <span>{t ? t("drag") : "拖动卡片"}</span>
                 </div>
               )}
               {scene.sample === "card" ? (
                 <div className="card-copy">
-                  <h1>Liquid Glass</h1>
+                  {t ? <>
+                    <h2>{t("glassTitle")}</h2>
+                    <p>{t("glassLine1")}<br/>{t("glassLine2")}</p>
+                    <span>{t("glassFoot")}</span>
+                  </> : <><h1>Liquid Glass</h1>
                   <p>
                     光线穿过边缘。
                     <br />
                     中心保留背景的颜色。
                   </p>
-                  <span>SVG refraction / 0.5.0</span>
+                  <span>SVG refraction / 0.5.0</span></>}
                 </div>
               ) : (
                 <div className="card-copy controls">
                   <label
                     htmlFor={i === 0 ? "native-input" : `native-input-${i}`}
                   >
-                    输入文字
+                    {t ? t("inputLabel") : "输入文字"}
                     <span className="native-input-wrap">
                       <span
                         className="glass native-input-surface"
@@ -129,7 +135,7 @@ export function SceneView({
                       <input
                         id={i === 0 ? "native-input" : `native-input-${i}`}
                         className="native-input"
-                        placeholder="保持原生输入行为"
+                        placeholder={t ? t("inputPlaceholder") : "保持原生输入行为"}
                       />
                     </span>
                   </label>
@@ -138,7 +144,7 @@ export function SceneView({
                     className="glass native-button"
                     onClick={() => setClicks((n) => n + 1)}
                   >
-                    点击计数 {clicks}
+                    {t ? t("click", {count: clicks}) : `点击计数 ${clicks}`}
                   </button>
                 </div>
               )}
@@ -148,9 +154,9 @@ export function SceneView({
       </div>
       <div className="frame-status">
         <span>
-          {supported ? "SVG refraction 可用" : "CSS fallback"} / {scene.quality}
+          {t ? t(supported ? "active" : "fallbackStatus") : supported ? "SVG refraction 可用" : "CSS fallback"} / {scene.quality}
         </span>
-        <span>贴图构建 {builds}</span>
+        <span>{t ? t("sceneSize", canvas) : `贴图构建 ${builds}`}</span>
       </div>
     </div>
   );

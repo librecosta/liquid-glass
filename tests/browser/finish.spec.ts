@@ -1,25 +1,32 @@
 import { test, expect } from "@playwright/test";
-test("finish controls separate edge, saturation and rim without changing Reference", async ({
+test("finish controls separate CSS outline from the historical optical highlight", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?lang=en");
   await page.waitForFunction(() => window.__ready && window.__engine);
-  await expect(page.locator(".quality-note")).toContainText("库默认画质");
+  await expect(page.locator(".quality-note")).toContainText("library default");
   await expect(page.locator("#card")).toHaveCSS("box-shadow", "none");
-  const state = await page.evaluate(() => ({
-    edge: window.__engine.DEFAULTS.edge,
-    rim: window.__engine.DEFAULTS.rim,
-  }));
-  expect([state.edge, state.rim]).toEqual([0, 0.80]);
-  await page.getByRole("button", { name: "Reference（历史参考）", exact: true }).click();
-  await expect(page.locator("#card")).not.toHaveCSS("box-shadow", "none");
-  await expect(page.getByRole("slider", {name: "边缘反光", exact: true})).toHaveValue("1.76");
+  expect(
+    await page.evaluate(() => [
+      window.__engine.DEFAULTS.edge,
+      window.__engine.DEFAULTS.rim,
+    ]),
+  ).toEqual([0, 0.8]);
+  await page
+    .getByRole("button", { name: "Reference (historical)", exact: true })
+    .click();
+  await page.getByText("Light & color", { exact: true }).click();
+  await expect(
+    page.getByRole("slider", { name: "Optical highlight", exact: true }),
+  ).toHaveValue("1.76");
   const reference = await page.evaluate(() => ({
     map: window.__engine.info()!.map,
     ref: document.getElementById("card")!.style.getPropertyValue("--hyalite"),
   }));
-  for (const label of ["0", "0.08", "0.16", "0.32"]) {
-    await page.getByRole("button", { name: label, exact: true }).click();
+  for (const edge of [0, 0.08, 0.16, 0.32]) {
+    await page
+      .getByRole("spinbutton", { name: "CSS outline (value)", exact: true })
+      .fill(String(edge));
     expect(await page.evaluate(() => window.__engine.info()!.map)).toBe(
       reference.map,
     );
@@ -29,9 +36,10 @@ test("finish controls separate edge, saturation and rim without changing Referen
         .evaluate((el) => el.style.getPropertyValue("--hyalite")),
     ).toBe(reference.ref);
   }
+  await page.getByText("Advanced optics", { exact: true }).click();
   await page
-    .getByRole("button", { name: "Optical Balanced（实验对照）", exact: true })
-    .click();
+    .getByRole("combobox", { name: "Historical comparisons", exact: true })
+    .selectOption("optical");
   await expect(page.locator("#card")).toHaveCSS("box-shadow", "none");
   expect(await page.locator("filter feDisplacementMap").count()).toBe(3);
   expect(await page.locator("filter > *").count()).toBe(18);
@@ -39,7 +47,7 @@ test("finish controls separate edge, saturation and rim without changing Referen
     reference.map,
   );
   await page
-    .getByRole("combobox", { name: "样例", exact: true })
+    .getByRole("combobox", { name: "Content", exact: true })
     .selectOption("controls");
   await page.locator("#native-input").fill("Clear foreground");
   await expect(page.locator("#native-input")).toHaveCSS("filter", "none");
@@ -51,19 +59,31 @@ test("finish controls separate edge, saturation and rim without changing Referen
     "pointer-events",
     "none",
   );
-  await page.getByRole("button", {name:"重置",exact:true}).click();
-  await expect(page.getByRole("button", {name:"Balanced（默认）",exact:true})).toHaveAttribute("aria-pressed","true");
-  for (const [name, value] of [["色散", "0.8"], ["边缘饱和度", "1"], ["外轮廓", "0"], ["边缘反光", "0.8"]])
-    await expect(page.getByRole("slider", {name,exact:true})).toHaveValue(value);
+  await page.getByRole("button", { name: "Reset all", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^Balanced/ })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  for (const [name, value] of [
+    ["Dispersion", "0.8"],
+    ["Edge saturation", "1"],
+    ["CSS outline", "0"],
+    ["Optical highlight", "0.8"],
+  ])
+    await expect(page.getByRole("slider", { name, exact: true })).toHaveValue(
+      value,
+    );
 });
-test("DIY Hook page keeps native forms, disabled, focus and clear foreground", async ({
+test("DIY Hook page keeps native forms, disabled, keyboard focus and clear foreground", async ({
   page,
 }) => {
-  await page.goto("/components.html");
+  await page.goto("/components.html?lang=en");
   await expect(
-    page.getByRole("heading", { name: "React Hook / DIY DOM" }),
+    page.getByRole("heading", { name: "Your DOM. A little glass." }),
   ).toBeVisible();
-  await expect(page.getByRole("combobox")).toHaveValue("Balanced");
+  await expect(
+    page.getByRole("combobox", { name: "Quality", exact: true }),
+  ).toHaveValue("Balanced");
   await expect(page.locator(".demo-card").first()).toHaveCSS(
     "box-shadow",
     "none",
@@ -73,20 +93,18 @@ test("DIY Hook page keeps native forms, disabled, focus and clear foreground", a
   await expect(input).toHaveCSS("filter", "none");
   await expect(input).toHaveCSS("backdrop-filter", "none");
   await expect(input).toHaveCSS("border-top-width", "0px");
-  await page.getByRole("button", { name: "提交", exact: true }).click();
+  await page.getByRole("button", { name: "Submit", exact: true }).click();
   await expect(page.locator("output")).toContainText("hello@example.com");
-  const action = page.getByRole("button", { name: /原生点击/ });
+  const action = page.getByRole("button", { name: /Native click/ });
   await action.focus();
   await action.press("Space");
-  await expect(action).toHaveText("原生点击 1");
+  await expect(action).toHaveText("Native click 1");
   await expect(action).toHaveCSS("outline-style", "solid");
-  await page.getByRole("checkbox", { name: "禁用示例按钮" }).check();
+  await page.getByRole("checkbox", { name: "Disable example buttons" }).check();
   await expect(action).toBeDisabled();
   await action.evaluate((el) => (el as HTMLButtonElement).click());
-  await expect(action).toHaveText("原生点击 1");
-  await page
-    .getByRole("checkbox", { name: "启用特效（独立于 disabled）" })
-    .uncheck();
+  await expect(action).toHaveText("Native click 1");
+  await page.getByRole("checkbox", { name: "Enable glass effect" }).uncheck();
   await expect(page.locator("filter")).toHaveCount(0);
   await expect(page.locator(".demo-card").first()).toHaveCSS(
     "box-shadow",

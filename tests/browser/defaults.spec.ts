@@ -4,6 +4,7 @@ import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
 
 test("Balanced/Fast keep the C3 visual baselines before and after quality switching", async ({}, testInfo) => {
+  test.skip(process.env.LG_EXACT_PIXELS === "0" || (process.platform !== "win32" && process.env.LG_EXACT_PIXELS !== "1"), "Exact Windows Chrome pixels are platform-specific; portable map/SVG contracts run everywhere.");
   mkdirSync("test-results/c3", {recursive: true});
   for (const quality of ["Balanced", "Fast"]) {
     // Fresh process matches fixture JPEG decode/resampling, as with Reference.

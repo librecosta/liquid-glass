@@ -10,6 +10,7 @@ declare global {
   }
 }
 test("Reference keeps b257c17 mathematical/map/SVG/pixel gold on forest and grid", async ({}, testInfo) => {
+  test.skip(process.env.LG_EXACT_PIXELS === "0" || (process.platform !== "win32" && process.env.LG_EXACT_PIXELS !== "1"), "Exact Windows Chrome pixels are platform-specific; portable map/SVG contracts run everywhere.");
   // Match the original gold capture's fresh Chrome process. Chrome's JPEG decode
   // cache can change resampling by a few channel values across reused contexts.
   const browser = await chromium.launch(testInfo.project.use.launchOptions);
@@ -78,19 +79,21 @@ test("single engine, local forest, real drag/cancel/keyboard, qualities, resize 
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/?lang=en");
   await page.waitForFunction(() => window.__ready && window.__scene);
   expect(await page.locator("iframe").count()).toBe(0);
-  expect(await page.locator("svg").count()).toBe(1);
+  expect(await page.locator("svg:has(filter)").count()).toBe(1);
   await expect(
-    page.getByRole("button", { name: "Balanced（默认）", exact: true }),
+    page.getByRole("button", { name: /^Balanced/ }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#scene")).toHaveCSS("background-image", /forest/);
   const card = page.locator("#card"),
     initial = await card.evaluate((el) =>
       el.style.getPropertyValue("--hyalite"),
     );
-  const handle = page.getByRole("button", { name: "移动卡片" }),
+  await page.waitForTimeout(100);
+  const start = await page.evaluate(() => ({x: window.__scene.x, y: window.__scene.y}));
+  const handle = page.getByRole("button", { name: "Move glass" }),
     box = (await handle.boundingBox())!;
   await page.mouse.move(box.x + 20, box.y + 10);
   await page.mouse.down();
@@ -98,7 +101,7 @@ test("single engine, local forest, real drag/cancel/keyboard, qualities, resize 
   await page.mouse.up();
   await expect(page.locator("#position")).toHaveCSS(
     "transform",
-    "matrix(1, 0, 0, 1, 160, 172)",
+    `matrix(1, 0, 0, 1, ${start.x + 60}, ${start.y + 30})`,
   );
   expect(
     await card.evaluate((el) => el.style.getPropertyValue("--hyalite")),
@@ -106,48 +109,50 @@ test("single engine, local forest, real drag/cancel/keyboard, qualities, resize 
   await handle.press("ArrowLeft");
   await expect(page.locator("#position")).toHaveCSS(
     "transform",
-    "matrix(1, 0, 0, 1, 150, 172)",
+    `matrix(1, 0, 0, 1, ${start.x + 50}, ${start.y + 30})`,
   );
   // Exercise real pointer capture, a clamped move, then cancellation before release.
   const cancelBox = (await handle.boundingBox())!;
   await page.mouse.move(cancelBox.x + 10, cancelBox.y + 10);
   await page.mouse.down();
   expect(await handle.evaluate((el) => el.hasPointerCapture(1))).toBe(true);
-  await page.mouse.move(1400, 900);
+  await page.mouse.move(2500, 2500);
   await handle.dispatchEvent("pointercancel", { pointerId: 1 });
   await page.mouse.up();
+  const end = await page.locator("#scene").evaluate(el => [el.clientWidth - window.__scene.width, el.clientHeight - window.__scene.height]);
   await expect(page.locator("#position")).toHaveCSS(
     "transform",
-    "matrix(1, 0, 0, 1, 200, 260)",
+    `matrix(1, 0, 0, 1, ${end[0]}, ${end[1]})`,
   );
   expect(await handle.evaluate((el) => el.hasPointerCapture(1))).toBe(false);
   await page.mouse.move(800, 600);
   await expect
     .poll(() => page.evaluate(() => [window.__scene.x, window.__scene.y]))
-    .toEqual([200, 260]);
-  await page.getByRole("button", { name: "Fast（性能优先）", exact: true }).click();
-  await expect(page.locator(".quality-note")).toContainText("单通道");
+    .toEqual(end);
+  await page.getByRole("button", { name: "Fast", exact: true }).click();
+  await expect(page.locator(".quality-note")).toContainText("One displacement channel");
   expect(await page.locator("filter feDisplacementMap").count()).toBe(1);
-  await page.getByRole("button", { name: "Reference（历史参考）", exact: true }).click();
+  await page.getByRole("button", { name: "Reference (historical)", exact: true }).click();
   expect(await page.locator("filter feDisplacementMap").count()).toBe(3);
   await page
-    .getByRole("combobox", { name: "样例", exact: true })
+    .getByRole("combobox", { name: "Content", exact: true })
     .selectOption("controls");
   await page.locator("#native-input").fill("Native input");
   await page.locator("#native-button").click();
-  await expect(page.locator("#native-button")).toHaveText("点击计数 1");
-  await page.getByRole("checkbox", { name: "模拟不支持 SVG 折射" }).check();
+  await expect(page.locator("#native-button")).toHaveText("Clicked 1 times");
+  await page.getByText("Advanced optics", {exact: true}).click();
+  await page.getByRole("checkbox", { name: "Preview CSS fallback" }).check();
   await expect(card).toHaveCSS("backdrop-filter", "blur(1px)");
   expect(await page.locator("filter").count()).toBe(0);
   await page
-    .getByRole("combobox", { name: "背景", exact: true })
+    .getByRole("combobox", { name: "Background", exact: true })
     .selectOption("image");
   await page
     .locator("input[type=file]")
     .setInputFiles("tests/fixtures/background.svg");
   await expect(page.locator("#scene")).toHaveCSS("background-image", /blob:/);
-  await page.getByRole("button", { name: "重置", exact: true }).click();
-  await expect(card).toHaveCSS("width", "300px");
+  await page.getByRole("button", { name: "Reset all", exact: true }).click();
+  await expect(card).toHaveCSS("width", "400px");
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
     390,
@@ -175,7 +180,7 @@ test("local forest and data maps work with explicit image CSP permissions", asyn
       window.__violations.push(e.blockedURI),
     );
   });
-  await page.goto("/");
+  await page.goto("/?lang=en");
   await page.waitForFunction(() => window.__ready && window.__engine);
   await expect(page.locator("filter")).toHaveCount(1);
   expect(
@@ -183,7 +188,8 @@ test("local forest and data maps work with explicit image CSP permissions", asyn
   ).toMatch(/^data:image\/png/);
   await expect(page.locator("#scene")).toHaveCSS("background-image", /forest/);
   expect(await page.evaluate(() => window.__violations)).toEqual([]);
-  await page.getByRole("checkbox", { name: "模拟不支持 SVG 折射" }).check();
+  await page.getByText("Advanced optics", {exact: true}).click();
+  await page.getByRole("checkbox", { name: "Preview CSS fallback" }).check();
   await expect(page.locator("#card")).toHaveCSS("backdrop-filter", "blur(1px)");
 });
 

@@ -1,25 +1,28 @@
-import { StrictMode, useRef, useState } from "react";
+import { StrictMode, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useLiquidGlass } from "./react/index.js";
-import {
-  QUALITY_PRESETS,
-  QUALITY_NOTES,
-  QUALITY_LABELS,
-  type LiquidGlassQuality,
-} from "./quality.ts";
+import { QUALITY_PRESETS, type LiquidGlassQuality } from "./quality.ts";
+import { useLanguage, qualityKeys, qualityNotes } from "./i18n.ts";
+import { RangeField, SiteFooter, SiteHeader, Switch } from "./site-ui.tsx";
 import "./styles.css";
+import "./style.css";
 import "./components-demo.css";
 
 function Demo() {
-  const [quality, setQuality] =
-    useState<LiquidGlassQuality>("Balanced");
-  const options = QUALITY_PRESETS[quality];
+  const { language, setLanguage, t } = useLanguage("examplesTitle");
+  const [quality, setQuality] = useState<LiquidGlassQuality>(() => {
+    const query = new URLSearchParams(location.search).get("quality");
+    return query && Object.hasOwn(QUALITY_PRESETS, query)
+      ? (query as LiquidGlassQuality)
+      : "Balanced";
+  });
   const [bevel, setBevel] = useState(37),
     [enabled, setEnabled] = useState(true),
     [disabled, setDisabled] = useState(false);
   const [text, setText] = useState(""),
-    [submitted, setSubmitted] = useState(""),
+    [submitted, setSubmitted] = useState<string | null>(null),
     [clicks, setClicks] = useState(0);
+  const options = QUALITY_PRESETS[quality];
   const input = useRef<HTMLInputElement>(null);
   const left = useLiquidGlass<HTMLDivElement>({
     options: { ...options, bevel },
@@ -33,120 +36,170 @@ function Demo() {
   const surface = useLiquidGlass<HTMLSpanElement>({ options, enabled });
   const submit = useLiquidGlass<HTMLButtonElement>({ options, enabled });
   const action = useLiquidGlass<HTMLButtonElement>({ options, enabled });
+  useEffect(() => {
+    if (input.current?.validity.customError)
+      input.current.setCustomValidity(t("invalidEmail"));
+  }, [language]);
   return (
-    <main className="component-demo">
-      <header>
-        <h1>React Hook / DIY DOM</h1>
-        <a href="/">Playground ↗</a>
-      </header>
-      <p>
-        以下 div、section、button、input 均由示例自己创建，只有绑定玻璃的
-        useLiquidGlass Hook 来自库。外观和布局可自由覆盖。
-      </p>
-      <label>
-        画质{" "}
-        <select
-          value={quality}
-          onChange={(e) => setQuality(e.target.value as LiquidGlassQuality)}
-        >
-          {Object.keys(QUALITY_PRESETS).map((q) => (
-            <option key={q} value={q}>{QUALITY_LABELS[q as LiquidGlassQuality]}</option>
-          ))}
-        </select>
-      </label>
-      <p>{QUALITY_NOTES[quality]}</p>
-      <label>
-        左侧斜面 {bevel}px{" "}
-        <input
-          aria-label="左侧斜面"
-          type="range"
-          min="1"
-          max="90"
-          value={bevel}
-          onChange={(e) => setBevel(+e.target.value)}
-        />
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={enabled}
-          onChange={(e) => setEnabled(e.target.checked)}
-        />
-        启用特效（独立于 disabled）
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={disabled}
-          onChange={(e) => setDisabled(e.target.checked)}
-        />
-        禁用示例按钮
-      </label>
-      <div className="demo-scene">
-        <div ref={left.ref} className="liquid-glass demo-card">
-          <h2>自己的 div</h2>
-          <p>左侧斜面 {bevel}px</p>
+    <div className="site">
+      <SiteHeader
+        language={language}
+        setLanguage={setLanguage}
+        t={t}
+        page="examples"
+      />
+      <main id="content" className="site-main" tabIndex={-1}>
+        <div className="page-intro">
+          <div>
+            <h1>{t("examplesHeading")}</h1>
+            <p>{t("examplesIntro")}</p>
+          </div>
         </div>
-        <div ref={right.ref} className="liquid-glass demo-card">
-          <h2>独立实例</h2>
-          <p>右侧斜面始终为 37px</p>
+        <div className="workspace">
+          <section className="preview-column" aria-label={t("demoStage")}>
+            <div className="demo-scene">
+              <div ref={left.ref} className="liquid-glass demo-card">
+                <span className="demo-tag">HTMLDivElement</span>
+                <h2>{t("ownDiv")}</h2>
+                <p>
+                  {t("leftBevel")}: {bevel}px
+                </p>
+              </div>
+              <div ref={right.ref} className="liquid-glass demo-card">
+                <span className="demo-tag">HTMLDivElement</span>
+                <h2>{t("independent")}</h2>
+                <p>{t("independentNote")}</p>
+              </div>
+              <section ref={custom.ref} className="liquid-glass demo-card">
+                <span className="demo-tag">HTMLElement</span>
+                <h2>{t("ownSection")}</h2>
+                <p>{t("sectionNote")}</p>
+                <button className="demo-refresh" onClick={custom.refresh}>
+                  {t("refresh")}
+                </button>
+              </section>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSubmitted(
+                    new FormData(e.currentTarget).get("email") as string,
+                  );
+                }}
+              >
+                <label className="demo-email-label" htmlFor="email">
+                  {t("email")}
+                </label>
+                <span className="demo-input">
+                  <span
+                    ref={surface.ref}
+                    className="liquid-glass demo-input-surface"
+                    aria-hidden="true"
+                  />
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    placeholder={t("emailPlaceholder")}
+                    value={text}
+                    ref={input}
+                    onInvalid={(e) =>
+                      e.currentTarget.setCustomValidity(t("invalidEmail"))
+                    }
+                    onChange={(e) => {
+                      e.currentTarget.setCustomValidity("");
+                      setText(e.target.value);
+                    }}
+                  />
+                </span>
+                <div className="demo-form-actions">
+                  <button
+                    ref={submit.ref}
+                    className="liquid-glass demo-button"
+                    type="submit"
+                    disabled={disabled}
+                  >
+                    {t("submit")}
+                  </button>
+                  <button
+                    ref={action.ref}
+                    className="liquid-glass demo-button"
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => setClicks((n) => n + 1)}
+                  >
+                    {t("action", { count: clicks })}
+                  </button>
+                  <button
+                    className="demo-focus"
+                    type="button"
+                    onClick={() => input.current?.focus()}
+                  >
+                    {t("focusInput")}
+                  </button>
+                </div>
+              </form>
+            </div>
+            <output className="demo-feedback" aria-live="polite">
+              {submitted !== null
+                ? t("submitted", { value: submitted })
+                : t("formReady")}
+            </output>
+            <p className="stage-caption">{t("inputHint")}</p>
+          </section>
+          <aside className="properties" aria-label={t("properties")}>
+            <div className="properties-heading">
+              <h2>{t("properties")}</h2>
+            </div>
+            <label className="select-field">
+              {t("quality")}
+              <select
+                value={quality}
+                onChange={(e) =>
+                  setQuality(e.target.value as LiquidGlassQuality)
+                }
+              >
+                {Object.keys(QUALITY_PRESETS).map((q) => (
+                  <option key={q} value={q}>
+                    {t(qualityKeys[q as LiquidGlassQuality])}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="quality-note">{t(qualityNotes[quality])}</p>
+            <RangeField
+              label={t("leftBevel")}
+              min={1}
+              max={90}
+              value={bevel}
+              onChange={setBevel}
+              t={t}
+              unit="px"
+            />
+            <Switch
+              label={t("effectEnabled")}
+              checked={enabled}
+              onChange={setEnabled}
+            />
+            <Switch
+              label={t("disableButtons")}
+              checked={disabled}
+              onChange={setDisabled}
+            />
+            <p className="field-hint demo-property-hint">{t("hookCodeHint")}</p>
+          </aside>
+          <section className="code-section code-panel">
+            <h2>{t("hookCodeTitle")}</h2>
+            <p>{t("hookCodeHint")}</p>
+            <pre tabIndex={0}>
+              <code>{`const { ref } = useLiquidGlass<HTMLButtonElement>({\n  options: QUALITY_PRESETS${quality === "Optical Balanced" ? '["Optical Balanced"]' : `.${quality}`},\n  enabled,\n});\n\nreturn <button ref={ref} className="my-glass" disabled={disabled}>\n  ${t("submit")}\n</button>;`}</code>
+            </pre>
+          </section>
         </div>
-        <section ref={custom.ref} className="liquid-glass demo-card">
-          <h2>自己的 section</h2>
-          <button onClick={custom.refresh}>刷新几何</button>
-        </section>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(new FormData(e.currentTarget).get("email") as string);
-          }}
-        >
-          <label htmlFor="email">邮箱（原生输入）</label>
-          <span className="demo-input">
-            <span
-              ref={surface.ref}
-              className="liquid-glass demo-input-surface"
-              aria-hidden="true"
-            />
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              placeholder="you@example.com"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              ref={input}
-            />
-          </span>
-          <button
-            ref={submit.ref}
-            className="liquid-glass demo-button"
-            type="submit"
-            disabled={disabled}
-          >
-            提交
-          </button>
-          <button
-            ref={action.ref}
-            className="liquid-glass demo-button"
-            type="button"
-            disabled={disabled}
-            onClick={() => setClicks((n) => n + 1)}
-          >
-            原生点击 {clicks}
-          </button>
-          <button type="button" onClick={() => input.current?.focus()}>
-            聚焦输入框
-          </button>
-        </form>
-      </div>
-      <output aria-live="polite">{submitted && `已提交：${submitted}`}</output>
-      <p>
-        输入框只有独立背景层应用折射；透明交互层保留清晰文字、光标、选择、焦点和表单行为。可用同样方式组合导航、弹窗等
-        DOM。
-      </p>
-    </main>
+      </main>
+      <SiteFooter t={t} />
+    </div>
   );
 }
 createRoot(document.getElementById("root")!).render(
