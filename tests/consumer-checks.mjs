@@ -81,6 +81,74 @@ export async function verifyConsumerBrowser(
   const builds = () => page.evaluate(() => window.probe.builds());
   const b = await ref("b");
   expect(await ref("a")).toBe(b);
+  // Compare actual graphs/maps against independent four-value configurations.
+  // Both core's omitted options and Hook's omitted options must be Balanced.
+  const qualities = await page.evaluate(() => {
+    const api = window.probe;
+    const source = document.getElementById("quality");
+    const box = source.getBoundingClientRect(), css = getComputedStyle(source);
+    const make = () => {
+      const el = document.createElement("div");
+      el.className = "liquid-glass";
+      el.style.cssText = `position:fixed;width:${box.width}px;height:${box.height}px;border-radius:${css.borderRadius};box-sizing:border-box`;
+      document.body.append(el);
+      return el;
+    };
+    const actual = make(), control = make();
+    let builds = 0;
+    const glass = api.create(actual), expected = api.create(control);
+    const fingerprint = el => ({
+      graph: document.querySelector(el.style.getPropertyValue("--hyalite").slice(4, -1)).outerHTML.replace(/liquid-glass-\d+/g, "FILTER"),
+      edge: el.style.getPropertyValue("--hyalite-edge"),
+    });
+    const values = {
+      Balanced: {dispersion: 0.8, sat: 1, edge: 0, rim: 0.80},
+      Fast: {dispersion: 0, sat: 1, edge: 0, rim: 0.80},
+      Reference: {dispersion: 1.6, sat: 0.86, edge: 0.32, rim: 1.76},
+    };
+    expected.setOptions(values.Balanced);
+    const defaults = JSON.stringify(fingerprint(actual)) === JSON.stringify(fingerprint(control));
+    const hookDefaults = JSON.stringify(fingerprint(source)) === JSON.stringify(fingerprint(control));
+    const fingerprints = {};
+    let reproducible = true;
+    for (const name of ["Reference", "Fast", "Balanced", "Fast", "Reference", "Balanced"]) {
+      expected.setOptions(values[name]);
+      glass.setOptions(api.presets[name]);
+      fingerprints[name] = fingerprint(control);
+      reproducible &&= JSON.stringify(fingerprint(actual)) === JSON.stringify(fingerprints[name]);
+    }
+    glass.setOptions({onBuild: () => builds++, materialize: 1000});
+    const initial = fingerprint(actual);
+    glass.setOptions({edge: 0.16});
+    const edgeOnlyReuses = builds === 0 && fingerprint(actual).graph === initial.graph;
+    glass.setOptions({rim: 0.5});
+    const afterRim = fingerprint(actual);
+    glass.setOptions({rim: 0.5});
+    glass.setOptions({edge: 0});
+    const rimSingleBuild = builds === 1 && fingerprint(actual).graph === afterRim.graph;
+    glass.setOptions(api.presets.Balanced);
+    const returnedToCache = builds === 1 && JSON.stringify(fingerprint(actual)) === JSON.stringify(initial);
+    const noRamp = document.querySelectorAll('filter[id*="-m"]').length === 0;
+    glass.destroy(); expected.destroy(); actual.remove(); control.remove();
+    return {defaults, hookDefaults, reproducible, edgeOnlyReuses, rimSingleBuild, returnedToCache, noRamp, fingerprints};
+  });
+  const {fingerprints, ...qualityChecks} = qualities;
+  expect(qualityChecks).toEqual({
+    defaults: true, hookDefaults: true, reproducible: true, edgeOnlyReuses: true,
+    rimSingleBuild: true, returnedToCache: true, noRamp: true,
+  });
+  const qualityNode = await page.locator("#quality").elementHandle();
+  for (const name of ["Reference", "Fast", "Balanced", "Reference", "Balanced", "Fast", "default"]) {
+    await page.getByRole("button", {name: `Quality ${name}`, exact:true}).click();
+    const actual = await page.locator("#quality").evaluate(el => ({
+      graph: document.querySelector(el.style.getPropertyValue("--hyalite").slice(4, -1)).outerHTML.replace(/liquid-glass-\d+/g, "FILTER"),
+      edge: el.style.getPropertyValue("--hyalite-edge"),
+    }));
+    expect(actual).toEqual(fingerprints[name === "default" ? "Balanced" : name]);
+    expect(await page.evaluate(el => el === document.getElementById("quality"), qualityNode)).toBe(true);
+    expect(await ref("b")).toBe(b);
+    expect(await page.locator('filter[id*="-m"]').count()).toBe(0);
+  }
   expect(
     await page.evaluate(() => {
       const r = window.probe.refs();
@@ -299,6 +367,7 @@ export async function verifyConsumerBrowser(
       "shared cache",
       "repeat updates",
       "headless public API",
+      "Balanced defaults and repeated core/Hook quality switching without remount",
       "native buttons/forms/selection",
       "refs and callback cleanup",
       "class radius and resize",

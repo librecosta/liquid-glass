@@ -4,36 +4,39 @@ test("finish controls separate edge, saturation and rim without changing Referen
 }) => {
   await page.goto("/");
   await page.waitForFunction(() => window.__ready && window.__engine);
-  await expect(page.locator(".quality-note")).toContainText("覆盖 edge=0");
+  await expect(page.locator(".quality-note")).toContainText("库默认画质");
   await expect(page.locator("#card")).toHaveCSS("box-shadow", "none");
   const state = await page.evaluate(() => ({
     edge: window.__engine.DEFAULTS.edge,
     rim: window.__engine.DEFAULTS.rim,
+  }));
+  expect([state.edge, state.rim]).toEqual([0, 0.80]);
+  await page.getByRole("button", { name: "Reference（历史参考）", exact: true }).click();
+  await expect(page.locator("#card")).not.toHaveCSS("box-shadow", "none");
+  await expect(page.getByRole("slider", {name: "边缘反光", exact: true})).toHaveValue("1.76");
+  const reference = await page.evaluate(() => ({
     map: window.__engine.info()!.map,
     ref: document.getElementById("card")!.style.getPropertyValue("--hyalite"),
   }));
-  expect([state.edge, state.rim]).toEqual([0.32, 1.76]);
-  await page.getByRole("button", { name: "Reference", exact: true }).click();
-  await expect(page.locator("#card")).not.toHaveCSS("box-shadow", "none");
   for (const label of ["0", "0.08", "0.16", "0.32"]) {
     await page.getByRole("button", { name: label, exact: true }).click();
     expect(await page.evaluate(() => window.__engine.info()!.map)).toBe(
-      state.map,
+      reference.map,
     );
     expect(
       await page
         .locator("#card")
         .evaluate((el) => el.style.getPropertyValue("--hyalite")),
-    ).toBe(state.ref);
+    ).toBe(reference.ref);
   }
   await page
-    .getByRole("button", { name: "Optical Balanced（实验）", exact: true })
+    .getByRole("button", { name: "Optical Balanced（实验对照）", exact: true })
     .click();
   await expect(page.locator("#card")).toHaveCSS("box-shadow", "none");
   expect(await page.locator("filter feDisplacementMap").count()).toBe(3);
   expect(await page.locator("filter > *").count()).toBe(18);
   expect(await page.evaluate(() => window.__engine.info()!.map)).toBe(
-    state.map,
+    reference.map,
   );
   await page
     .getByRole("combobox", { name: "样例", exact: true })
@@ -48,6 +51,10 @@ test("finish controls separate edge, saturation and rim without changing Referen
     "pointer-events",
     "none",
   );
+  await page.getByRole("button", {name:"重置",exact:true}).click();
+  await expect(page.getByRole("button", {name:"Balanced（默认）",exact:true})).toHaveAttribute("aria-pressed","true");
+  for (const [name, value] of [["色散", "0.8"], ["边缘饱和度", "1"], ["外轮廓", "0"], ["边缘反光", "0.8"]])
+    await expect(page.getByRole("slider", {name,exact:true})).toHaveValue(value);
 });
 test("DIY Hook page keeps native forms, disabled, focus and clear foreground", async ({
   page,
@@ -56,6 +63,7 @@ test("DIY Hook page keeps native forms, disabled, focus and clear foreground", a
   await expect(
     page.getByRole("heading", { name: "React Hook / DIY DOM" }),
   ).toBeVisible();
+  await expect(page.getByRole("combobox")).toHaveValue("Balanced");
   await expect(page.locator(".demo-card").first()).toHaveCSS(
     "box-shadow",
     "none",

@@ -12,7 +12,7 @@ import { LiquidGlassButton } from "@librecosta/liquid-glass/react";
 import { setOpts } from "@librecosta/liquid-glass";
 void LiquidGlassButton;
 void setOpts;
-const quality: LiquidGlassQuality = "Optical Balanced";
+const quality: LiquidGlassQuality = "Fast";
 const options: LiquidGlassOptions = {
   ...QUALITY_PRESETS[quality],
   bevel: 37,
@@ -21,6 +21,13 @@ const options: LiquidGlassOptions = {
 const make: (el: HTMLElement) => LiquidGlassInstance = (el) =>
   createLiquidGlass(el, options);
 void make;
+const switchQuality = (glass: LiquidGlassInstance) => {
+  glass.setOptions(QUALITY_PRESETS.Fast);
+  glass.setOptions(QUALITY_PRESETS.Balanced);
+  glass.setOptions(QUALITY_PRESETS.Reference);
+  glass.setOptions({rim: 0.5});
+};
+void switchQuality;
 function OwnDOM() {
   const card = useLiquidGlass<HTMLDivElement>({ options }),
     button = useLiquidGlass<HTMLButtonElement>(),

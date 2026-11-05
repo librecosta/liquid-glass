@@ -192,22 +192,20 @@ interface State {
 const VAR = "--hyalite",
   VAR_EDGE = "--hyalite-edge";
 const N_GLASS = 1.5; // refractive index of ordinary glass
-/* Defaults are the set VII-Cae tuned by eye on 2026-09-10: a narrow bevel over a very thick slab,
-     with a folding slope. The centre stays clear while the edge concentrates the backdrop into a
-     coloured band; the folding is confined to that narrow rim, where blur and dispersion cover the
-     staircase Chromium's nearest-neighbour sampler leaves behind. */
+/* Balanced defaults approved in LG-C3. The complete historical 0.5.0 configuration
+   is pinned separately by QUALITY_PRESETS.Reference; the renderer/math is unchanged. */
 const DEFAULTS: ResolvedOptions = {
   bevel: 37,
   thickness: 59,
   slope: 2.7,
   shape: "squircle",
   blur: 1,
-  dispersion: 1.6,
+  dispersion: 0.8,
   shade: 0.46,
-  rim: 1.76,
+  rim: 0.80,
   edgeW: 8,
-  sat: 0.86,
-  edge: 0.32,
+  sat: 1,
+  edge: 0,
   light: -140,
   smooth: 1,
   materialize: 0,

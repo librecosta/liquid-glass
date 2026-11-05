@@ -39,15 +39,15 @@ export const FINISH_EXPERIMENTS: {
   },
   {
     id: "optical",
-    label: "Optical Balanced（候选）",
+    label: "Optical Balanced（LG-C2 历史实验对照）",
     quality: "Optical Balanced",
     opts: {},
   },
   {
     id: "balanced",
-    label: "Balanced（既有实验）",
+    label: "Balanced（默认）",
     quality: "Balanced",
     opts: {},
   },
-  { id: "fast", label: "Fast（既有实验）", quality: "Fast", opts: {} },
+  { id: "fast", label: "Fast（性能优先）", quality: "Fast", opts: {} },
 ];

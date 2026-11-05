@@ -1,6 +1,6 @@
 # LG-C — 单引擎、拖动性能与画质实验
 
-历史记录：本页数字/三档截图采自 `d3cbe91`，不是当前公开 API 的说明。Headless API、轻边缘和 Optical Balanced 候选见 [LG-C2](lg-c2-finalization.md)。
+历史记录：本页数字/三档截图采自 `d3cbe91`，当时库默认为 Reference，Balanced/Fast 沿用 edge=0.32、rim=1.76。下文“默认/当前”均指当时状态。当前 Balanced 默认及 Fast 配置见 [LG-C3](lg-c3-defaults.md)；Headless 收敛记录见 [LG-C2](lg-c2-finalization.md)。复现本页测量须使用 `d3cbe91` 的脚本及源码。
 
 [当前 Playground 截图](lg-c-playground.png)。实施范围为 [Issue #3](https://github.com/librecosta/liquid-glass/issues/3)。基线 `b257c17`，仅在 `dev` 交付。默认 Reference 的光学数学、参数、贴图、编码、量化、缓存和 resize 调度均未修改。删除了上游运行源码/演示/旧 runner 与双 iframe；完整改编代码 MIT 许可保留在 `licenses/Hyalite-MIT.txt`，也进入本地 tarball。
 

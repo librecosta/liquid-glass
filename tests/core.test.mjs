@@ -8,6 +8,7 @@ import Core, {
   profile,
   heightFn,
 } from "../src/core/index.ts";
+import { QUALITY_PRESETS } from "../src/quality.ts";
 
 const gold = JSON.parse(
   fs.readFileSync(new URL("./golden/math.json", import.meta.url), "utf8"),
@@ -29,8 +30,12 @@ test("SSR import never reads browser globals or installs a global API", () => {
   );
   assert.equal(result.status, 0, result.stderr);
 });
-test("Reference defaults and legacy API retain the accepted LibreCosta baseline", () => {
-  assert.deepEqual(Core.DEFAULTS, gold.defaults);
+test("Balanced defaults and explicit Reference preserve their separate contracts", () => {
+  assert.deepEqual(QUALITY_PRESETS.Reference, gold.defaults);
+  assert.ok(Object.isFrozen(QUALITY_PRESETS.Reference));
+  assert.deepEqual(QUALITY_PRESETS.Balanced, {dispersion: 0.8, sat: 1, edge: 0, rim: 0.80});
+  assert.deepEqual(QUALITY_PRESETS.Fast, {dispersion: 0, sat: 1, edge: 0, rim: 0.80});
+  assert.deepEqual(Core.DEFAULTS, {...gold.defaults, ...QUALITY_PRESETS.Balanced});
   assert.deepEqual(Object.keys(Core).sort(), [
     "DEFAULTS",
     "attach",

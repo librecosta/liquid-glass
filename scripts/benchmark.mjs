@@ -1,6 +1,9 @@
 import { chromium } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { instrument } from "./perf-instrument.mjs";
+import { DEFAULTS } from "../src/core/index.ts";
+if (DEFAULTS.dispersion !== 1.6 || DEFAULTS.edge !== 0.32 || DEFAULTS.rim !== 1.76)
+  throw Error("Historical LG-C measurements require the d3cbe91 checkout. Use measure-switching.mjs for current defaults.");
 const arg = (name) => {
   const i = process.argv.indexOf("--" + name);
   return i < 0 ? null : process.argv[i + 1];

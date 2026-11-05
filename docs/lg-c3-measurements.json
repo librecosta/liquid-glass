@@ -1,0 +1,462 @@
+{
+  "browser": "156.0.8078.80",
+  "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.21921.1000)",
+  "mode": "production",
+  "viewport": [
+    1480,
+    960
+  ],
+  "scene": [
+    500,
+    480
+  ],
+  "moves": 45,
+  "repeats": 3,
+  "method": "12 five-card runs after Reference/Fast/Balanced switching; real pointer capture. rAF includes idle callbacks, not painted FPS; DOM style-update intervals and input dispatch measured separately. Times in ms. No trace overhead in this smoke sample.",
+  "rows": [
+    {
+      "quality": "Balanced",
+      "opts": {
+        "dispersion": 0.8,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 1,
+      "trial": 1,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 18,
+        "displacements": 3,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1547.4,
+      "raf": {
+        "n": 59,
+        "p50": 33.3,
+        "p95": 41.7,
+        "over33": 36,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 33.7,
+        "p95": 45.3
+      },
+      "dispatchP95": 24.5759,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Balanced",
+      "opts": {
+        "dispersion": 0.8,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 1,
+      "trial": 2,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 18,
+        "displacements": 3,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1782.6,
+      "raf": {
+        "n": 60,
+        "p50": 33.4,
+        "p95": 50.1,
+        "over33": 37,
+        "over50": 7
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 38.5,
+        "p95": 54
+      },
+      "dispatchP95": 40.5314,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Balanced",
+      "opts": {
+        "dispersion": 0.8,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 1,
+      "trial": 3,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 18,
+        "displacements": 3,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1665.1,
+      "raf": {
+        "n": 64,
+        "p50": 33.3,
+        "p95": 41.8,
+        "over33": 38,
+        "over50": 2
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 35.3,
+        "p95": 52.3
+      },
+      "dispatchP95": 32.0256,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Fast",
+      "opts": {
+        "dispersion": 0,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 1,
+      "trial": 1,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 11,
+        "displacements": 1,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1138.1,
+      "raf": {
+        "n": 82,
+        "p50": 16.6,
+        "p95": 25.1,
+        "over33": 1,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 24.9,
+        "p95": 32.6
+      },
+      "dispatchP95": 19.384,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Fast",
+      "opts": {
+        "dispersion": 0,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 1,
+      "trial": 2,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 11,
+        "displacements": 1,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1264.8,
+      "raf": {
+        "n": 86,
+        "p50": 8.4,
+        "p95": 37.5,
+        "over33": 9,
+        "over50": 1
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 26.1,
+        "p95": 43.6
+      },
+      "dispatchP95": 28.8897,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Fast",
+      "opts": {
+        "dispersion": 0,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 1,
+      "trial": 3,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 11,
+        "displacements": 1,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1062.8,
+      "raf": {
+        "n": 83,
+        "p50": 16.6,
+        "p95": 25,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 23,
+        "p95": 29.1
+      },
+      "dispatchP95": 12.6983,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Balanced",
+      "opts": {
+        "dispersion": 0.8,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 2,
+      "trial": 1,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 18,
+        "displacements": 3,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1857.1,
+      "raf": {
+        "n": 66,
+        "p50": 33.3,
+        "p95": 50.1,
+        "over33": 38,
+        "over50": 4
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 40.4,
+        "p95": 61.5
+      },
+      "dispatchP95": 44.436,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Balanced",
+      "opts": {
+        "dispersion": 0.8,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 2,
+      "trial": 2,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 18,
+        "displacements": 3,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1818,
+      "raf": {
+        "n": 62,
+        "p50": 33.4,
+        "p95": 54.2,
+        "over33": 42,
+        "over50": 6
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 38.3,
+        "p95": 61
+      },
+      "dispatchP95": 43.8423,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Balanced",
+      "opts": {
+        "dispersion": 0.8,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 2,
+      "trial": 3,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 18,
+        "displacements": 3,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1652.3,
+      "raf": {
+        "n": 62,
+        "p50": 33.4,
+        "p95": 41.7,
+        "over33": 39,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 36.3,
+        "p95": 44.2
+      },
+      "dispatchP95": 29.6302,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Fast",
+      "opts": {
+        "dispersion": 0,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 2,
+      "trial": 1,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 11,
+        "displacements": 1,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1043.4,
+      "raf": {
+        "n": 75,
+        "p50": 16.7,
+        "p95": 25,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 22.5,
+        "p95": 29.4
+      },
+      "dispatchP95": 13.2541,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Fast",
+      "opts": {
+        "dispersion": 0,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 2,
+      "trial": 2,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 11,
+        "displacements": 1,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1181.1,
+      "raf": {
+        "n": 70,
+        "p50": 20.8,
+        "p95": 29.2,
+        "over33": 2,
+        "over50": 1
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 25,
+        "p95": 33.5
+      },
+      "dispatchP95": 17.518,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    },
+    {
+      "quality": "Fast",
+      "opts": {
+        "dispersion": 0,
+        "sat": 1,
+        "edge": 0,
+        "rim": 0.8
+      },
+      "dpr": 2,
+      "trial": 3,
+      "count": 5,
+      "graph": {
+        "sameNode": true,
+        "primitives": 11,
+        "displacements": 1,
+        "edge": "none",
+        "ramps": 0
+      },
+      "elapsed": 1100.5,
+      "raf": {
+        "n": 86,
+        "p50": 4.3,
+        "p95": 29.2,
+        "over33": 3,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 23.2,
+        "p95": 35.7
+      },
+      "dispatchP95": 21.4248,
+      "maps": 0,
+      "pngBuilds": 0,
+      "ro": 0,
+      "commits": 1
+    }
+  ]
+}

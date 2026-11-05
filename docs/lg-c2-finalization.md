@@ -1,5 +1,7 @@
 # LG-C2 — Headless API & Optical Finish
 
+Historical report at `56fc13c`: all default/recommendation/Playground statements below describe LG-C2, when Reference was the library default and Balanced/Fast inherited edge=0.32/rim=1.76. LG-C3 now adopts Balanced with edge=0/rim=0.80; see [current defaults and validation](lg-c3-defaults.md). Reproduce the numbers below using the `56fc13c` source and scripts; the recorded data/images have not been rewritten.
+
 Issue [#4](https://github.com/librecosta/liquid-glass/issues/4), based on `dev` at `d3cbe91`. Reference core/defaults and frozen LG-A fixtures are unchanged. No npm/Release/main merge. User review decides any later default change and closure of #3/#4.
 
 ## API and native DOM

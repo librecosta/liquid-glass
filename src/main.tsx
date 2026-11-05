@@ -11,7 +11,7 @@ import { createRoot } from "react-dom/client";
 import { DEFAULTS, type HyaliteOptions } from "./core/index.ts";
 import { initialScene, type Scene } from "./scene.ts";
 import { SceneView } from "./scene-view.tsx";
-import { QUALITY_PRESETS, QUALITY_NOTES } from "./quality.ts";
+import { QUALITY_PRESETS, QUALITY_NOTES, QUALITY_LABELS } from "./quality.ts";
 import api from "./core/index.ts";
 import { FINISH_EXPERIMENTS } from "./finish-experiments.ts";
 import "./style.css";
@@ -51,8 +51,7 @@ function App() {
       quality:
         quality && Object.hasOwn(QUALITY_PRESETS, quality)
           ? (quality as Scene["quality"])
-          : "Reference",
-      opts: !params.has("fixture") && !quality ? { edge: 0 } : {},
+          : initialScene.quality,
     };
   });
   const [environment, setEnvironment] = useState("");
@@ -77,6 +76,7 @@ function App() {
   const option = (patch: HyaliteOptions) =>
     setScene((s) => ({ ...s, opts: { ...s.opts, ...patch } }));
   const position = (x: number, y: number) => setScene((s) => ({ ...s, x, y }));
+  const effective = { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality], ...scene.opts };
   if (new URLSearchParams(location.search).has("fixture"))
     return <SceneView scene={scene} onPosition={position} />;
   return (
@@ -84,7 +84,7 @@ function App() {
       <header>
         <div>
           <h1>Liquid Glass</h1>
-          <p>Headless 玻璃实验 / 保留 Reference 历史基准</p>
+          <p>Headless 玻璃 / Balanced 默认 · Fast 性能优先 · Reference 历史参考</p>
         </div>
         <a href="/components.html">React Hook DIY 示例 ↗</a>
       </header>
@@ -100,8 +100,7 @@ function App() {
                     change({ quality: q as Scene["quality"], opts: {} })
                   }
                 >
-                  {q}
-                  {q === "Reference" ? "" : "（实验）"}
+                  {QUALITY_LABELS[q as Scene["quality"]]}
                 </button>
               ))}
             </div>
@@ -109,11 +108,8 @@ function App() {
           <p className="quality-note">
             {QUALITY_NOTES[scene.quality]} 切换档位会清除参数覆盖。
             <br />
-            当前 CSS edge=
-            {scene.opts.edge ??
-              { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }.edge}
-            ；SVG rim={scene.opts.rim ?? DEFAULTS.rim}。初始展示仅覆盖
-            edge=0；点击 Reference 恢复原值 0.32。
+            当前有效参数：色散 {effective.dispersion}；sat={effective.sat}；CSS edge=
+            {effective.edge}；SVG rim={effective.rim}。首屏与重置均使用库默认 Balanced。
           </p>
           <label className="experiment-select">
             逐项比较
@@ -149,16 +145,14 @@ function App() {
               <button
                 key={edge}
                 aria-pressed={
-                  (scene.opts.edge ??
-                    { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }.edge) ===
-                  edge
+                  effective.edge === edge
                 }
                 onClick={() => option({ edge })}
               >
                 {edge}
               </button>
             ))}
-            <span> rim 保持 1.76；与 SVG 高光分开比较</span>
+            <span> CSS 外轮廓，与 SVG rim 高光分开调节</span>
           </div>
           <div className="scene-viewport">
             <SceneView scene={scene} onPosition={position} />
@@ -279,7 +273,7 @@ function App() {
           <label>
             斜面截面
             <select
-              value={scene.opts.shape ?? DEFAULTS.shape}
+              value={effective.shape}
               onChange={(e) =>
                 option({ shape: e.target.value as HyaliteOptions["shape"] })
               }
@@ -294,8 +288,7 @@ function App() {
               <label key={key}>
                 {label}
                 <output>
-                  {scene.opts[key] ??
-                    { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }[key]}
+                  {effective[key]}
                 </output>
                 <input
                   aria-label={label}
@@ -303,10 +296,7 @@ function App() {
                   min={min}
                   max={max}
                   step={step}
-                  value={
-                    scene.opts[key] ??
-                    { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }[key]
-                  }
+                  value={effective[key]}
                   onChange={(e) => option({ [key]: +e.target.value })}
                 />
               </label>
@@ -315,7 +305,7 @@ function App() {
           <label className="check">
             <input
               type="checkbox"
-              checked={scene.opts.self ?? false}
+              checked={effective.self}
               onChange={(e) => option({ self: e.target.checked })}
             />
             Self 模式（只位移自身）

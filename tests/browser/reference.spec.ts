@@ -19,7 +19,7 @@ test("Reference keeps b257c17 mathematical/map/SVG/pixel gold on forest and grid
     deviceScaleFactor: 1,
   });
   try {
-    await page.goto("/?fixture=1");
+    await page.goto("/?fixture=1&quality=Reference");
     await page.waitForFunction(() => window.__ready && window.__engine);
     mkdirSync("test-results/reference", { recursive: true });
     for (const { name, patch, digest } of gold.results) {
@@ -83,7 +83,7 @@ test("single engine, local forest, real drag/cancel/keyboard, qualities, resize 
   expect(await page.locator("iframe").count()).toBe(0);
   expect(await page.locator("svg").count()).toBe(1);
   await expect(
-    page.getByRole("button", { name: "Reference", exact: true }),
+    page.getByRole("button", { name: "Balanced（默认）", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#scene")).toHaveCSS("background-image", /forest/);
   const card = page.locator("#card"),
@@ -125,10 +125,10 @@ test("single engine, local forest, real drag/cancel/keyboard, qualities, resize 
   await expect
     .poll(() => page.evaluate(() => [window.__scene.x, window.__scene.y]))
     .toEqual([200, 260]);
-  await page.getByRole("button", { name: "Fast（实验）", exact: true }).click();
+  await page.getByRole("button", { name: "Fast（性能优先）", exact: true }).click();
   await expect(page.locator(".quality-note")).toContainText("单通道");
   expect(await page.locator("filter feDisplacementMap").count()).toBe(1);
-  await page.getByRole("button", { name: "Reference", exact: true }).click();
+  await page.getByRole("button", { name: "Reference（历史参考）", exact: true }).click();
   expect(await page.locator("filter feDisplacementMap").count()).toBe(3);
   await page
     .getByRole("combobox", { name: "样例", exact: true })
@@ -190,7 +190,7 @@ test("local forest and data maps work with explicit image CSP permissions", asyn
 test("Reference live and settle resizes retain valid SVG references through every frame", async ({
   page,
 }) => {
-  await page.goto("/?fixture=1");
+  await page.goto("/?fixture=1&quality=Reference");
   await page.waitForFunction(() => window.__ready && window.__engine);
   for (const settle of [0, 120]) {
     await page.evaluate(

@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import {
   createLiquidGlass,
   DEFAULTS,
+  QUALITY_PRESETS,
+  type LiquidGlassQuality,
   type LiquidGlassOptions,
 } from "@librecosta/liquid-glass";
 import { useLiquidGlass } from "@librecosta/liquid-glass/react";
@@ -48,6 +50,7 @@ interface State {
   disabled: boolean;
   radius: boolean;
   alternate: boolean;
+  quality?: LiquidGlassQuality;
 }
 function Subjects({
   options,
@@ -55,10 +58,15 @@ function Subjects({
   disabled,
   radius,
   alternate,
+  quality,
   onSubmit,
 }: { onSubmit: (s: string) => void } & State) {
   const a = useTrackedGlass<HTMLDivElement>("card", options, enabled),
     b = useLiquidGlass<HTMLDivElement>({ options: { onBuild }, enabled });
+  // Undefined config exercises the same default-argument path as useLiquidGlass().
+  const switching = useLiquidGlass<HTMLDivElement>(quality
+    ? {options: QUALITY_PRESETS[quality], enabled}
+    : enabled ? undefined : {enabled: false});
   const callback = useTrackedGlass<HTMLDivElement>(null, { onBuild }, enabled);
   const custom = useLiquidGlass<HTMLElement>({ options: { onBuild }, enabled });
   const action = useTrackedGlass<HTMLButtonElement>(
@@ -92,6 +100,9 @@ function Subjects({
       </div>
       <div id="b" ref={b.ref} className="liquid-glass sample">
         Instance B
+      </div>
+      <div id="quality" ref={switching.ref} className="liquid-glass sample">
+        Native Hook quality switching
       </div>
       <div id="callback" ref={callback} className="liquid-glass sample">
         Callback ref cleanup
@@ -195,6 +206,7 @@ declare global {
   interface Window {
     probe: {
       create: typeof createLiquidGlass;
+      presets: typeof QUALITY_PRESETS;
       refs: () => typeof refs;
       builds: () => number;
       cleanupCalls: () => number;
@@ -209,8 +221,10 @@ function App() {
     [radius, setRadius] = useState(false),
     [alternate, setAlternate] = useState(false),
     [submitted, setSubmitted] = useState("");
+  const [quality, setQuality] = useState<LiquidGlassQuality>();
   window.probe = {
     create: createLiquidGlass,
+    presets: QUALITY_PRESETS,
     refs: () => refs,
     builds: () => builds,
     cleanupCalls: () => cleanupCalls,
@@ -218,6 +232,8 @@ function App() {
   return (
     <>
       <nav>
+        {["Balanced", "Fast", "Reference"].map(q => <button key={q} onClick={() => setQuality(q as LiquidGlassQuality)}>Quality {q}</button>)}
+        <button onClick={() => setQuality(undefined)}>Quality default</button>
         <button
           onClick={() =>
             setOptions({ bevel: 18, thickness: 25, blur: 2, onBuild })
@@ -242,7 +258,7 @@ function App() {
       </nav>
       {mounted && (
         <Subjects
-          {...{ options, enabled, disabled, radius, alternate }}
+          {...{ options, enabled, disabled, radius, alternate, quality }}
           onSubmit={setSubmitted}
         />
       )}

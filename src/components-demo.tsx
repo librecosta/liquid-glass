@@ -4,6 +4,7 @@ import { useLiquidGlass } from "./react/index.js";
 import {
   QUALITY_PRESETS,
   QUALITY_NOTES,
+  QUALITY_LABELS,
   type LiquidGlassQuality,
 } from "./quality.ts";
 import "./styles.css";
@@ -11,7 +12,7 @@ import "./components-demo.css";
 
 function Demo() {
   const [quality, setQuality] =
-    useState<LiquidGlassQuality>("Optical Balanced");
+    useState<LiquidGlassQuality>("Balanced");
   const options = QUALITY_PRESETS[quality];
   const [bevel, setBevel] = useState(37),
     [enabled, setEnabled] = useState(true),
@@ -49,7 +50,7 @@ function Demo() {
           onChange={(e) => setQuality(e.target.value as LiquidGlassQuality)}
         >
           {Object.keys(QUALITY_PRESETS).map((q) => (
-            <option key={q}>{q}</option>
+            <option key={q} value={q}>{QUALITY_LABELS[q as LiquidGlassQuality]}</option>
           ))}
         </select>
       </label>

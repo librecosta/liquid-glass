@@ -5,6 +5,9 @@ import pixelmatch from "pixelmatch";
 import { FINISH_EXPERIMENTS } from "../src/finish-experiments.ts";
 import {QUALITY_PRESETS} from '../src/quality.ts';
 import { instrument } from "./perf-instrument.mjs";
+import { DEFAULTS } from "../src/core/index.ts";
+if (DEFAULTS.dispersion !== 1.6 || DEFAULTS.edge !== 0.32 || DEFAULTS.rim !== 1.76)
+  throw Error("Historical LG-C2 measurements require the 56fc13c checkout. Use measure-switching.mjs for current defaults.");
 const base = process.env.LG_FINISH_URL || "http://127.0.0.1:4183";
 const launch = () =>
   chromium.launch({

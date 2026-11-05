@@ -29,6 +29,6 @@ export const initialScene: Scene = {
   fallback: false,
   sample: "card",
   revision: 0,
-  quality: "Reference",
+  quality: "Balanced",
   instances: 1,
 };
