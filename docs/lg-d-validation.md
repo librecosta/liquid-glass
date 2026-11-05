@@ -33,7 +33,7 @@ Responsive five-card drags at 390px and 1440px, after Fast→Balanced switching,
 
 ## CI and regression boundaries
 
-The Node 24 Ubuntu workflow runs `npm ci`, installs Playwright's pinned Chromium and dependencies, then runs the same `npm run check`, including the external tarball consumer. Lockfile download URLs use the official npm registry; all dependency versions and integrity hashes are unchanged. Permissions are read-only; failed browser diagnostics are retained. No publication, deployment, release or version automation exists.
+The Node 24 Ubuntu 24.04 workflow runs `npm ci`, installs Playwright's pinned Chromium and dependencies, then runs the same `npm run check`, including the external tarball consumer. The runner is pinned because `ubuntu-latest` moved to 26.04, which Playwright 1.56.1 does not support. Lockfile download URLs use the official npm registry; all dependency versions and integrity hashes are unchanged. Permissions are read-only; failed browser diagnostics are retained. No publication, deployment, release or version automation exists.
 
 Ubuntu skips only the two Windows Chrome exact screenshot tests, using `LG_EXACT_PIXELS=0`. Original math, raw state goldens and PNG files are not regenerated. A separate portable contract checks exact decoded map pixels/dimensions, SVG, edge CSS and rendering metadata across six Reference cases plus Balanced/Fast. It ignores PNG compression and generated IDs. Diagnostic raw profiles/maxDisplacement are excluded because V8 versions differ at floating-point last bits; their rendered map/SVG output is compared without tolerance. Original exact Node math and Windows full-state checks continue independently.
 
