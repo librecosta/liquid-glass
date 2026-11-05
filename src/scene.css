@@ -1,0 +1,187 @@
+* {
+  box-sizing: border-box;
+}
+.scene-shell {
+  width: 500px;
+  background: #232529;
+  color: #fff;
+  font:
+    14px/1.5 "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+}
+.scene {
+  position: relative;
+  width: 500px;
+  height: 480px;
+  overflow: hidden;
+  background-color: #25272b;
+  background-size: cover;
+  background-position: center;
+}
+.scene.forest::before,
+.scene.image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.16);
+  pointer-events: none;
+}
+.scene.forest,
+.scene.image {
+  background-repeat: no-repeat;
+}
+.scene.grid {
+  background-color: #244637;
+  background-image:
+    linear-gradient(#e8f4e84d 1px, transparent 1px),
+    linear-gradient(90deg, #e8f4e84d 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.glass {
+  backdrop-filter: var(--hyalite, blur(1px));
+  -webkit-backdrop-filter: var(--hyalite, blur(1px));
+  box-shadow: var(--hyalite-edge, none);
+  background: #ffffff08;
+  border: 0;
+  color: #fff;
+}
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.card.self {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  filter: var(--hyalite, none);
+}
+.drag-handle {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  color: #ffffffad;
+  font-size: 17px;
+  padding: 2px 12px;
+  white-space: nowrap;
+}
+.drag-handle span {
+  font-size: 10px;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.card-copy {
+  padding: 26px 28px 12px;
+  width: 100%;
+  text-align: left;
+}
+.card-copy h1 {
+  font-size: 27px;
+  line-height: 1.15;
+  letter-spacing: -0.7px;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+.card-copy p {
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0 0 16px;
+}
+.card-copy > span {
+  font-size: 10px;
+  color: #ffffffb5;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.controls label {
+  font-size: 12px;
+}
+.native-input {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font:
+    14px "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+  margin-top: 6px;
+  caret-color: #fff;
+}
+.native-input::placeholder {
+  color: #ffffffb3;
+}
+.native-button {
+  font:
+    14px "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+  border-radius: 999px;
+  padding: 10px 18px;
+  cursor: pointer;
+  align-self: start;
+}
+.glass:focus-visible,
+.drag-handle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+.frame-status {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 10px;
+  background: #30343a;
+  color: #c6d1db;
+}
+
+.card-position {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.native-input-wrap {
+  display: grid;
+  position: relative;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+.native-input-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.native-input {
+  position: relative;
+  background: transparent;
+  border: 0;
+  margin-top: 0;
+}
+.native-input:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+.native-button:hover {
+  background: #ffffff20;
+}
+.native-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

@@ -1,0 +1,65 @@
+{
+  "source": "b257c17f448446729172b39991d85f293303c4ac",
+  "browser": "156.0.8078.76",
+  "dpr": 1,
+  "viewport": [
+    500,
+    516
+  ],
+  "scene": [
+    500,
+    480
+  ],
+  "results": [
+    {
+      "name": "forest",
+      "patch": {},
+      "digest": "648b79d833031e6798aecb9830e55b7e11a9ace0bb49aafcd5d01a087c85ed90"
+    },
+    {
+      "name": "grid",
+      "patch": {
+        "background": "grid"
+      },
+      "digest": "648b79d833031e6798aecb9830e55b7e11a9ace0bb49aafcd5d01a087c85ed90"
+    },
+    {
+      "name": "asymmetric",
+      "patch": {
+        "radius": "48px 12px 64px 4px"
+      },
+      "digest": "8a8bc2fa2815ada19157826069a2124fc0748bfebae558f9df91ccd82662921b"
+    },
+    {
+      "name": "circle",
+      "patch": {
+        "radius": "50%",
+        "width": 220,
+        "height": 220
+      },
+      "digest": "f0ba11f6a187e56195b1b78ba1ac8fb9737ecf5f67df879e1f2f8282acd3ae9f"
+    },
+    {
+      "name": "overlap",
+      "patch": {
+        "width": 320,
+        "height": 40,
+        "radius": "24px 24px 0 0"
+      },
+      "digest": "8ec48cd4f9789ca48932f920127a0f304e6c9ed890c62973c841545ce20789fe"
+    },
+    {
+      "name": "nonfolding",
+      "patch": {
+        "width": 300,
+        "height": 220,
+        "radius": "30px / 50px",
+        "opts": {
+          "slope": 0.85,
+          "dispersion": 0.5
+        }
+      },
+      "digest": "1e0f16484f14efff237a90909bea1d1e11593e022087e83161c4442837a6311b"
+    }
+  ]
+}

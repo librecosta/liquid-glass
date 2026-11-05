@@ -1,0 +1,4366 @@
+{
+  "browser": "156.0.8078.80",
+  "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.21921.1000)",
+  "mode": "production",
+  "viewport": [
+    1480,
+    960
+  ],
+  "scene": [
+    500,
+    480
+  ],
+  "moves": 45,
+  "repeats": 3,
+  "method": "One active variant, real pointer capture, sequential contexts; rAF includes idle callbacks, not painted FPS; DOM update intervals and input dispatch latency are separate observations. First trial traced. Times in ms.",
+  "variants": [
+    {
+      "id": "reference",
+      "label": "Reference（历史基准）",
+      "quality": "Reference",
+      "opts": {}
+    },
+    {
+      "id": "edge-0",
+      "label": "Reference + edge=0（无 CSS 描边）",
+      "quality": "Reference",
+      "opts": {
+        "edge": 0
+      }
+    },
+    {
+      "id": "edge-008",
+      "label": "Reference + edge=0.08",
+      "quality": "Reference",
+      "opts": {
+        "edge": 0.08
+      }
+    },
+    {
+      "id": "edge-016",
+      "label": "Reference + edge=0.16",
+      "quality": "Reference",
+      "opts": {
+        "edge": 0.16
+      }
+    },
+    {
+      "id": "sat-1",
+      "label": "Reference + sat=1（仅跳过校正）",
+      "quality": "Reference",
+      "opts": {
+        "sat": 1
+      }
+    },
+    {
+      "id": "optical",
+      "label": "Optical Balanced（候选）",
+      "quality": "Optical Balanced",
+      "opts": {}
+    },
+    {
+      "id": "balanced",
+      "label": "Balanced（既有实验）",
+      "quality": "Balanced",
+      "opts": {}
+    },
+    {
+      "id": "fast",
+      "label": "Fast（既有实验）",
+      "quality": "Fast",
+      "opts": {}
+    }
+  ],
+  "rows": [
+    {
+      "id": "reference",
+      "dpr": 1,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1025.9,
+      "raf": {
+        "n": 116,
+        "p50": 4.2,
+        "p95": 20.8,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 19.7,
+        "p95": 30.1
+      },
+      "dispatch": {
+        "p50": 6.4805,
+        "p95": 10.2801
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 15.136,
+      "taskMs": 96.253,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.742
+        }
+      }
+    },
+    {
+      "id": "reference",
+      "dpr": 1,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3711.1,
+      "raf": {
+        "n": 61,
+        "p50": 79.2,
+        "p95": 95.8,
+        "p99": 129.2,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 83.4,
+        "p95": 102.3
+      },
+      "dispatch": {
+        "p50": 67.9717,
+        "p95": 80.6787
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.081,
+      "taskMs": 81.368,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 6.156
+        }
+      }
+    },
+    {
+      "id": "reference",
+      "dpr": 1,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 872.7,
+      "raf": {
+        "n": 97,
+        "p50": 4.2,
+        "p95": 16.7,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.9,
+        "p95": 29.2
+      },
+      "dispatch": {
+        "p50": 5.2387,
+        "p95": 8.1528
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.703,
+      "taskMs": 69.46
+    },
+    {
+      "id": "reference",
+      "dpr": 1,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3703.6,
+      "raf": {
+        "n": 64,
+        "p50": 79.2,
+        "p95": 95.8,
+        "p99": 100,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 84.3,
+        "p95": 101.3
+      },
+      "dispatch": {
+        "p50": 70.6856,
+        "p95": 82.9737
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.546,
+      "taskMs": 64.199
+    },
+    {
+      "id": "reference",
+      "dpr": 1,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1011.8,
+      "raf": {
+        "n": 102,
+        "p50": 4.2,
+        "p95": 20.9,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 21,
+        "p95": 29.8
+      },
+      "dispatch": {
+        "p50": 6.6633,
+        "p95": 12.5866
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 15.059,
+      "taskMs": 87.016
+    },
+    {
+      "id": "reference",
+      "dpr": 1,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3848.2,
+      "raf": {
+        "n": 58,
+        "p50": 83.4,
+        "p95": 104.2,
+        "p99": 120.8,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 87,
+        "p95": 115.2
+      },
+      "dispatch": {
+        "p50": 71.6131,
+        "p95": 95.1287
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.012,
+      "taskMs": 65.718
+    },
+    {
+      "id": "edge-0",
+      "dpr": 1,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 920.1,
+      "raf": {
+        "n": 105,
+        "p50": 4.2,
+        "p95": 16.7,
+        "p99": 20.7,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.8,
+        "p95": 29.2
+      },
+      "dispatch": {
+        "p50": 6.2095,
+        "p95": 7.7606
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 14.233,
+      "taskMs": 88.802,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.731
+        }
+      }
+    },
+    {
+      "id": "edge-0",
+      "dpr": 1,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3602.2,
+      "raf": {
+        "n": 60,
+        "p50": 79.2,
+        "p95": 87.5,
+        "p99": 95.8,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 83.4,
+        "p95": 89.4
+      },
+      "dispatch": {
+        "p50": 66.676,
+        "p95": 79.0816
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.721,
+      "taskMs": 72.179,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.269
+        }
+      }
+    },
+    {
+      "id": "edge-0",
+      "dpr": 1,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 799.3,
+      "raf": {
+        "n": 76,
+        "p50": 12.5,
+        "p95": 16.8,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16,
+        "p95": 28.4
+      },
+      "dispatch": {
+        "p50": 5.2412,
+        "p95": 7.5819
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.515,
+      "taskMs": 68.483
+    },
+    {
+      "id": "edge-0",
+      "dpr": 1,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3987.6,
+      "raf": {
+        "n": 62,
+        "p50": 83.4,
+        "p95": 108,
+        "p99": 141.8,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 89.6,
+        "p95": 118.8
+      },
+      "dispatch": {
+        "p50": 73.8294,
+        "p95": 107.0514
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.724,
+      "taskMs": 68.894
+    },
+    {
+      "id": "edge-0",
+      "dpr": 1,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 827.2,
+      "raf": {
+        "n": 85,
+        "p50": 8.3,
+        "p95": 16.7,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.6,
+        "p95": 28.9
+      },
+      "dispatch": {
+        "p50": 5.2594,
+        "p95": 8.8964
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.483,
+      "taskMs": 77.42
+    },
+    {
+      "id": "edge-0",
+      "dpr": 1,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3611.9,
+      "raf": {
+        "n": 58,
+        "p50": 79.1,
+        "p95": 104.1,
+        "p99": 137.7,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 80.5,
+        "p95": 105.4
+      },
+      "dispatch": {
+        "p50": 64.0067,
+        "p95": 89.803
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.888,
+      "taskMs": 64.222
+    },
+    {
+      "id": "sat-1",
+      "dpr": 1,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 765.1,
+      "raf": {
+        "n": 180,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 8.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.3
+      },
+      "dispatch": {
+        "p50": 4.7304,
+        "p95": 7.0608
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 16.379,
+      "taskMs": 103.156,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.584
+        }
+      }
+    },
+    {
+      "id": "sat-1",
+      "dpr": 1,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1475.8,
+      "raf": {
+        "n": 60,
+        "p50": 29.2,
+        "p95": 41.8,
+        "p99": 66.6,
+        "over33": 17,
+        "over50": 2
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 30.7,
+        "p95": 59.2
+      },
+      "dispatch": {
+        "p50": 16.6553,
+        "p95": 26.7614
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.356,
+      "taskMs": 75.36,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.595
+        }
+      }
+    },
+    {
+      "id": "sat-1",
+      "dpr": 1,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 736.4,
+      "raf": {
+        "n": 175,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.6056,
+        "p95": 6.4269
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.651,
+      "taskMs": 74.632
+    },
+    {
+      "id": "sat-1",
+      "dpr": 1,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1356.1,
+      "raf": {
+        "n": 60,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 37.6,
+        "over33": 14,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 30.1,
+        "p95": 35
+      },
+      "dispatch": {
+        "p50": 16.1331,
+        "p95": 23.278
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.133,
+      "taskMs": 61.758
+    },
+    {
+      "id": "sat-1",
+      "dpr": 1,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 767.9,
+      "raf": {
+        "n": 180,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 9.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.8924,
+        "p95": 6.875
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.671,
+      "taskMs": 75.842
+    },
+    {
+      "id": "sat-1",
+      "dpr": 1,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1360.2,
+      "raf": {
+        "n": 58,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 37.6,
+        "over33": 12,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 30,
+        "p95": 33.7
+      },
+      "dispatch": {
+        "p50": 17.5681,
+        "p95": 22.5441
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.044,
+      "taskMs": 63.314
+    },
+    {
+      "id": "optical",
+      "dpr": 1,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 753,
+      "raf": {
+        "n": 179,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.8312,
+        "p95": 6.7375
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 14.546,
+      "taskMs": 92.963,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.45
+        }
+      }
+    },
+    {
+      "id": "optical",
+      "dpr": 1,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1344.6,
+      "raf": {
+        "n": 60,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 33.4,
+        "over33": 10,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 30.2,
+        "p95": 33.6
+      },
+      "dispatch": {
+        "p50": 15.9164,
+        "p95": 21.8638
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.156,
+      "taskMs": 72.126,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.301
+        }
+      }
+    },
+    {
+      "id": "optical",
+      "dpr": 1,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 737.6,
+      "raf": {
+        "n": 177,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 27.7
+      },
+      "dispatch": {
+        "p50": 4.7125,
+        "p95": 6.5301
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.315,
+      "taskMs": 71.497
+    },
+    {
+      "id": "optical",
+      "dpr": 1,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1312.2,
+      "raf": {
+        "n": 62,
+        "p50": 29.1,
+        "p95": 33.3,
+        "p99": 33.4,
+        "over33": 5,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.2,
+        "p95": 33.2
+      },
+      "dispatch": {
+        "p50": 14.4095,
+        "p95": 21.8931
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.076,
+      "taskMs": 59.164
+    },
+    {
+      "id": "optical",
+      "dpr": 1,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 723.3,
+      "raf": {
+        "n": 172,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.4,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.7051,
+        "p95": 6.277
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.354,
+      "taskMs": 71.44
+    },
+    {
+      "id": "optical",
+      "dpr": 1,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1324.6,
+      "raf": {
+        "n": 56,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 37.5,
+        "over33": 10,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.3,
+        "p95": 33.4
+      },
+      "dispatch": {
+        "p50": 15.9171,
+        "p95": 20.6286
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.07,
+      "taskMs": 62.022
+    },
+    {
+      "id": "balanced",
+      "dpr": 1,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 752.6,
+      "raf": {
+        "n": 178,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.2
+      },
+      "dispatch": {
+        "p50": 4.9506,
+        "p95": 6.8172
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 14.526,
+      "taskMs": 91.387,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.442
+        }
+      }
+    },
+    {
+      "id": "balanced",
+      "dpr": 1,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1301.4,
+      "raf": {
+        "n": 56,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 33.4,
+        "over33": 5,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.1,
+        "p95": 32.8
+      },
+      "dispatch": {
+        "p50": 15.6541,
+        "p95": 21.4756
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.676,
+      "taskMs": 69.853,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.095
+        }
+      }
+    },
+    {
+      "id": "balanced",
+      "dpr": 1,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 709.8,
+      "raf": {
+        "n": 169,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.7
+      },
+      "dispatch": {
+        "p50": 4.2637,
+        "p95": 6.3765
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.947,
+      "taskMs": 64.331
+    },
+    {
+      "id": "balanced",
+      "dpr": 1,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1311.7,
+      "raf": {
+        "n": 56,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 33.4,
+        "over33": 8,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.4,
+        "p95": 33.7
+      },
+      "dispatch": {
+        "p50": 17.2018,
+        "p95": 20.7174
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.991,
+      "taskMs": 56.648
+    },
+    {
+      "id": "balanced",
+      "dpr": 1,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 738.8,
+      "raf": {
+        "n": 176,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 25
+      },
+      "dispatch": {
+        "p50": 4.8596,
+        "p95": 6.5896
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.14,
+      "taskMs": 66.351
+    },
+    {
+      "id": "balanced",
+      "dpr": 1,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1322.4,
+      "raf": {
+        "n": 61,
+        "p50": 29.1,
+        "p95": 33.3,
+        "p99": 41.7,
+        "over33": 7,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.1,
+        "p95": 34
+      },
+      "dispatch": {
+        "p50": 15.6753,
+        "p95": 19.8974
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.189,
+      "taskMs": 56.854
+    },
+    {
+      "id": "fast",
+      "dpr": 1,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 740.5,
+      "raf": {
+        "n": 177,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.7751,
+        "p95": 6.7741
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 13.585,
+      "taskMs": 85.858,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.303
+        }
+      }
+    },
+    {
+      "id": "fast",
+      "dpr": 1,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 783.5,
+      "raf": {
+        "n": 87,
+        "p50": 4.3,
+        "p95": 16.7,
+        "p99": 16.7,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.5,
+        "p95": 29
+      },
+      "dispatch": {
+        "p50": 5.5069,
+        "p95": 7.1364
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.447,
+      "taskMs": 70.365,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 44,
+          "ms": 5.138
+        }
+      }
+    },
+    {
+      "id": "fast",
+      "dpr": 1,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 710.6,
+      "raf": {
+        "n": 169,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.704,
+        "p95": 6.2024
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.231,
+      "taskMs": 66.149
+    },
+    {
+      "id": "fast",
+      "dpr": 1,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 740,
+      "raf": {
+        "n": 80,
+        "p50": 12.4,
+        "p95": 16.7,
+        "p99": 16.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.3,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 3.797,
+        "p95": 6.6964
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.458,
+      "taskMs": 53.412
+    },
+    {
+      "id": "fast",
+      "dpr": 1,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 709,
+      "raf": {
+        "n": 170,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.6999,
+        "p95": 6.4826
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.35,
+      "taskMs": 67.377
+    },
+    {
+      "id": "fast",
+      "dpr": 1,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 753.3,
+      "raf": {
+        "n": 79,
+        "p50": 12.4,
+        "p95": 16.7,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.7,
+        "p95": 29
+      },
+      "dispatch": {
+        "p50": 4.7127,
+        "p95": 6.7648
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.673,
+      "taskMs": 53.819
+    },
+    {
+      "id": "reference",
+      "dpr": 2,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 754,
+      "raf": {
+        "n": 70,
+        "p50": 12.5,
+        "p95": 16.7,
+        "p99": 16.7,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.2,
+        "p95": 28.4
+      },
+      "dispatch": {
+        "p50": 4.8163,
+        "p95": 6.7917
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.376,
+      "taskMs": 79.107,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.455
+        }
+      }
+    },
+    {
+      "id": "reference",
+      "dpr": 2,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3385.7,
+      "raf": {
+        "n": 63,
+        "p50": 75,
+        "p95": 83.3,
+        "p99": 87.5,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 78.3,
+        "p95": 85.2
+      },
+      "dispatch": {
+        "p50": 64.2352,
+        "p95": 73.2637
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.379,
+      "taskMs": 71.222,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.126
+        }
+      }
+    },
+    {
+      "id": "reference",
+      "dpr": 2,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 799.2,
+      "raf": {
+        "n": 85,
+        "p50": 12.5,
+        "p95": 16.7,
+        "p99": 20.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.4,
+        "p95": 29.2
+      },
+      "dispatch": {
+        "p50": 5.4003,
+        "p95": 8.1813
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.394,
+      "taskMs": 65.493
+    },
+    {
+      "id": "reference",
+      "dpr": 2,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3415.5,
+      "raf": {
+        "n": 57,
+        "p50": 75.1,
+        "p95": 83.4,
+        "p99": 91.6,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 79.9,
+        "p95": 85.3
+      },
+      "dispatch": {
+        "p50": 61.7582,
+        "p95": 71.6128
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 7.978,
+      "taskMs": 56.967
+    },
+    {
+      "id": "reference",
+      "dpr": 2,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 740.3,
+      "raf": {
+        "n": 78,
+        "p50": 12.4,
+        "p95": 16.7,
+        "p99": 16.7,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.1,
+        "p95": 29
+      },
+      "dispatch": {
+        "p50": 4.6893,
+        "p95": 6.3948
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.5,
+      "taskMs": 61.995
+    },
+    {
+      "id": "reference",
+      "dpr": 2,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3339.5,
+      "raf": {
+        "n": 60,
+        "p50": 75,
+        "p95": 83.3,
+        "p99": 83.4,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 77.7,
+        "p95": 83.8
+      },
+      "dispatch": {
+        "p50": 61.9246,
+        "p95": 71.4243
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.243,
+      "taskMs": 56.819
+    },
+    {
+      "id": "edge-0",
+      "dpr": 2,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 786.9,
+      "raf": {
+        "n": 83,
+        "p50": 8.4,
+        "p95": 16.7,
+        "p99": 16.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.8,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.7652,
+        "p95": 7.0256
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 12.609,
+      "taskMs": 79.139,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.449
+        }
+      }
+    },
+    {
+      "id": "edge-0",
+      "dpr": 2,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3304.7,
+      "raf": {
+        "n": 66,
+        "p50": 70.8,
+        "p95": 83.4,
+        "p99": 87.5,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 76.4,
+        "p95": 85.2
+      },
+      "dispatch": {
+        "p50": 59.9348,
+        "p95": 72.8202
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.954,
+      "taskMs": 72.44,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.242
+        }
+      }
+    },
+    {
+      "id": "edge-0",
+      "dpr": 2,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 752.7,
+      "raf": {
+        "n": 77,
+        "p50": 8.4,
+        "p95": 16.7,
+        "p99": 16.7,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.5,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 5.0866,
+        "p95": 6.7888
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.67,
+      "taskMs": 64.011
+    },
+    {
+      "id": "edge-0",
+      "dpr": 2,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3447.1,
+      "raf": {
+        "n": 55,
+        "p50": 79.1,
+        "p95": 83.4,
+        "p99": 91.7,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 79.8,
+        "p95": 87.8
+      },
+      "dispatch": {
+        "p50": 61.6052,
+        "p95": 71.9061
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.333,
+      "taskMs": 59.216
+    },
+    {
+      "id": "edge-0",
+      "dpr": 2,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 772.3,
+      "raf": {
+        "n": 84,
+        "p50": 8.4,
+        "p95": 16.7,
+        "p99": 20.9,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.3,
+        "p95": 25.1
+      },
+      "dispatch": {
+        "p50": 4.608,
+        "p95": 6.8172
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.816,
+      "taskMs": 63.03
+    },
+    {
+      "id": "edge-0",
+      "dpr": 2,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 28,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 0.86,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 3351,
+      "raf": {
+        "n": 64,
+        "p50": 71,
+        "p95": 83.3,
+        "p99": 87.5,
+        "over33": 42,
+        "over50": 42
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 76.1,
+        "p95": 85.8
+      },
+      "dispatch": {
+        "p50": 60.173,
+        "p95": 72.3275
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.451,
+      "taskMs": 58.418
+    },
+    {
+      "id": "sat-1",
+      "dpr": 2,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 712.7,
+      "raf": {
+        "n": 171,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.45,
+        "p95": 6.4627
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 13.832,
+      "taskMs": 86.93,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.341
+        }
+      }
+    },
+    {
+      "id": "sat-1",
+      "dpr": 2,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1312.2,
+      "raf": {
+        "n": 64,
+        "p50": 25,
+        "p95": 33.2,
+        "p99": 37.5,
+        "over33": 4,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.2,
+        "p95": 34.9
+      },
+      "dispatch": {
+        "p50": 9.1012,
+        "p95": 21.9579
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.145,
+      "taskMs": 67.018,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.007
+        }
+      }
+    },
+    {
+      "id": "sat-1",
+      "dpr": 2,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 726.9,
+      "raf": {
+        "n": 174,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.9
+      },
+      "dispatch": {
+        "p50": 4.5009,
+        "p95": 6.2615
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.619,
+      "taskMs": 67.049
+    },
+    {
+      "id": "sat-1",
+      "dpr": 2,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1324.7,
+      "raf": {
+        "n": 59,
+        "p50": 29.1,
+        "p95": 33.3,
+        "p99": 33.4,
+        "over33": 7,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.4,
+        "p95": 33.7
+      },
+      "dispatch": {
+        "p50": 16.6743,
+        "p95": 22.9008
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.178,
+      "taskMs": 58.288
+    },
+    {
+      "id": "sat-1",
+      "dpr": 2,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 739.2,
+      "raf": {
+        "n": 175,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 8.2,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.8278,
+        "p95": 6.606
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.408,
+      "taskMs": 66.834
+    },
+    {
+      "id": "sat-1",
+      "dpr": 2,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1269.7,
+      "raf": {
+        "n": 55,
+        "p50": 29.1,
+        "p95": 29.4,
+        "p99": 33.4,
+        "over33": 1,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 28.9,
+        "p95": 32.4
+      },
+      "dispatch": {
+        "p50": 15.5423,
+        "p95": 20.2326
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.086,
+      "taskMs": 56.598
+    },
+    {
+      "id": "optical",
+      "dpr": 2,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 767.1,
+      "raf": {
+        "n": 180,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 8.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.2
+      },
+      "dispatch": {
+        "p50": 4.945,
+        "p95": 6.8248
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 14.706,
+      "taskMs": 93.296,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.602
+        }
+      }
+    },
+    {
+      "id": "optical",
+      "dpr": 2,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1313.5,
+      "raf": {
+        "n": 61,
+        "p50": 29.1,
+        "p95": 33.3,
+        "p99": 33.4,
+        "over33": 5,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.4,
+        "p95": 32.5
+      },
+      "dispatch": {
+        "p50": 14.0776,
+        "p95": 18.3969
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.654,
+      "taskMs": 69.159,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.502
+        }
+      }
+    },
+    {
+      "id": "optical",
+      "dpr": 2,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 724,
+      "raf": {
+        "n": 171,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 8.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.4346,
+        "p95": 6.3432
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.096,
+      "taskMs": 64.619
+    },
+    {
+      "id": "optical",
+      "dpr": 2,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1313,
+      "raf": {
+        "n": 62,
+        "p50": 29.1,
+        "p95": 33.3,
+        "p99": 33.4,
+        "over33": 5,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.4,
+        "p95": 33.3
+      },
+      "dispatch": {
+        "p50": 14.6388,
+        "p95": 20.0043
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.136,
+      "taskMs": 56.646
+    },
+    {
+      "id": "optical",
+      "dpr": 2,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 738.9,
+      "raf": {
+        "n": 174,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 8.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29
+      },
+      "dispatch": {
+        "p50": 4.3529,
+        "p95": 6.3838
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.399,
+      "taskMs": 67.481
+    },
+    {
+      "id": "optical",
+      "dpr": 2,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "none",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 1.6,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1293.6,
+      "raf": {
+        "n": 55,
+        "p50": 29.1,
+        "p95": 33.3,
+        "p99": 37.5,
+        "over33": 4,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29,
+        "p95": 34.1
+      },
+      "dispatch": {
+        "p50": 13.293,
+        "p95": 20.1682
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.189,
+      "taskMs": 56.645
+    },
+    {
+      "id": "balanced",
+      "dpr": 2,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 724.7,
+      "raf": {
+        "n": 174,
+        "p50": 4.2,
+        "p95": 4.2,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.6257,
+        "p95": 6.2963
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 13.695,
+      "taskMs": 85.689,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.317
+        }
+      }
+    },
+    {
+      "id": "balanced",
+      "dpr": 2,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1311.3,
+      "raf": {
+        "n": 59,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 33.4,
+        "over33": 5,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.3,
+        "p95": 33.9
+      },
+      "dispatch": {
+        "p50": 17.1393,
+        "p95": 22.2001
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.054,
+      "taskMs": 71.249,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 5.335
+        }
+      }
+    },
+    {
+      "id": "balanced",
+      "dpr": 2,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 726.4,
+      "raf": {
+        "n": 173,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 5,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.6351,
+        "p95": 6.6158
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.839,
+      "taskMs": 68.698
+    },
+    {
+      "id": "balanced",
+      "dpr": 2,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1340.1,
+      "raf": {
+        "n": 62,
+        "p50": 29.1,
+        "p95": 33.4,
+        "p99": 37.5,
+        "over33": 8,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29.4,
+        "p95": 33.5
+      },
+      "dispatch": {
+        "p50": 16.7662,
+        "p95": 20.6344
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.191,
+      "taskMs": 57.599
+    },
+    {
+      "id": "balanced",
+      "dpr": 2,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 711,
+      "raf": {
+        "n": 171,
+        "p50": 4.2,
+        "p95": 4.2,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.3863,
+        "p95": 6.1515
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.148,
+      "taskMs": 65.397
+    },
+    {
+      "id": "balanced",
+      "dpr": 2,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 18,
+        "displacements": 3,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0.8,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 1296.6,
+      "raf": {
+        "n": 63,
+        "p50": 25,
+        "p95": 33.2,
+        "p99": 33.4,
+        "over33": 4,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 29,
+        "p95": 31.9
+      },
+      "dispatch": {
+        "p50": 14.6731,
+        "p95": 20.1765
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.888,
+      "taskMs": 55.504
+    },
+    {
+      "id": "fast",
+      "dpr": 2,
+      "count": 1,
+      "trial": 1,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 737.3,
+      "raf": {
+        "n": 177,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.7433,
+        "p95": 6.6974
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 13.733,
+      "taskMs": 87.106,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 43,
+          "ms": 3.386
+        }
+      }
+    },
+    {
+      "id": "fast",
+      "dpr": 2,
+      "count": 5,
+      "trial": 1,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 738.9,
+      "raf": {
+        "n": 73,
+        "p50": 12.5,
+        "p95": 16.7,
+        "p99": 16.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.4,
+        "p95": 24.8
+      },
+      "dispatch": {
+        "p50": 4.6725,
+        "p95": 7.2374
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 10.022,
+      "taskMs": 66.154,
+      "trace": {
+        "PaintArtifactCompositor::Update": {
+          "count": 44,
+          "ms": 4.783
+        }
+      }
+    },
+    {
+      "id": "fast",
+      "dpr": 2,
+      "count": 1,
+      "trial": 2,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 738.4,
+      "raf": {
+        "n": 177,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 29.1
+      },
+      "dispatch": {
+        "p50": 4.723,
+        "p95": 6.5775
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.381,
+      "taskMs": 67.628
+    },
+    {
+      "id": "fast",
+      "dpr": 2,
+      "count": 5,
+      "trial": 2,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 724.3,
+      "raf": {
+        "n": 75,
+        "p50": 12.4,
+        "p95": 16.7,
+        "p99": 16.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.6,
+        "p95": 25.8
+      },
+      "dispatch": {
+        "p50": 4.9545,
+        "p95": 6.6731
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 8.513,
+      "taskMs": 53.265
+    },
+    {
+      "id": "fast",
+      "dpr": 2,
+      "count": 1,
+      "trial": 3,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 708.2,
+      "raf": {
+        "n": 169,
+        "p50": 4.2,
+        "p95": 4.3,
+        "p99": 4.3,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 16.6,
+        "p95": 16.8
+      },
+      "dispatch": {
+        "p50": 4.4579,
+        "p95": 6.3145
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 11.215,
+      "taskMs": 65.304
+    },
+    {
+      "id": "fast",
+      "dpr": 2,
+      "count": 5,
+      "trial": 3,
+      "graph": {
+        "primitives": 11,
+        "displacements": 1,
+        "mapSize": [
+          306,
+          223
+        ],
+        "edge": "rgba(255, 255, 255, 0.23) 0px 0px 0px 0.5px inset, rgba(255, 255, 255, 0.176) -0.64px 0.77px 0px 0.5px inset, rgba(0, 0, 0, 0.05) 0px 0px 0px 1.5px inset, rgba(255, 255, 255, 0.024) 0px 0px 6px 2px inset",
+        "opts": {
+          "bevel": 37,
+          "thickness": 59,
+          "slope": 2.7,
+          "shape": "squircle",
+          "blur": 1,
+          "dispersion": 0,
+          "shade": 0.46,
+          "rim": 1.76,
+          "edgeW": 8,
+          "sat": 1,
+          "edge": 0.32,
+          "light": -140,
+          "smooth": 1,
+          "materialize": 0,
+          "settle": 0,
+          "self": false
+        }
+      },
+      "elapsed": 738.3,
+      "raf": {
+        "n": 72,
+        "p50": 12.4,
+        "p95": 16.7,
+        "p99": 20.8,
+        "over33": 0,
+        "over50": 0
+      },
+      "dom": {
+        "updates": 43,
+        "p50": 15.3,
+        "p95": 24.9
+      },
+      "dispatch": {
+        "p50": 4.5466,
+        "p95": 7.7439
+      },
+      "maps": 0,
+      "ro": 0,
+      "commits": 1,
+      "scriptMs": 9.014,
+      "taskMs": 55.788
+    }
+  ],
+  "captures": [
+    {
+      "id": "reference",
+      "background": "forest",
+      "path": "docs/c2/reference-forest.png",
+      "pixels": 0,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "reference",
+      "background": "grid",
+      "path": "docs/c2/reference-grid.png",
+      "pixels": 0,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "edge-0",
+      "background": "forest",
+      "path": "docs/c2/edge-0-forest.png",
+      "pixels": 5911,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "edge-0",
+      "background": "grid",
+      "path": "docs/c2/edge-0-grid.png",
+      "pixels": 5896,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "edge-008",
+      "background": "forest",
+      "path": "docs/c2/edge-008-forest.png",
+      "pixels": 5907,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "edge-008",
+      "background": "grid",
+      "path": "docs/c2/edge-008-grid.png",
+      "pixels": 5869,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "edge-016",
+      "background": "forest",
+      "path": "docs/c2/edge-016-forest.png",
+      "pixels": 4877,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "edge-016",
+      "background": "grid",
+      "path": "docs/c2/edge-016-grid.png",
+      "pixels": 4658,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "sat-1",
+      "background": "forest",
+      "path": "docs/c2/sat-1-forest.png",
+      "pixels": 14229,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "sat-1",
+      "background": "grid",
+      "path": "docs/c2/sat-1-grid.png",
+      "pixels": 17344,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "optical",
+      "background": "forest",
+      "path": "docs/c2/optical-forest.png",
+      "pixels": 14816,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "optical",
+      "background": "grid",
+      "path": "docs/c2/optical-grid.png",
+      "pixels": 17438,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "balanced",
+      "background": "forest",
+      "path": "docs/c2/balanced-forest.png",
+      "pixels": 15363,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "balanced",
+      "background": "grid",
+      "path": "docs/c2/balanced-grid.png",
+      "pixels": 17357,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "fast",
+      "background": "forest",
+      "path": "docs/c2/fast-forest.png",
+      "pixels": 16124,
+      "backgroundPixels": 0
+    },
+    {
+      "id": "fast",
+      "background": "grid",
+      "path": "docs/c2/fast-grid.png",
+      "pixels": 17411,
+      "backgroundPixels": 0
+    }
+  ]
+}

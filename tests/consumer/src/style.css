@@ -1,0 +1,87 @@
+body {
+  font: 16px/1.5 sans-serif;
+  background:
+    linear-gradient(#ffffff33 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff33 1px, transparent 1px), #23334b;
+  background-size: 26px 26px;
+  color: white;
+  margin: 20px;
+}
+nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+nav button {
+  padding: 8px;
+}
+#subjects {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.sample {
+  box-sizing: border-box;
+  width: 260px;
+  height: 120px;
+  border-radius: 20px;
+  padding: 20px;
+}
+.alternate {
+  border-radius: 42px 12px 30px 4px;
+}
+form {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+.action {
+  font: inherit;
+  color: inherit;
+  height: 60px;
+  border: 0;
+}
+.action:hover {
+  color: #ffdf80;
+  background: #ffffff10;
+}
+.action:active {
+  color: #e6acff;
+}
+.input-wrapper {
+  border-radius: 18px;
+}
+.input-wrapper input {
+  font: inherit;
+  padding: 14px;
+  color: inherit;
+  border: 0;
+}
+:focus-visible {
+  outline: 3px solid #facd65;
+  outline-offset: 3px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-grid;
+  min-width: 0;
+  vertical-align: middle;
+}
+.input-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.native-field {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border-radius: inherit;
+}

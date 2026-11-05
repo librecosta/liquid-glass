@@ -147,3 +147,10 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Local Chromium comparison artifacts
+test-results/
+playwright-report/
+dist-playground/
+dist-pages/
+performance-results/

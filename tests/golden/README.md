@@ -1,0 +1,11 @@
+# LibreCosta Reference gold
+
+Captured from **b257c17f448446729172b39991d85f293303c4ac**, before LG-C UI/drag changes. This is the accepted TypeScript engine, not a second embedded engine.
+
+- `math.json`: defaults and deterministic SDF (300x180, three corner sets), Fresnel and Snell samples for all three bevel shapes. No browser required.
+- `reference.json`: SHA-256 of JSON `{info, graph, edge}`. `info()` includes full map PNG data URLs and sampled profiles. `graph` is filter `outerHTML` with only generated `liquid-glass-<number>` IDs replaced by `FILTER`; `edge` is the card's CSS rim value. Cases are applied sequentially, merging patches.
+- `reference/*.png`: Chrome 156.0.8078.76, DPR 1, viewport 500x516; capture the complete 500x480 scene. Same 300x220 card, 42px radius, position 100,142 initially. Forest case uses the exact local forest JPEG with a 16% black overlay; the old background lettering was hidden in the test adapter. Other cases use the unchanged 26px straight grid. Text remains included. No pixel masking or tolerance (`threshold:0`, `includeAA:true`).
+
+The image/overlay adapter was the only background change to the historical checkout; no core, defaults, map or graph code was altered. These gold files are checked into Git. `npm run check` compares the current single engine against them. Browser rasterization is version/platform-sensitive: a mismatch on another Chrome needs explicit visual review, not automatic snapshot replacement. Do not regenerate these files as part of normal tests.
+
+The pixel test launches an isolated Chrome process, matching the historical capture. Reused Chrome processes/contexts can choose a different JPEG decode/resampling cache path: an investigation observed differences even outside the glass (maximum channel delta 9, mean absolute delta 0.239), while a fresh historical checkout and a fresh current process matched the original gold exactly. Isolation keeps the zero-tolerance check; no gold replacement or pixel tolerance was used. Quality comparison images also use isolated fresh processes with the preset selected before the first render, and assert that pixels outside the glass match across presets. Production Reference forest/grid captures also match this gold exactly.
