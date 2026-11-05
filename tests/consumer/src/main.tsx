@@ -1,71 +1,217 @@
-import { StrictMode, useCallback, useRef, useState } from "react";
+import { StrictMode, useCallback, useState, type RefCallback } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createLiquidGlass,
-  force,
-  setOpts,
   DEFAULTS,
   type LiquidGlassOptions,
 } from "@librecosta/liquid-glass";
-import {
-  LiquidGlass,
-  LiquidGlassButton,
-  LiquidGlassInput,
-  useLiquidGlass,
-} from "@librecosta/liquid-glass/react";
+import { useLiquidGlass } from "@librecosta/liquid-glass/react";
 import "@librecosta/liquid-glass/styles.css";
 import "./style.css";
-
+let builds = 0,
+  cleanupCalls = 0;
+const onBuild = () => builds++;
+const refs: Record<"card" | "button" | "input", HTMLElement | null> = {
+  card: null,
+  button: null,
+  input: null,
+};
+// Test-app composition only: the package exports no UI components or ref merger.
+function useTrackedGlass<T extends HTMLElement>(
+  key: "card" | "button" | null,
+  options: LiquidGlassOptions,
+  enabled: boolean,
+) {
+  const glass = useLiquidGlass<T>({ options, enabled });
+  return useCallback<RefCallback<T>>(
+    (node) => {
+      glass.ref(node);
+      if (key) refs[key] = node;
+      return () => {
+        glass.ref(null);
+        if (key) refs[key] = null;
+        cleanupCalls++;
+      };
+    },
+    [glass.ref, key],
+  );
+}
+const inputRef: RefCallback<HTMLInputElement> = (node) => {
+  refs.input = node;
+  return () => {
+    refs.input = null;
+  };
+};
+interface State {
+  options: LiquidGlassOptions;
+  enabled: boolean;
+  disabled: boolean;
+  radius: boolean;
+  alternate: boolean;
+}
+function Subjects({
+  options,
+  enabled,
+  disabled,
+  radius,
+  alternate,
+  onSubmit,
+}: { onSubmit: (s: string) => void } & State) {
+  const a = useTrackedGlass<HTMLDivElement>("card", options, enabled),
+    b = useLiquidGlass<HTMLDivElement>({ options: { onBuild }, enabled });
+  const callback = useTrackedGlass<HTMLDivElement>(null, { onBuild }, enabled);
+  const custom = useLiquidGlass<HTMLElement>({ options: { onBuild }, enabled });
+  const action = useTrackedGlass<HTMLButtonElement>(
+      "button",
+      { onBuild },
+      enabled,
+    ),
+    submit = useLiquidGlass<HTMLButtonElement>({
+      options: { onBuild },
+      enabled,
+    });
+  const email = useLiquidGlass<HTMLSpanElement>({
+      options: { onBuild },
+      enabled,
+    }),
+    search = useLiquidGlass<HTMLSpanElement>({ options: { onBuild }, enabled }),
+    password = useLiquidGlass<HTMLSpanElement>({
+      options: { onBuild },
+      enabled,
+    });
+  const [text, setText] = useState(""),
+    [clicks, setClicks] = useState(0);
+  return (
+    <div id="subjects">
+      <div
+        id="a"
+        ref={a}
+        className={`liquid-glass sample ${radius ? "alternate" : ""}`}
+      >
+        Instance A
+      </div>
+      <div id="b" ref={b.ref} className="liquid-glass sample">
+        Instance B
+      </div>
+      <div id="callback" ref={callback} className="liquid-glass sample">
+        Callback ref cleanup
+      </div>
+      {alternate ? (
+        <article id="custom" className="liquid-glass sample" ref={custom.ref}>
+          Custom article
+        </article>
+      ) : (
+        <section id="custom" className="liquid-glass sample" ref={custom.ref}>
+          Custom section
+        </section>
+      )}
+      <button onClick={custom.refresh}>Refresh custom</button>
+      <form
+        id="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(
+            JSON.stringify(Object.fromEntries(new FormData(e.currentTarget))),
+          );
+        }}
+      >
+        <button
+          id="action"
+          ref={action}
+          type="button"
+          className="liquid-glass sample action"
+          disabled={disabled}
+          onClick={() => setClicks((v) => v + 1)}
+        >
+          Action {clicks}
+        </button>
+        <label htmlFor="controlled">Email</label>
+        <span
+          className="input-wrapper"
+          style={{ borderRadius: radius ? 28 : 12 }}
+        >
+          <span
+            ref={email.ref}
+            aria-hidden="true"
+            className="liquid-glass input-surface"
+          />
+          <input
+            id="controlled"
+            ref={inputRef}
+            className="native-field"
+            name="email"
+            type="email"
+            placeholder="Your email"
+            required
+            autoComplete="email"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+        </span>
+        <label htmlFor="uncontrolled">Search</label>
+        <span className="input-wrapper">
+          <span
+            ref={search.ref}
+            aria-hidden="true"
+            className="liquid-glass input-surface"
+          />
+          <input
+            id="uncontrolled"
+            className="native-field"
+            name="query"
+            type="search"
+            defaultValue="initial"
+            placeholder="Search"
+          />
+        </span>
+        <span className="input-wrapper">
+          <span
+            ref={password.ref}
+            aria-hidden="true"
+            className="liquid-glass input-surface"
+          />
+          <input
+            id="password"
+            className="native-field"
+            name="password"
+            type="password"
+            defaultValue="secret"
+            aria-label="Password"
+          />
+        </span>
+        <button
+          id="submit"
+          ref={submit.ref}
+          className="liquid-glass"
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
 declare global {
   interface Window {
     probe: {
       create: typeof createLiquidGlass;
-      force: typeof force;
-      legacySet: typeof setOpts;
-      refs: () => {
-        card: HTMLDivElement | null;
-        button: HTMLButtonElement | null;
-        input: HTMLInputElement | null;
-      };
+      refs: () => typeof refs;
       builds: () => number;
       cleanupCalls: () => number;
     };
   }
 }
-let builds = 0,
-  cleanupCalls = 0;
-const onBuild = () => {
-  builds++;
-};
 function App() {
-  const [options, setOptions] = useState<LiquidGlassOptions>({ onBuild });
-  const [mounted, setMounted] = useState(true),
+  const [options, setOptions] = useState<LiquidGlassOptions>({ onBuild }),
+    [mounted, setMounted] = useState(true),
     [enabled, setEnabled] = useState(true),
-    [alternate, setAlternate] = useState(false);
-  const [disabled, setDisabled] = useState(false),
+    [disabled, setDisabled] = useState(false),
     [radius, setRadius] = useState(false),
-    [text, setText] = useState("");
-  const [clicks, setClicks] = useState(0),
+    [alternate, setAlternate] = useState(false),
     [submitted, setSubmitted] = useState("");
-  const card = useRef<HTMLDivElement>(null),
-    button = useRef<HTMLButtonElement>(null),
-    input = useRef<HTMLInputElement>(null);
-  const custom = useLiquidGlass<HTMLElement>({ options: { onBuild }, enabled });
-  const callback = useCallback((node: HTMLDivElement | null) => {
-    if (node)
-      return () => {
-        cleanupCalls++;
-      };
-  }, []);
   window.probe = {
     create: createLiquidGlass,
-    force,
-    legacySet: setOpts,
-    refs: () => ({
-      card: card.current,
-      button: button.current,
-      input: input.current,
-    }),
+    refs: () => refs,
     builds: () => builds,
     cleanupCalls: () => cleanupCalls,
   };
@@ -83,9 +229,7 @@ function App() {
           Reset A
         </button>
         <button
-          onClick={() =>
-            setOptions((previous) => ({ ...previous, materialize: 1000 }))
-          }
+          onClick={() => setOptions((p) => ({ ...p, materialize: 1000 }))}
         >
           Animate next mount
         </button>
@@ -94,124 +238,13 @@ function App() {
         <button onClick={() => setDisabled((v) => !v)}>Toggle disabled</button>
         <button onClick={() => setRadius((v) => !v)}>Toggle radius</button>
         <button onClick={() => setAlternate((v) => !v)}>Swap custom ref</button>
-        <button onClick={custom.refresh}>Refresh custom</button>
-        <button onClick={() => input.current?.focus()}>Focus input</button>
+        <button onClick={() => refs.input?.focus()}>Focus input</button>
       </nav>
       {mounted && (
-        <div id="subjects">
-          <LiquidGlass
-            id="a"
-            ref={card}
-            className={radius ? "sample alternate" : "sample"}
-            options={options}
-            enabled={enabled}
-          >
-            Instance A
-          </LiquidGlass>
-          <LiquidGlass
-            id="b"
-            className="sample"
-            options={{ onBuild }}
-            enabled={enabled}
-          >
-            Instance B
-          </LiquidGlass>
-          <LiquidGlass
-            id="callback"
-            ref={callback}
-            className="sample"
-            options={{ onBuild }}
-            enabled={enabled}
-          >
-            Callback ref cleanup
-          </LiquidGlass>
-          {alternate ? (
-            <article
-              id="custom"
-              className="liquid-glass sample"
-              ref={custom.ref}
-            >
-              Custom article
-            </article>
-          ) : (
-            <section
-              id="custom"
-              className="liquid-glass sample"
-              ref={custom.ref}
-            >
-              Custom section
-            </section>
-          )}
-          <form
-            id="form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSubmitted(
-                JSON.stringify(
-                  Object.fromEntries(new FormData(e.currentTarget)),
-                ),
-              );
-            }}
-          >
-            <LiquidGlassButton
-              id="action"
-              ref={button}
-              type="button"
-              className="sample action"
-              disabled={disabled}
-              enabled={enabled}
-              options={{ onBuild }}
-              onClick={() => setClicks((v) => v + 1)}
-            >
-              Action {clicks}
-            </LiquidGlassButton>
-            <label htmlFor="controlled">Email</label>
-            <LiquidGlassInput
-              id="controlled"
-              ref={input}
-              name="email"
-              type="email"
-              placeholder="Your email"
-              required
-              autoComplete="email"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              enabled={enabled}
-              options={{ onBuild }}
-              wrapperClassName="input-wrapper"
-              wrapperStyle={{ borderRadius: radius ? 28 : 12 }}
-            />
-            <label htmlFor="uncontrolled">Search</label>
-            <LiquidGlassInput
-              id="uncontrolled"
-              name="query"
-              type="search"
-              defaultValue="initial"
-              placeholder="Search"
-              enabled={enabled}
-              options={{ onBuild }}
-              wrapperClassName="input-wrapper"
-            />
-            <LiquidGlassInput
-              id="password"
-              name="password"
-              type="password"
-              defaultValue="secret"
-              enabled={enabled}
-              options={{ onBuild }}
-              wrapperClassName="input-wrapper"
-              aria-label="Password"
-            />
-            <LiquidGlassButton
-              id="submit"
-              type="submit"
-              enabled={enabled}
-              options={{ onBuild }}
-            >
-              Submit
-            </LiquidGlassButton>
-          </form>
-        </div>
+        <Subjects
+          {...{ options, enabled, disabled, radius, alternate }}
+          onSubmit={setSubmitted}
+        />
       )}
       <output id="submitted">{submitted}</output>
     </>

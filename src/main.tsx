@@ -13,6 +13,7 @@ import { initialScene, type Scene } from "./scene.ts";
 import { SceneView } from "./scene-view.tsx";
 import { QUALITY_PRESETS, QUALITY_NOTES } from "./quality.ts";
 import api from "./core/index.ts";
+import { FINISH_EXPERIMENTS } from "./finish-experiments.ts";
 import "./style.css";
 
 const sliders = [
@@ -34,11 +35,24 @@ const sliders = [
 
 function App() {
   const [scene, setScene] = useState<Scene>(() => {
-    const quality = new URLSearchParams(location.search).get("quality");
+    const params = new URLSearchParams(location.search);
+    const experiment = FINISH_EXPERIMENTS.find(
+      (e) => e.id === params.get("experiment"),
+    );
+    if (experiment)
+      return {
+        ...initialScene,
+        quality: experiment.quality,
+        opts: { ...experiment.opts },
+      };
+    const quality = params.get("quality");
     return {
       ...initialScene,
       quality:
-        quality === "Balanced" || quality === "Fast" ? quality : "Reference",
+        quality && Object.hasOwn(QUALITY_PRESETS, quality)
+          ? (quality as Scene["quality"])
+          : "Reference",
+      opts: !params.has("fixture") && !quality ? { edge: 0 } : {},
     };
   });
   const [environment, setEnvironment] = useState("");
@@ -70,9 +84,9 @@ function App() {
       <header>
         <div>
           <h1>Liquid Glass</h1>
-          <p>单引擎折射实验 / Reference 默认画质</p>
+          <p>Headless 玻璃实验 / 保留 Reference 历史基准</p>
         </div>
-        <a href="/components.html">React API 示例 ↗</a>
+        <a href="/components.html">React Hook DIY 示例 ↗</a>
       </header>
       <div className="workspace">
         <section className="comparison" aria-label="LibreCosta Playground">
@@ -94,7 +108,58 @@ function App() {
           </div>
           <p className="quality-note">
             {QUALITY_NOTES[scene.quality]} 切换档位会清除参数覆盖。
+            <br />
+            当前 CSS edge=
+            {scene.opts.edge ??
+              { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }.edge}
+            ；SVG rim={scene.opts.rim ?? DEFAULTS.rim}。初始展示仅覆盖
+            edge=0；点击 Reference 恢复原值 0.32。
           </p>
+          <label className="experiment-select">
+            逐项比较
+            <select
+              aria-label="逐项比较"
+              value={
+                FINISH_EXPERIMENTS.find(
+                  (e) =>
+                    e.quality === scene.quality &&
+                    JSON.stringify(e.opts) === JSON.stringify(scene.opts),
+                )?.id ?? ""
+              }
+              onChange={(e) => {
+                const v = FINISH_EXPERIMENTS.find(
+                  (v) => v.id === e.target.value,
+                );
+                if (v) change({ quality: v.quality, opts: { ...v.opts } });
+              }}
+            >
+              <option value="" disabled>
+                自定义参数
+              </option>
+              {FINISH_EXPERIMENTS.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="edge-presets" aria-label="CSS 外描边">
+            CSS edge：
+            {[0, 0.08, 0.16, 0.32].map((edge) => (
+              <button
+                key={edge}
+                aria-pressed={
+                  (scene.opts.edge ??
+                    { ...DEFAULTS, ...QUALITY_PRESETS[scene.quality] }.edge) ===
+                  edge
+                }
+                onClick={() => option({ edge })}
+              >
+                {edge}
+              </button>
+            ))}
+            <span> rim 保持 1.76；与 SVG 高光分开比较</span>
+          </div>
           <div className="scene-viewport">
             <SceneView scene={scene} onPosition={position} />
           </div>

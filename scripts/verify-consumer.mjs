@@ -74,10 +74,12 @@ const ssr = spawnSync(
 for(const key of ['window','document','navigator','CSS','ResizeObserver','MutationObserver'])
  Object.defineProperty(globalThis,key,{configurable:true,get(){throw Error('browser read: '+key)}});
 const core=await import('@librecosta/liquid-glass');const react=await import('@librecosta/liquid-glass/react');
-if(typeof core.createLiquidGlass!=='function'||typeof react.useLiquidGlass!=='function')throw Error('exports');
+if(JSON.stringify(Object.keys(react).sort())!==JSON.stringify(['useLiquidGlass']))throw Error('React public exports');
+if(JSON.stringify(Object.keys(core).sort())!==JSON.stringify(['DEFAULTS','QUALITY_PRESETS','createLiquidGlass','supported']))throw Error('Core public exports');
 for(const key of ['window','document','navigator','CSS','ResizeObserver','MutationObserver'])delete globalThis[key];
-const {renderToString}=await import('react-dom/server'); const {createElement:h}=await import('react');
-const html=renderToString(h(react.LiquidGlass,null,h(react.LiquidGlassButton,{type:'submit'},'Save'),h(react.LiquidGlassInput,{name:'email',type:'email'})));
+const {renderToString}=await import('react-dom/server');const {createElement:h}=await import('react');
+function OwnDOM(){const card=react.useLiquidGlass(),button=react.useLiquidGlass(),surface=react.useLiquidGlass();return h('div',{ref:card.ref},h('button',{ref:button.ref,type:'submit'},'Save'),h('span',null,h('span',{ref:surface.ref,'aria-hidden':true}),h('input',{name:'email',type:'email'})));}
+const html=renderToString(h(OwnDOM));
 if(!html.includes('<button')||!html.includes('<input')||html.includes('<svg'))throw Error('SSR markup');
 console.log('Packed core/react SSR imports and server rendering passed');
 `,

@@ -1,27 +1,10 @@
-export {
-  default,
-  Hyalite,
-  createLiquidGlass,
-  DEFAULTS,
-  attach,
-  detach,
-  refresh,
-  watch,
-  unwatch,
-  setOpts,
-  info,
-  supported,
-  force,
-} from "./core/index.js";
+export { createLiquidGlass, DEFAULTS, supported } from "./core/index.js";
 export type {
   LiquidGlassOptions,
   LiquidGlassInstance,
-  HyaliteAPI,
-  HyaliteOptions,
-  HyaliteInfo,
-  HyaliteProfile,
-  HyaliteShape,
-  HyaliteWatcher,
+  HyaliteInfo as LiquidGlassInfo,
+  HyaliteProfile as LiquidGlassProfile,
+  HyaliteShape as LiquidGlassShape,
 } from "./core/types.js";
 
 export { QUALITY_PRESETS } from "./quality.js";

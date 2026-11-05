@@ -1,4 +1,6 @@
-# LG-B validation
+# LG-B validation (historical)
+
+The prefab/global APIs described below were experimental LG-B contracts; LG-C2 removes them from package exports. Current usage is core + Hook + optional CSS: see [LG-C2](lg-c2-finalization.md).
 
 LG-B was accepted at [`b257c17`](https://github.com/librecosta/liquid-glass/tree/b257c17), extending LG-A without changing optical algorithms/defaults. It added independent instances, four React APIs, standard ESM exports and independent tarball consumption.
 

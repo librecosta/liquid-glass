@@ -9,7 +9,7 @@ export async function verifyConsumerBrowser(
     viewport: { width: 1280, height: 900 },
     deviceScaleFactor: 1,
   });
-  await context.addInitScript(() => {
+  const observeResources = () => {
     const resources = {
       resize: new Set(),
       mutation: new Set(),
@@ -57,7 +57,8 @@ export async function verifyConsumerBrowser(
       Object.fromEntries(
         Object.entries(resources).map(([k, v]) => [k, v.size]),
       );
-  });
+  };
+  await context.addInitScript(observeResources);
   const page = await context.newPage(),
     errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -104,9 +105,6 @@ export async function verifyConsumerBrowser(
   await page.getByRole("button", { name: "Update A", exact: true }).click();
   expect(await ref("a")).toBe(a);
   expect(await builds()).toBe(repeated);
-  await page.evaluate(() => window.probe.legacySet({ thickness: 200 }));
-  expect(await ref("a")).toBe(a);
-  expect(await ref("b")).toBe(b);
   const action = page.locator("#action"),
     hoverBuilds = await builds();
   await action.hover();
@@ -139,7 +137,7 @@ export async function verifyConsumerBrowser(
   await expect(page.locator("#password")).toHaveAttribute("type", "password");
   await expect(field).toHaveCSS("filter", "none");
   await expect(field).toHaveCSS("backdrop-filter", "none");
-  await expect(page.locator(".liquid-glass-input__surface").first()).toHaveCSS(
+  await expect(page.locator(".input-surface").first()).toHaveCSS(
     "pointer-events",
     "none",
   );
@@ -151,7 +149,7 @@ export async function verifyConsumerBrowser(
       password: "secret",
     }),
   );
-  const surface = page.locator(".liquid-glass-input__surface").first();
+  const surface = page.locator(".input-surface").first();
   const oldSurface = await surface.evaluate((el) =>
     el.style.getPropertyValue("--hyalite"),
   );
@@ -266,18 +264,33 @@ export async function verifyConsumerBrowser(
     resources: { resize: 0, mutation: 0, frames: 0 },
     filters: 0,
   });
-  await page.evaluate(() => window.probe.force(false));
-  await page.getByRole("button", { name: "Toggle mount", exact: true }).click();
-  await expect(page.locator("#a")).toHaveCSS("backdrop-filter", "blur(2px)");
-  await expect(page.locator("filter")).toHaveCount(0);
-  await field.fill("fallback@example.com");
-  await expect(field).toHaveValue("fallback@example.com");
-  await page.getByRole("button", { name: "Toggle mount", exact: true }).click();
+  await context.close();
+  const fallback = await browser.newContext();
+  await fallback.addInitScript(observeResources);
+  await fallback.addInitScript(() => {
+    Object.defineProperty(navigator, "userAgentData", {
+      value: { brands: [{ brand: "Unsupported", version: "1" }] },
+    });
+    Object.defineProperty(navigator, "userAgent", { value: "Unsupported/1" });
+  });
+  const fp = await fallback.newPage();
+  fp.on("pageerror", (e) => errors.push(e.message));
+  fp.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  await fp.goto(url);
+  await fp.waitForFunction(() => window.probe);
+  await expect(fp.locator("#a")).toHaveCSS("backdrop-filter", "blur(1px)");
+  await expect(fp.locator("filter")).toHaveCount(0);
+  await fp.locator("#controlled").fill("fallback@example.com");
+  await expect(fp.locator("#controlled")).toHaveValue("fallback@example.com");
+  await fp.getByRole("button", { name: "Toggle mount", exact: true }).click();
+  await expect(fp.locator("svg")).toHaveCount(0);
   await expect
-    .poll(() => page.evaluate(() => window.resources()))
+    .poll(() => fp.evaluate(() => window.resources()))
     .toEqual({ resize: 0, mutation: 0, frames: 0 });
   expect(errors).toEqual([]);
-  await context.close();
+  await fallback.close();
   return {
     strictMode,
     errors,
@@ -285,7 +298,7 @@ export async function verifyConsumerBrowser(
       "independent options",
       "shared cache",
       "repeat updates",
-      "legacy isolation",
+      "headless public API",
       "native buttons/forms/selection",
       "refs and callback cleanup",
       "class radius and resize",

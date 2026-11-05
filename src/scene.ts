@@ -1,5 +1,6 @@
 import forest from "./assets/forest.jpg";
 import type { HyaliteOptions } from "./core/index.ts";
+import type { LiquidGlassQuality } from "./quality.ts";
 
 export interface Scene {
   opts: HyaliteOptions;
@@ -13,7 +14,7 @@ export interface Scene {
   fallback: boolean;
   sample: "card" | "controls";
   revision: number;
-  quality: "Reference" | "Balanced" | "Fast";
+  quality: LiquidGlassQuality;
   instances: number;
 }
 export const initialScene: Scene = {

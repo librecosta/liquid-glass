@@ -218,3 +218,28 @@ output {
 .segments {
   flex-wrap: wrap;
 }
+
+.quality-note {
+  min-height: 7.2em;
+}
+.experiment-select {
+  display: block;
+  max-width: 500px;
+  font-size: 12px;
+}
+.edge-presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  max-width: 500px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+.edge-presets button[aria-pressed="true"] {
+  border-color: #316580;
+  background: #deedf5;
+}
+.edge-presets span {
+  color: #576c7a;
+}

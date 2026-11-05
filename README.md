@@ -1,76 +1,52 @@
 # Liquid Glass
 
-Liquid glass refraction with a framework-independent ESM core and four React 19 APIs.
+A Headless-first liquid-glass renderer: a framework-independent ESM core and one React 19 Hook. An independent [LibreCosta](https://github.com/librecosta) project.
 
-An independent [LibreCosta](https://github.com/librecosta) project.
+Experimental, private, local tarball consumption only; no npm release. One package provides `@librecosta/liquid-glass`, `/react` and optional `/styles.css`. You own the DOM, appearance and native semantics. There are no public prebuilt card/button/input components.
 
-## Status
-
-**LG-C experimental, local consumption only.** The package is private and has not been published to npm. Node 24+, npm and a React 19 + TypeScript app are the current validation targets.
-
-[LG-A](docs/lg-a-baseline.md) established the faithful Hyalite v0.5.0 port; [LG-B](docs/lg-b-validation.md) added independent instances and React/ESM consumption. [LG-C](docs/lg-c-performance.md) removes the upstream runtime and dual iframes, uses a local forest background and measures startup, dragging, resize and 1/5/20 instances. Reference keeps the accepted optical defaults and Chrome pixels. Balanced and Fast are explicitly lossy experiments; Reference remains the default.
-
-## Local consumption
-
-Run `npm ci` and `npm pack` in this repository, then `npm install /path/to/librecosta-liquid-glass-0.0.0.tgz` in your app. `npm pack` builds the ESM library and declarations; it does not publish anything. React/React DOM are peers, not bundled dependencies. CSS is explicit and can be overridden by application styles.
-
-```tsx
-import { LiquidGlass, LiquidGlassButton, LiquidGlassInput } from '@librecosta/liquid-glass/react';
-import '@librecosta/liquid-glass/styles.css';
-
-<LiquidGlass options={{ bevel: 37 }} className="custom-card">Hello</LiquidGlass>
-<LiquidGlassButton type="submit" disabled={false}>Continue</LiquidGlassButton>
-<LiquidGlassInput name="email" type="email" placeholder="Email" required
-  wrapperStyle={{ borderRadius: 16 }} />
+```js
+import {createLiquidGlass} from '@librecosta/liquid-glass';
+import '@librecosta/liquid-glass/styles.css'; // optional, low-specificity effect rules
+const element = document.querySelector('.my-surface');
+element.classList.add('liquid-glass'); // your own radius, spacing, border, etc.
+const glass = createLiquidGlass(element, {edge: 0}); // explicit example override
+glass.setOptions({thickness: 45}); // local patch, no remount
+glass.refresh(); // after external stylesheet/ancestor geometry changes
+// glass.destroy(); // idempotent cleanup when no longer needed
 ```
 
-Native attributes, events and refs reach the underlying elements. Input `className`/`style`/ref apply to the real input; `wrapperClassName`/`wrapperStyle` configure its glass background geometry/layout. Controlled and uncontrolled inputs work. `disabled` is native behavior; `enabled={false}` turns off the effect. No card radius, padding, typography or brand appearance is imposed.
-
 ```tsx
-import { useLiquidGlass } from '@librecosta/liquid-glass/react';
-
-function CustomCard() {
-  const { ref, refresh } = useLiquidGlass<HTMLElement>({ options: { thickness: 59 } });
-  return <section ref={ref} className="liquid-glass" onTransitionEnd={refresh}>Custom DOM</section>;
+import {useLiquidGlass} from '@librecosta/liquid-glass/react';
+import '@librecosta/liquid-glass/styles.css';
+function MyButton() {
+  const {ref} = useLiquidGlass<HTMLButtonElement>({options: {edge: 0}});
+  return <button ref={ref} className="liquid-glass" type="submit">Save</button>;
 }
 ```
 
-The hook uses the same core and opt-in CSS. Element class/style radius changes and inherited radius changes during React commits are detected. Use `refresh()` after changes to an ancestor or external stylesheet outside React. Size updates use the original ResizeObserver rules.
+The Hook returns `ref` and `refresh`, accepts `enabled` independently of native `disabled`, and binds to your div, button, section, or decorative background layer. For inputs, put the Hook on an absolutely positioned, `pointer-events:none` background span; keep the real input transparent, above it, with its own native ref. See the [DIY example](src/components-demo.tsx) for controlled email, forms, focus and disabled behavior. No filter is applied to input text/caret. Navigation, dialogs and other layouts can use the same binding.
 
-```ts
-import { createLiquidGlass } from '@librecosta/liquid-glass';
-// Client-side, after the element exists; apply class="liquid-glass" and import styles.css.
-const glass = createLiquidGlass(element, { bevel: 37 });
-glass.setOptions({ thickness: 45 }); // local synchronous patch; no remount/ramp
-glass.refresh();
-glass.destroy(); // idempotent
-```
+Public core exports are `createLiquidGlass`, `DEFAULTS`, `QUALITY_PRESETS`, `supported` and `LiquidGlass*` types. React exports only `useLiquidGlass` plus its types. The old global facade/watch/attach/setOpts machinery is internal, retained for regression tests, and not a package API. The unreleased prefab component exports have been removed.
 
-One owner per element; a duplicate binding throws. Instances share map/filter caches and a hidden SVG host. Updating or destroying one leaves others intact. The legacy Hyalite API is a compatibility facade over the same TS engine; its global `setOpts` affects legacy attachments only. React `options` are a complete prop value (omitted fields reset to defaults); instance `setOptions` merges a patch. Materialize plays only on binding. Reserved `--hyalite`/`--hyalite-edge` properties are restored on instance destruction. Imports and React server rendering are SSR-safe; actual binding is client-only.
+Instances share maps and the hidden SVG host while options remain independent; duplicate ownership throws. Core `setOptions` merges patches; Hook `options` are a complete value, with omitted fields reset to defaults. Radius changes on bound DOM are observed; inherited changes during React commits are checked. Call `refresh()` for external ancestor/stylesheet changes. Materialize plays on binding, not updates. Destruction restores reserved `--hyalite`/`--hyalite-edge` values. SSR imports/rendering and development StrictMode are checked; binding is client-only. Optional CSS contains only effect rules, with no input layout, borders, radius, font or padding. Without it, consume those reserved variables in your own CSS; `self` mode also needs the appropriate `filter` styling/data attribute.
 
-Optional `QUALITY_PRESETS` and `LiquidGlassQuality` are exported from the core entry. Pass a preset as ordinary instance/React options to opt in. Balanced uses dispersion 0.8 and `sat=1`; Fast uses dispersion 0 and `sat=1`, losing chromatic separation. Both skip edge desaturation. Neither changes SDF, map resolution or quantization. See the measured comparison and images in [LG-C](docs/lg-c-performance.md).
+**Reference remains the library default**, including dispersion 1.6, sat 0.86, edge 0.32 and rim 1.76. Balanced/Fast remain lossy experiments. Optical Balanced is a new explicit candidate: dispersion 1.6, sat 1, edge 0, rim 1.76. It preserves chromatic separation but removes edge desaturation and the CSS outline; it is not a lossless replacement. Pass `QUALITY_PRESETS['Optical Balanced']` to opt in. No SDF, map resolution/quantization or renderer changes were made. See [LG-C2 comparison and measurements](docs/lg-c2-finalization.md).
 
-## Run and verify
+## Run and consume locally
 
-Chrome is required for browser checks (`LG_CHROME` can select an executable). No backend or external runtime services.
+Node 24+, npm, Chrome for browser checks (`LG_CHROME` selects an executable):
 
 ```sh
 npm ci
 npm run dev
 npm run check
+npm pack
 ```
 
-Open `/` for the single-engine playground and `/components.html` for the actual React APIs. Both default to Reference over the local forest photo. The playground also supports a precise grid and local image uploads. Move the card by dragging or focusing its handle and using arrow keys. Quality switching clears parameter overrides; reset restores Reference.
+Install the resulting `.tgz` in your own React + TypeScript app. Packing builds ESM/declarations and does not publish. React/React DOM are peers, never bundled. `npm run build` produces `dist/` for the library and `dist-playground/` for the demo. The independent tarball check installs outside this repository without aliases/symlinks, verifies types/public exports/SSR, then tests real DOM in dev StrictMode and production, including native forms, shared cache, resize and zero leaked resources. The photo is excluded from the library.
 
-`npm run build` produces `dist/` (library) and `dist-playground/` (demo). `npm test` runs frozen math/default and SSR contracts; `npm run test:browser` verifies LibreCosta Reference gold, dragging, cache/lifecycle and fallback. `npm run test:consumer` installs a tarball into a separate temporary React + Vite + strict TS project and verifies SSR, dev StrictMode and production rendering. Run `npm run build:lib` before an isolated consumer check. Test artifacts are in ignored `test-results/`; performance traces are in ignored `performance-results/`. The external project is retained at its printed temporary path. Its first dependency installation requires the npm registry. Performance commands, environment and reviewed data are in [LG-C](docs/lg-c-performance.md).
+Open `/` for the single-engine forest/grid/upload Playground. It initially shows **Reference with an explicit example-only edge=0 override**. Click Reference or Reset to restore the historical values. Compare the four edge strengths, the six ablation cases, and Optical Balanced without changing scene position. `/components.html` is a DIY Hook example with native div/button/input; it initially opts into the Optical Balanced candidate. These are examples, not bundled UI components. The [manual review guide](docs/lg-c2-finalization.md) contains direct comparison links, static images and repeatable measurements.
 
-## Support
+SVG backdrop refraction targets Chromium; other engines get CSS fallback. Actual Safari/Firefox, autofill/password-manager and assistive-technology combinations remain unverified. CSP must allow `img-src data:` for maps, plus `blob:` for Playground uploads; CSP denial is not automatically detected. Existing folded-field, percentage/elliptical-radius and overlapping-filter limits remain. rAF intervals measured on one headless Chrome machine are not GPU utilization or a universal FPS guarantee.
 
-SVG backdrop refraction targets Chromium. Other engines receive CSS blur/edge fallback; actual Safari/Firefox rendering has not been validated. A strict CSP must allow `img-src data:` for displacement maps (and `blob:` if the playground uses local pictures). The original percentage/elliptical-radius rules and folded-field limitations remain unchanged. Input background and text are separate layers; standard native keyboard, focus, selection and forms are retained. Autofill attributes are forwarded; password-manager/autofill UI and assistive-technology combinations have not been exhaustively tested. `self` displaces the bound element itself; on an empty input background it has no foreground to displace.
-
-Reference still has Chromium SVG compositing costs, especially at high DPR or with overlapping glass. Frame timing in one machine's headless Chrome is not a universal FPS guarantee or GPU utilization measurement. No new renderer, optical algorithm optimization, npm publication or large UI library was added.
-
-## License
-
-MIT; adapted portions retain the notices described in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-The demo forest photo is owner-reported CC0, with the original photo page still unverified; [provenance](src/assets/forest.provenance.json) records that limit. It is bundled only with the playground, never the library.
+MIT; adapted code retains the full [Hyalite MIT notice](licenses/Hyalite-MIT.txt). The local forest photo is owner-reported CC0, with original provenance still unverified; see [notices](THIRD_PARTY_NOTICES.md). No main merge, npm publication, Release or UI framework is part of LG-C2.

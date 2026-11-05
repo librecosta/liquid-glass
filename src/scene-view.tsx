@@ -121,11 +121,17 @@ export function SceneView({
                     htmlFor={i === 0 ? "native-input" : `native-input-${i}`}
                   >
                     输入文字
-                    <input
-                      id={i === 0 ? "native-input" : `native-input-${i}`}
-                      className="glass native-input"
-                      placeholder="保持原生输入行为"
-                    />
+                    <span className="native-input-wrap">
+                      <span
+                        className="glass native-input-surface"
+                        aria-hidden="true"
+                      />
+                      <input
+                        id={i === 0 ? "native-input" : `native-input-${i}`}
+                        className="native-input"
+                        placeholder="保持原生输入行为"
+                      />
+                    </span>
                   </label>
                   <button
                     id={i === 0 ? "native-button" : undefined}

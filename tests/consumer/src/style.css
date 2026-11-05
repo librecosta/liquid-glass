@@ -1,7 +1,9 @@
 body {
   font: 16px/1.5 sans-serif;
-  background: linear-gradient(#ffffff33 1px,transparent 1px),linear-gradient(90deg,#ffffff33 1px,transparent 1px),#23334b;
-  background-size:26px 26px;
+  background:
+    linear-gradient(#ffffff33 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff33 1px, transparent 1px), #23334b;
+  background-size: 26px 26px;
   color: white;
   margin: 20px;
 }
@@ -40,7 +42,7 @@ form {
   font: inherit;
   color: inherit;
   height: 60px;
-  border: 1px solid #fff8;
+  border: 0;
 }
 .action:hover {
   color: #ffdf80;
@@ -56,9 +58,30 @@ form {
   font: inherit;
   padding: 14px;
   color: inherit;
-  border: 1px solid #fff9;
+  border: 0;
 }
 :focus-visible {
   outline: 3px solid #facd65;
   outline-offset: 3px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-grid;
+  min-width: 0;
+  vertical-align: middle;
+}
+.input-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.native-field {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border-radius: inherit;
 }
