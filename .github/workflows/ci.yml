@@ -35,7 +35,7 @@ jobs:
       - run: npm ci
       - name: Install pinned Playwright Chromium and system dependencies
         run: npx playwright install --with-deps chromium
-      - name: Node contracts, TypeScript, builds, browser behavior and external tarball
+      - name: Contracts, types/builds, browsers, external tarballs and production paths
         run: npm run check
       - name: Retain diagnostics on failure
         if: failure()

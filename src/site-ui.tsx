@@ -29,7 +29,7 @@ export function SiteHeader({
       <header className="site-header">
         <a
           className="brand"
-          href={`/?lang=${language}`}
+          href={`${import.meta.env.BASE_URL}?lang=${language}`}
           aria-label={t("brandHome")}
         >
           <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
@@ -55,13 +55,13 @@ export function SiteHeader({
         </a>
         <nav aria-label={t("navigation")}>
           <a
-            href={`/?lang=${language}`}
+            href={`${import.meta.env.BASE_URL}?lang=${language}`}
             aria-current={page === "playground" ? "page" : undefined}
           >
             {t("playground")}
           </a>
           <a
-            href={`/components.html?lang=${language}`}
+            href={`${import.meta.env.BASE_URL}components.html?lang=${language}`}
             aria-current={page === "examples" ? "page" : undefined}
           >
             {t("examples")}

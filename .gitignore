@@ -152,4 +152,5 @@ vite.config.ts.timestamp-*
 test-results/
 playwright-report/
 dist-playground/
+dist-pages/
 performance-results/

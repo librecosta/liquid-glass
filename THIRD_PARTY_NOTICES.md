@@ -16,5 +16,8 @@ source. The source repository's MIT license (Copyright 2026 福狼) is not used 
 proof of photo rights. The exact bytes, dimensions, SHA-256 and provenance limit
 are recorded in [`forest.provenance.json`](src/assets/forest.provenance.json).
 The photo is not included in the library tarball or required by the library.
+Original-source rights must be confirmed (or the material replaced) before public
+demo hosting or wider promotion of derived screenshots. The existing local build
+preparation does not enable hosting. See the [release checklist](docs/v0.1.0-release-checklist.md).
 
 The repository's own code uses the root [MIT license](LICENSE).

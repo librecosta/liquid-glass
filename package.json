@@ -1,11 +1,29 @@
 {
   "name": "@librecosta/liquid-glass",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "license": "MIT",
-  "engines": {
-    "node": ">=24"
+  "description": "Headless SVG liquid-glass refraction for native HTML, with a TypeScript core and one React Hook.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/librecosta/liquid-glass.git"
+  },
+  "homepage": "https://github.com/librecosta/liquid-glass#readme",
+  "bugs": {
+    "url": "https://github.com/librecosta/liquid-glass/issues"
+  },
+  "keywords": [
+    "liquid-glass",
+    "svg",
+    "refraction",
+    "headless",
+    "typescript",
+    "react",
+    "react-hook"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
@@ -13,11 +31,14 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
-    "check": "npm test && npm run build && npm run test:browser && npm run test:consumer",
+    "check": "npm test && npm run build && npm run test:browser && npm run test:consumer && npm run test:distribution",
     "build:lib": "node scripts/build-lib.mjs",
     "build:playground": "vite build",
+    "build:pages": "vite build --base=/liquid-glass/ --outDir=dist-pages",
+    "preview:pages": "vite preview --host 127.0.0.1 --base=/liquid-glass/ --outDir=dist-pages",
     "prepack": "npm run build:lib",
-    "test:consumer": "node scripts/verify-consumer.mjs"
+    "test:consumer": "node scripts/verify-consumer.mjs",
+    "test:distribution": "node scripts/verify-distribution.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
@@ -55,7 +76,11 @@
     "**/*.css"
   ],
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   }
 }

@@ -5,7 +5,9 @@ import {
   writeFileSync,
   mkdirSync,
   realpathSync,
+  existsSync,
 } from "node:fs";
+import assert from "node:assert/strict";
 import { tmpdir } from "node:os";
 import { resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,6 +17,14 @@ import { createServer } from "node:net";
 import { chromium } from "@playwright/test";
 import { verifyConsumerBrowser } from "../tests/consumer-checks.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
+const sourcePackage = JSON.parse(
+  readFileSync(join(root, "package.json"), "utf8"),
+);
+const sourceLock = JSON.parse(
+  readFileSync(join(root, "package-lock.json"), "utf8"),
+);
+assert.equal(sourceLock.version, sourcePackage.version);
+assert.equal(sourceLock.packages[""].version, sourcePackage.version);
 const directory = mkdtempSync(join(tmpdir(), "liquid-glass-consumer-"));
 const npm = process.env.npm_execpath;
 if (!npm) throw Error("Run through npm run test:consumer");
@@ -33,17 +43,140 @@ const packed = JSON.parse(
     root,
   ),
 )[0];
-if (
-  packed.files.some(
-    (f) =>
-      /^(src|node_modules|dist-playground)\//.test(f.path) ||
-      /forest|\.(jpg|png)$/.test(f.path),
-  )
-)
-  throw Error("Unexpected package contents");
-if (!packed.files.some((f) => f.path === "licenses/Hyalite-MIT.txt"))
-  throw Error("Missing adapted-code MIT license");
+const dryRun = JSON.parse(
+  run(["pack", "--dry-run", "--ignore-scripts", "--json"], root),
+)[0];
+const fileNames = (p) => p.files.map((f) => f.path).sort();
+assert.deepEqual(
+  fileNames(packed),
+  fileNames(dryRun),
+  "Dry-run and real tarball contents agree",
+);
+const packageDocs = new Set([
+  "package.json",
+  "README.md",
+  "README.zh-CN.md",
+  "LICENSE",
+  "THIRD_PARTY_NOTICES.md",
+  "licenses/Hyalite-MIT.txt",
+]);
+for (const { path } of packed.files) {
+  assert.ok(
+    packageDocs.has(path) ||
+      /^dist\/(?:[a-z-]+\/)*[a-z-]+\.(?:js|d\.ts)$/.test(path) ||
+      path === "dist/styles.css",
+    `Unexpected package file: ${path}`,
+  );
+}
+for (const path of packageDocs)
+  assert.ok(fileNames(packed).includes(path), `Missing ${path}`);
+assert.equal(packed.name, "@librecosta/liquid-glass");
+assert.equal(packed.version, sourcePackage.version);
+// A real default npm install of only the core must not pull in React or tools.
+const coreOnly = join(directory, "core-only");
+mkdirSync(coreOnly);
+writeFileSync(
+  join(coreOnly, "package.json"),
+  JSON.stringify({
+    private: true,
+    type: "module",
+    dependencies: { "@librecosta/liquid-glass": `file:../${packed.filename}` },
+  }),
+);
+run(
+  [
+    "install",
+    "--registry=https://registry.npmjs.org",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+  ],
+  coreOnly,
+);
+const coreLock = JSON.parse(
+  readFileSync(join(coreOnly, "package-lock.json"), "utf8"),
+);
+assert.deepEqual(Object.keys(coreLock.packages).sort(), [
+  "",
+  "node_modules/@librecosta/liquid-glass",
+]);
+for (const name of ["react", "react-dom", "@playwright", "vite"])
+  assert.equal(
+    existsSync(join(coreOnly, "node_modules", name)),
+    false,
+    `Unexpected core dependency: ${name}`,
+  );
+writeFileSync(
+  join(coreOnly, "core.ts"),
+  `import { createLiquidGlass, QUALITY_PRESETS, type LiquidGlassInstance } from '@librecosta/liquid-glass';
+export function bind(element: HTMLElement): LiquidGlassInstance {
+  const glass = createLiquidGlass(element);
+  glass.setOptions(QUALITY_PRESETS.Fast);
+  glass.setOptions(QUALITY_PRESETS.Balanced);
+  return glass;
+}`,
+);
+writeFileSync(
+  join(coreOnly, "tsconfig.json"),
+  JSON.stringify({
+    compilerOptions: {
+      target: "ES2022",
+      lib: ["ES2022", "DOM"],
+      module: "NodeNext",
+      moduleResolution: "NodeNext",
+      strict: true,
+      noEmit: true,
+      types: [],
+    },
+    include: ["core.ts"],
+  }),
+);
+const coreTypes = spawnSync(
+  process.execPath,
+  [join(root, "node_modules/typescript/bin/tsc"), "-p", coreOnly],
+  { encoding: "utf8", windowsHide: true },
+);
+assert.equal(coreTypes.status, 0, coreTypes.stdout + coreTypes.stderr);
+const coreSSR = spawnSync(
+  process.execPath,
+  [
+    "--input-type=module",
+    "-e",
+    `
+for (const key of ['window','document','navigator','CSS','ResizeObserver','MutationObserver'])
+ Object.defineProperty(globalThis,key,{configurable:true,get(){throw Error('browser read: '+key)}});
+const core=await import('@librecosta/liquid-glass');
+if(JSON.stringify(Object.keys(core).sort())!==JSON.stringify(['DEFAULTS','QUALITY_PRESETS','createLiquidGlass','supported'])) throw Error('Core exports');
+`,
+  ],
+  { cwd: coreOnly, encoding: "utf8", windowsHide: true },
+);
+assert.equal(coreSSR.status, 0, coreSSR.stderr);
+console.log(
+  `Tarball ${packed.filename}: ${packed.files.length} allowlisted files, ${packed.size} bytes; core-only install/types/SSR without React passed`,
+);
 cpSync(resolve(root, "tests/consumer"), directory, { recursive: true });
+// Compile the actual bilingual Quick Starts against the installed package.
+const readmeExamples = [];
+for (const [file, language] of [
+  ["README.md", "en"],
+  ["README.zh-CN.md", "zh-CN"],
+]) {
+  const blocks = [
+    ...readFileSync(join(root, file), "utf8").matchAll(
+      /^```(ts|tsx)\r?\n([\s\S]*?)^```/gm,
+    ),
+  ];
+  assert.ok(
+    blocks.some((b) => b[1] === "ts") && blocks.some((b) => b[1] === "tsx"),
+    `${file}: core and Hook Quick Starts`,
+  );
+  for (const [i, block] of blocks.entries()) {
+    const name = `readme-${language}-${i}.${block[1]}`;
+    writeFileSync(join(directory, "src", name), block[2]);
+    readmeExamples.push(name);
+  }
+}
 const pkgPath = join(directory, "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
 pkg.dependencies["@librecosta/liquid-glass"] = "file:./" + packed.filename;
@@ -59,6 +192,47 @@ run([
 ]);
 console.log(run(["run", "build"]));
 const installed = join(directory, "node_modules/@librecosta/liquid-glass");
+const installedPackage = JSON.parse(
+  readFileSync(join(installed, "package.json"), "utf8"),
+);
+assert.equal(installedPackage.version, sourcePackage.version);
+assert.equal(
+  installedPackage.private,
+  sourcePackage.private,
+  "Publish lock matches reviewed source",
+);
+assert.deepEqual(installedPackage.peerDependencies, { react: "^19.0.0" });
+assert.deepEqual(installedPackage.peerDependenciesMeta, {
+  react: { optional: true },
+});
+assert.equal(
+  installedPackage.engines,
+  undefined,
+  "Node 24 is a development gate, not an asserted browser runtime requirement",
+);
+assert.equal(installedPackage.publishConfig.access, "public");
+assert.equal(installedPackage.license, "MIT");
+for (const path of [
+  "LICENSE",
+  "THIRD_PARTY_NOTICES.md",
+  "licenses/Hyalite-MIT.txt",
+])
+  assert.deepEqual(
+    readFileSync(join(installed, path)),
+    readFileSync(join(root, path)),
+    `Installed license: ${path}`,
+  );
+assert.deepEqual(Object.keys(installedPackage.exports).sort(), [
+  ".",
+  "./react",
+  "./styles.css",
+]);
+for (const value of Object.values(installedPackage.exports))
+  for (const path of typeof value === "string" ? [value] : Object.values(value))
+    assert.ok(
+      existsSync(join(installed, path)),
+      `Export target exists: ${path}`,
+    );
 if (!realpathSync(installed).startsWith(realpathSync(directory)))
   throw Error("Package resolved outside consumer");
 const fromConsumer = createRequire(pkgPath),
@@ -126,7 +300,9 @@ async function startServer(preview) {
 const browser = await chromium.launch(
   process.env.LG_CHROME
     ? { executablePath: process.env.LG_CHROME }
-    : process.env.LG_BROWSER === "chromium" ? {} : { channel: "chrome" },
+    : process.env.LG_BROWSER === "chromium"
+      ? {}
+      : { channel: "chrome" },
 );
 const phases = [];
 try {
@@ -148,6 +324,11 @@ try {
         browser: browser.version(),
         directory,
         tarball: packed.filename,
+        version: packed.version,
+        bytes: packed.size,
+        integrity: packed.integrity,
+        coreWithoutReact: true,
+        readmeExamples,
         files: packed.files.map((f) => f.path),
         phases,
       },

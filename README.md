@@ -4,7 +4,9 @@
 
 A headless liquid-glass renderer with a native TypeScript core and one React Hook. Bind real refraction to your own HTML. Keep complete control of your CSS, layout and native interactions.
 
-![The Liquid Glass Playground: an interactive glass card over a local forest, with a dark property editor](docs/playground.webp)
+**v0.1.0 release candidate on `dev`; not published to npm.** See the [release checklist](docs/v0.1.0-release-checklist.md) for the remaining owner actions.
+
+![The Liquid Glass Playground: an interactive glass card over a local forest, with a dark property editor](https://raw.githubusercontent.com/librecosta/liquid-glass/dev/docs/playground.webp)
 
 ## Features
 
@@ -26,16 +28,16 @@ npm ci
 npm pack
 ```
 
-This creates `librecosta-liquid-glass-0.0.0.tgz`. In an existing app located next to the repository, install the real file:
+This creates `librecosta-liquid-glass-0.1.0.tgz`. In an existing app located next to the repository, install the real file:
 
 ```sh
 # Run from your app directory, alongside liquid-glass/
-npm install ../liquid-glass/librecosta-liquid-glass-0.0.0.tgz
+npm install ../liquid-glass/librecosta-liquid-glass-0.1.0.tgz
 ```
 
-For another directory layout, use the tarball's absolute path. React/React DOM 19 are peers; the core entry itself does not import React. The independent consumer check tests this tarball installation outside the repository, without aliases or symlinks.
+For another directory layout, use the tarball's absolute path. The core has no runtime dependencies and installs without React. React `^19.0.0` is an optional peer required only by `/react`; a React DOM app supplies its own React DOM. The independent consumer check tests real installation outside the repository, without aliases or symlinks, including a core-only app without React and a React/React DOM 19.2.0 app.
 
-After a future public npm release, installation will be `npm install @librecosta/liquid-glass`. That registry command is not available yet; the package currently remains private.
+After a future public npm release, installation will be `npm install @librecosta/liquid-glass`. That registry command is not available yet. The RC deliberately retains `private: true` as a publish lock until the owner verifies the npm scope, account/2FA and separately approves publication.
 
 ## Quick Start
 
@@ -76,7 +78,7 @@ import { useLiquidGlass } from "@librecosta/liquid-glass/react";
 import { QUALITY_PRESETS } from "@librecosta/liquid-glass";
 import "@librecosta/liquid-glass/styles.css";
 
-function MyButton({ fast = false, disabled = false }) {
+export function MyButton({ fast = false, disabled = false }) {
   const { ref } = useLiquidGlass<HTMLButtonElement>({
     options: fast ? QUALITY_PRESETS.Fast : undefined,
   });
@@ -95,7 +97,7 @@ function MyButton({ fast = false, disabled = false }) {
 
 Define `.my-button` with your own spacing, radius, colors and focus state. `useLiquidGlass()` without configuration uses Balanced. The Hook returns `ref` and `refresh`; `enabled` controls the effect independently of native `disabled`. A state/prop change updates the existing binding without remounting.
 
-For inputs, bind the glass to a decorative `pointer-events:none` background layer and place a transparent native input above it. Text, caret, selection and forms remain native. See the runnable [Hook examples](src/components-demo.tsx) for controlled email input, independent instances and native buttons.
+For inputs, bind the glass to a decorative `pointer-events:none` background layer and place a transparent native input above it. Text, caret, selection and forms remain native. See the runnable [Hook examples](https://github.com/librecosta/liquid-glass/blob/dev/src/components-demo.tsx) for controlled email input, independent instances and native buttons.
 
 ## Configuration
 
@@ -119,21 +121,34 @@ Chromium provides SVG backdrop refraction. Other engines receive CSS blur fallba
 
 Strict CSP must permit map images with `img-src data:`; the Playground also needs its local image asset and `blob:` uploads. CSP denial is not automatically detected. Existing folded-field, percentage/elliptical-radius and overlapping-filter limitations remain. Imports and Hook server rendering are SSR-safe; DOM binding is client-only.
 
+The distributed ESM targets ES2022. Node 24+ is required for this repository's development/build tools, not for browser consumers. SSR is tested on Node 24 with React 19.2.0; a minimum Node runtime version is not claimed.
+
 ## Development
 
 ```sh
 npm ci
 npm run dev       # http://127.0.0.1:5173
-npm run check     # Node, types/builds, browser checks, independent tarball app
+npm run check     # Node, types/builds, browsers, tarball apps, production root/subpath
 npm run build     # dist/ library + dist-playground/ website
 ```
 
 Use `/` for the Playground and `/components.html` for Hook examples. English is the default; language persists locally and can be shared with `?lang=en` or `?lang=zh-CN`. Quality links accept `?quality=Fast` or `?quality=Reference`. Images never leave the browser.
 
+For a local production build at the GitHub Pages project path:
+
+```sh
+npm run build:pages
+npm run preview:pages -- --port 4175
+# http://127.0.0.1:4175/liquid-glass/?lang=en&quality=Fast
+# http://127.0.0.1:4175/liquid-glass/components.html?lang=zh-CN
+```
+
+This creates `dist-pages/` for local review; public hosting is not enabled. Confirm the photo's original rights or replace it before hosting. The [release checklist](docs/v0.1.0-release-checklist.md) records the exact Pages settings and publication gates.
+
 Local checks use installed Chrome (`LG_CHROME` can select an executable). CI uses the Chromium revision pinned by Playwright: `npx playwright install --with-deps chromium`, then set `LG_BROWSER=chromium`. Ubuntu runs all behavior, SSR and consumer checks, original exact Node math, and decoded map/SVG contracts. Windows Chrome pixel goldens stay unchanged and run on their compatible capture environment; Ubuntu explicitly skips those two platform-specific screenshot tests. `LG_EXACT_PIXELS=1` opts into the exact screenshots; `0` skips them. Stable `?fixture=1` remains a separate 500×480 regression scene, independent of the responsive website and UI language.
 
-CI validates pushes to `dev`/`main` and pull requests. It does not publish, deploy, tag or create Releases. See [validation notes](docs/lg-d-validation.md) for the current acceptance results; earlier experiments remain in `docs/` as historical records.
+CI validates pushes to `dev`/`main` and pull requests, including both production entries at `/` and `/liquid-glass/`. It does not publish, deploy, tag or create Releases. See the [RC checklist](docs/v0.1.0-release-checklist.md) for acceptance and [LG-D notes](docs/lg-d-validation.md) for the website baseline; earlier experiments remain historical records.
 
 ## License
 
-MIT. The adapted renderer retains the complete [Hyalite MIT notice](licenses/Hyalite-MIT.txt). The demo-only forest image and other provenance are documented in [third-party notices](THIRD_PARTY_NOTICES.md). An independent [LibreCosta](https://github.com/librecosta) project.
+Code: MIT. The adapted renderer retains the complete [Hyalite MIT notice](licenses/Hyalite-MIT.txt). The forest photo has an owner-supplied CC0 report without independently verified original-source evidence; the repository's MIT is not proof of photo rights. The photo and derived preview images stay outside the npm tarball. See [third-party notices](THIRD_PARTY_NOTICES.md). An independent [LibreCosta](https://github.com/librecosta) project.
