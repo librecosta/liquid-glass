@@ -47,23 +47,26 @@ body {
 }
 .site button {
   border: 1px solid var(--line);
-  background: var(--raised);
   border-radius: 7px;
   padding: 9px 13px;
   line-height: 1.3;
 }
-.site button:hover {
+.site button:where(:not(.native-button)) {
+  background: var(--raised);
+}
+/* Keep the reviewed daylight Soft tint through native button states. */
+.site button:where(:not(.native-button[data-lg-material="soft"][data-lg-theme="light"])):hover {
   background: #293a44;
   border-color: #526873;
 }
-.site button:active {
+.site button:where(:not(.native-button[data-lg-material="soft"][data-lg-theme="light"])):active {
   background: #354954;
 }
 .site button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
-.site button:disabled:hover {
+.site button:where(:not(.native-button[data-lg-material="soft"][data-lg-theme="light"])):disabled:hover {
   background: var(--raised);
   border-color: var(--line);
 }
@@ -297,7 +300,6 @@ body {
   font-size: 11px;
 }
 .public-scene .native-button {
-  background: #ffffff08;
   color: white;
   border: 0;
   padding: 10px 17px;
@@ -308,7 +310,7 @@ body {
   color: white;
   background: transparent;
 }
-.public-scene .native-button:hover {
+.public-scene .native-button:where(:not([data-lg-material="soft"][data-lg-theme="light"])):hover {
   background: #ffffff20;
 }
 .stage-caption {
@@ -321,6 +323,33 @@ body {
 }
 .stage-caption span:last-child {
   color: #849ba6;
+}
+.material-toolbar {
+  display: flex;
+  min-height: 44px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.material-toolbar > span:first-child {
+  color: var(--text);
+}
+.material-badge {
+  font-size: 11px;
+}
+.stage-caption strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+}
+@media (max-width: 520px) {
+  .material-toolbar { gap: 8px; }
+  .material-segments { width: 100%; order: 3; }
+  .material-segments button { flex: 1; }
+  .material-badge { margin-left: auto; }
 }
 .properties {
   background: var(--panel);

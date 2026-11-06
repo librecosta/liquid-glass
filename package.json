@@ -1,6 +1,6 @@
 {
   "name": "@librecosta/liquid-glass",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "description": "Headless SVG liquid-glass refraction for native HTML, with a TypeScript core and one React Hook.",
@@ -26,6 +26,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "dev:stop": "node scripts/dev-stop.mjs",
     "build": "tsc --noEmit && npm run build:lib && npm run build:playground",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test tests/*.test.mjs",
@@ -63,10 +64,20 @@
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./materials.css": "./dist/materials.css"
   },
   "files": [
-    "dist",
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/core/*.js",
+    "dist/core/*.d.ts",
+    "dist/react/*.js",
+    "dist/react/*.d.ts",
+    "dist/quality.js",
+    "dist/quality.d.ts",
+    "dist/styles.css",
+    "dist/materials.css",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "licenses/Hyalite-MIT.txt"

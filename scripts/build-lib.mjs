@@ -14,3 +14,4 @@ execFileSync(
 );
 mkdirSync("dist", { recursive: true });
 copyFileSync("src/styles.css", "dist/styles.css");
+copyFileSync("src/materials.css", "dist/materials.css");

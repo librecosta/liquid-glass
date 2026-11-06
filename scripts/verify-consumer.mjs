@@ -102,14 +102,12 @@ const packageDocs = new Set([
   "THIRD_PARTY_NOTICES.md",
   "licenses/Hyalite-MIT.txt",
 ]);
-for (const { path } of packed.files) {
-  assert.ok(
-    packageDocs.has(path) ||
-      /^dist\/(?:[a-z-]+\/)*[a-z-]+\.(?:js|d\.ts)$/.test(path) ||
-      path === "dist/styles.css",
-    `Unexpected package file: ${path}`,
-  );
-}
+const runtimeFiles = [
+  "dist/index.js", "dist/index.d.ts", "dist/quality.js", "dist/quality.d.ts",
+  "dist/core/index.js", "dist/core/index.d.ts", "dist/core/types.js", "dist/core/types.d.ts",
+  "dist/react/index.js", "dist/react/index.d.ts", "dist/styles.css", "dist/materials.css",
+];
+assert.deepEqual(fileNames(packed), [...packageDocs, ...runtimeFiles].sort(), "Exact 18-file package allowlist");
 for (const path of packageDocs)
   assert.ok(fileNames(packed).includes(path), `Missing ${path}`);
 assert.equal(packed.name, "@librecosta/liquid-glass");
@@ -148,6 +146,11 @@ run(
 const coreLock = JSON.parse(
   readFileSync(join(coreOnly, "package-lock.json"), "utf8"),
 );
+const coreResolver = createRequire(join(coreOnly, "package.json"));
+for (const name of ["styles", "materials"]) {
+  const resolved = coreResolver.resolve(`@librecosta/liquid-glass/${name}.css`);
+  assert.deepEqual(readFileSync(resolved), readFileSync(join(root, "src", `${name}.css`)), `Installed ${name}.css matches source bytes`);
+}
 assert.deepEqual(Object.keys(coreLock.packages).sort(), [
   "",
   "node_modules/@librecosta/liquid-glass",
@@ -282,6 +285,7 @@ if (registryMode) {
     );
 }
 assert.equal(installedPackage.version, sourcePackage.version);
+assert.deepEqual(installedPackage.dependencies ?? {}, {}, "No core runtime dependencies added");
 assert.equal(
   installedPackage.private,
   sourcePackage.private,
@@ -317,6 +321,7 @@ for (const path of [
 }
 assert.deepEqual(Object.keys(installedPackage.exports).sort(), [
   ".",
+  "./materials.css",
   "./react",
   "./styles.css",
 ]);

@@ -9,6 +9,7 @@ import {
 } from "@librecosta/liquid-glass";
 import { useLiquidGlass } from "@librecosta/liquid-glass/react";
 import "@librecosta/liquid-glass/styles.css";
+import "@librecosta/liquid-glass/materials.css";
 import "./style.css";
 let builds = 0,
   cleanupCalls = 0;
@@ -51,6 +52,8 @@ interface State {
   radius: boolean;
   alternate: boolean;
   quality?: LiquidGlassQuality;
+  material: "clear" | "soft" | "prismatic";
+  theme: "light" | "dark";
 }
 function Subjects({
   options,
@@ -59,6 +62,8 @@ function Subjects({
   radius,
   alternate,
   quality,
+  material,
+  theme,
   onSubmit,
 }: { onSubmit: (s: string) => void } & State) {
   const a = useTrackedGlass<HTMLDivElement>("card", options, enabled),
@@ -89,10 +94,12 @@ function Subjects({
     });
   const [text, setText] = useState(""),
     [clicks, setClicks] = useState(0);
+  const skin = { "data-lg-material": material, "data-lg-theme": theme, "data-lg-decorate": "" };
   return (
-    <div id="subjects">
+    <div id="subjects" data-demo-theme={theme}>
       <div
         id="a"
+        {...skin}
         ref={a}
         className={`liquid-glass sample ${radius ? "alternate" : ""}`}
       >
@@ -101,7 +108,7 @@ function Subjects({
       <div id="b" ref={b.ref} className="liquid-glass sample">
         Instance B
       </div>
-      <div id="quality" ref={switching.ref} className="liquid-glass sample">
+      <div id="quality" {...skin} ref={switching.ref} className="liquid-glass sample">
         Native Hook quality switching
       </div>
       <div id="callback" ref={callback} className="liquid-glass sample">
@@ -128,6 +135,7 @@ function Subjects({
       >
         <button
           id="action"
+          {...skin}
           ref={action}
           type="button"
           className="liquid-glass sample action"
@@ -143,6 +151,7 @@ function Subjects({
         >
           <span
             ref={email.ref}
+            {...skin}
             aria-hidden="true"
             className="liquid-glass input-surface"
           />
@@ -163,6 +172,7 @@ function Subjects({
         <span className="input-wrapper">
           <span
             ref={search.ref}
+            {...skin}
             aria-hidden="true"
             className="liquid-glass input-surface"
           />
@@ -178,6 +188,7 @@ function Subjects({
         <span className="input-wrapper">
           <span
             ref={password.ref}
+            {...skin}
             aria-hidden="true"
             className="liquid-glass input-surface"
           />
@@ -192,6 +203,7 @@ function Subjects({
         </span>
         <button
           id="submit"
+          {...skin}
           ref={submit.ref}
           className="liquid-glass"
           type="submit"
@@ -222,6 +234,8 @@ function App() {
     [alternate, setAlternate] = useState(false),
     [submitted, setSubmitted] = useState("");
   const [quality, setQuality] = useState<LiquidGlassQuality>();
+  const [material, setMaterial] = useState<State["material"]>("clear");
+  const [theme, setTheme] = useState<State["theme"]>("dark");
   window.probe = {
     create: createLiquidGlass,
     presets: QUALITY_PRESETS,
@@ -232,6 +246,8 @@ function App() {
   return (
     <>
       <nav>
+        {(["clear", "soft", "prismatic"] as const).map(value => <button key={value} onClick={() => setMaterial(value)}>Material {value}</button>)}
+        {(["dark", "light"] as const).map(value => <button key={value} onClick={() => setTheme(value)}>Theme {value}</button>)}
         {["Balanced", "Fast", "Reference"].map(q => <button key={q} onClick={() => setQuality(q as LiquidGlassQuality)}>Quality {q}</button>)}
         <button onClick={() => setQuality(undefined)}>Quality default</button>
         <button
@@ -258,7 +274,7 @@ function App() {
       </nav>
       {mounted && (
         <Subjects
-          {...{ options, enabled, disabled, radius, alternate, quality }}
+          {...{ options, enabled, disabled, radius, alternate, quality, material, theme }}
           onSubmit={setSubmitted}
         />
       )}

@@ -13,6 +13,13 @@ import { SceneView } from "./scene-view.tsx";
 import { QUALITY_PRESETS } from "./quality.ts";
 import { FINISH_EXPERIMENTS } from "./finish-experiments.ts";
 import {
+  MATERIALS,
+  materialKeys,
+  materialNotes,
+  PRISMATIC_OPTICS,
+  type Material,
+} from "./material-presets.ts";
+import {
   useLanguage,
   qualityKeys,
   qualityNotes,
@@ -46,6 +53,12 @@ function sceneFromURL(): Scene {
   const base = {
     ...initialScene,
     ...(fixture ? {} : { width: 400, height: 280 }),
+    ...(!fixture && ["1", "5", "20"].includes(params.get("instances") ?? "")
+      ? { instances: Number(params.get("instances")) } : {}),
+    ...(!fixture &&
+    ["forest", "grid", "light", "dark"].includes(params.get("background") ?? "")
+      ? { background: params.get("background") as Scene["background"] }
+      : {}),
   };
   if (experiment)
     return {
@@ -79,7 +92,7 @@ function Fixture() {
   );
 }
 const sliders = {
-  material: [
+  opticalGeometry: [
     ["bevel", 1, 120, 1],
     ["thickness", 0, 200, 1],
     ["blur", 0, 12, 0.1],
@@ -115,11 +128,17 @@ function LiveStage({
   t,
   onPosition,
   onBounds,
+  material,
+  opticalTrial,
+  controlsDisabled,
 }: {
   scene: Scene;
   t: Translator;
   onPosition: (x: number, y: number) => void;
   onBounds: (b: { width: number; height: number }) => void;
+  material: Material;
+  opticalTrial: boolean;
+  controlsDisabled: boolean;
 }) {
   const element = useRef<HTMLDivElement>(null);
   const [canvas, setCanvas] = useState({ width: 500, height: 480 });
@@ -138,13 +157,50 @@ function LiveStage({
   }, [onBounds]);
   return (
     <div className="stage-live" ref={element}>
-      <SceneView scene={scene} t={t} canvas={canvas} onPosition={onPosition} />
+      <SceneView
+        scene={scene}
+        t={t}
+        canvas={canvas}
+        onPosition={onPosition}
+        material={material}
+        opticalPatch={opticalTrial ? PRISMATIC_OPTICS : undefined}
+        controlsDisabled={controlsDisabled}
+      />
     </div>
   );
 }
 function Playground() {
   const { language, setLanguage, t } = useLanguage("pageTitle");
   const [scene, setScene] = useScene();
+  const [material, setMaterial] = useState<Material>(() => {
+    const value = new URLSearchParams(location.search).get("material");
+    return MATERIALS.find((m) => m === value) ?? "clear";
+  });
+  const [opticalTrial, setOpticalTrial] = useState(false);
+  const [controlsDisabled, setControlsDisabled] = useState(false);
+  useEffect(() => {
+    const url = new URL(location.href);
+    if (material !== "clear") url.searchParams.set("material", material);
+    else url.searchParams.delete("material");
+    // M1-R2 links safely resolve to the approved Clearer default.
+    url.searchParams.delete("softVariant");
+    if (scene.quality !== "Balanced") url.searchParams.set("quality", scene.quality);
+    else url.searchParams.delete("quality");
+    if (scene.instances !== 1) url.searchParams.set("instances", String(scene.instances));
+    else url.searchParams.delete("instances");
+    if (!["image", "forest"].includes(scene.background))
+      url.searchParams.set("background", scene.background);
+    else url.searchParams.delete("background");
+    const experiment = FINISH_EXPERIMENTS.find(
+      (e) => e.id === url.searchParams.get("experiment"),
+    );
+    if (experiment && (
+      experiment.quality !== scene.quality ||
+      JSON.stringify(experiment.opts) !== JSON.stringify(scene.opts)
+    ))
+      url.searchParams.delete("experiment");
+    history.replaceState(null, "", url);
+  }, [material, scene.quality, scene.background, scene.opts, scene.instances]);
   const bounds = useRef({ width: 500, height: 480 }),
     firstSize = useRef(true);
   const imageURL = useRef("");
@@ -187,12 +243,20 @@ function Playground() {
   }, []);
   const change = (patch: Partial<Scene>) =>
     setScene((s) => fit({ ...s, ...patch }));
-  const option = (patch: HyaliteOptions) =>
+  const option = (patch: HyaliteOptions) => {
+    // Focusing/blurring a number field without an edit must not commit the
+    // trial's effective value into the user's saved options.
+    if (Object.entries(patch).every(
+      ([key, value]) => Reflect.get(effective, key) === value,
+    )) return;
+    setOpticalTrial(false);
     setScene((s) => ({ ...s, opts: { ...s.opts, ...patch } }));
+  };
   const effective = {
     ...DEFAULTS,
     ...QUALITY_PRESETS[scene.quality],
     ...scene.opts,
+    ...(opticalTrial ? PRISMATIC_OPTICS : {}),
   };
   const fields = (group: keyof typeof sliders) =>
     sliders[group].map(([key, min, max, step]) => (
@@ -212,7 +276,7 @@ function Playground() {
               : undefined
         }
         hint={
-          group === "material"
+          group === "opticalGeometry"
             ? t(`${key}Help` as "bevelHelp" | "thicknessHelp" | "blurHelp")
             : undefined
         }
@@ -241,7 +305,10 @@ function Playground() {
               <QualityPicker
                 quality={scene.quality}
                 t={t}
-                onChange={(quality) => change({ quality, opts: {} })}
+                onChange={(quality) => {
+                  setOpticalTrial(false);
+                  change({ quality, opts: {} });
+                }}
               />
               <button
                 className="icon-button"
@@ -252,17 +319,43 @@ function Playground() {
                 ⌖
               </button>
             </div>
+            <div className="material-toolbar">
+              <span id="material-label">{t("material")}</span>
+              <div
+                className="quality-segments material-segments"
+                role="group"
+                aria-labelledby="material-label"
+              >
+                {MATERIALS.map((value) => (
+                  <button
+                    key={value}
+                    aria-pressed={material === value}
+                    onClick={() => setMaterial(value)}
+                  >
+                    {t(materialKeys[value])}
+                  </button>
+                ))}
+              </div>
+              <span className="material-badge">{t("materialExperiment")}</span>
+            </div>
             <div className="stage-frame">
               <LiveStage
                 scene={scene}
                 t={t}
                 onBounds={onBounds}
                 onPosition={(x, y) => setScene((s) => ({ ...s, x, y }))}
+                material={material}
+                opticalTrial={opticalTrial}
+                controlsDisabled={controlsDisabled}
               />
             </div>
             <div className="stage-caption">
               <span>{t("keyboardHint")}</span>
               <span>{t(qualityNotes[scene.quality])}</span>
+              <span>{t(materialNotes[material])}</span>
+              {opticalTrial && (
+                <strong role="status">{t("opticalTrialActive")}</strong>
+              )}
             </div>
           </section>
           <aside className="properties" aria-label={t("properties")}>
@@ -275,6 +368,9 @@ function Playground() {
                   if (imageURL.current) URL.revokeObjectURL(imageURL.current);
                   imageURL.current = "";
                   setImageFeedback(null);
+                  setMaterial("clear");
+                  setOpticalTrial(false);
+                  setControlsDisabled(false);
                   setScene((s) =>
                     fit(
                       {
@@ -305,6 +401,8 @@ function Playground() {
                 >
                   <option value="forest">{t("forest")}</option>
                   <option value="grid">{t("grid")}</option>
+                  <option value="light">{t("lightBackground")}</option>
+                  <option value="dark">{t("darkBackground")}</option>
                   <option value="image">{t("image")}</option>
                 </select>
               </label>
@@ -380,6 +478,13 @@ function Playground() {
                   </select>
                 </label>
               </div>
+              {scene.sample === "controls" && (
+                <Switch
+                  label={t("disableButtons")}
+                  checked={controlsDisabled}
+                  onChange={setControlsDisabled}
+                />
+              )}
             </ControlGroup>
             <ControlGroup title={t("geometry")} initialOpen>
               <label className="select-field">
@@ -420,14 +525,20 @@ function Playground() {
                 onChange={(height) => change({ height })}
               />
             </ControlGroup>
-            <ControlGroup title={t("material")} initialOpen>
-              {fields("material")}
+            <ControlGroup title={t("opticalGeometry")} initialOpen>
+              {fields("opticalGeometry")}
             </ControlGroup>
             <ControlGroup title={t("lightColor")}>
               <p className="field-hint">{t("qualityHint")}</p>
               {fields("lightColor")}
             </ControlGroup>
             <ControlGroup title={t("advanced")}>
+              <Switch
+                label={t("tryOptics")}
+                checked={opticalTrial}
+                onChange={setOpticalTrial}
+              />
+              <p className="field-hint">{t("tryOpticsHelp")}</p>
               <label className="select-field">
                 {t("shape")}
                 <select
@@ -468,11 +579,13 @@ function Playground() {
                     const experiment = FINISH_EXPERIMENTS.find(
                       (v) => v.id === e.target.value,
                     );
-                    if (experiment)
+                    if (experiment) {
+                      setOpticalTrial(false);
                       change({
                         quality: experiment.quality,
                         opts: { ...experiment.opts },
                       });
+                    }
                   }}
                 >
                   <option value="" disabled>

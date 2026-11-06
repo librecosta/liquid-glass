@@ -2,24 +2,33 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import api, {
   createLiquidGlass,
   type LiquidGlassInstance,
+  type HyaliteOptions,
 } from "./core/index.ts";
 import { QUALITY_PRESETS } from "./quality.ts";
 import type { Scene } from "./scene.ts";
 import { useDrag } from "./drag.ts";
 import forest from "./assets/forest.jpg";
 import type { Translator } from "./i18n.ts";
+import type { Material } from "./material-presets.ts";
 import "./scene.css";
+import "./materials.css";
 
 export function SceneView({
   scene,
   onPosition,
   canvas = {width: 500, height: 480},
   t,
+  material,
+  opticalPatch,
+  controlsDisabled = false,
 }: {
   scene: Scene;
   onPosition: (x: number, y: number) => void;
   canvas?: {width: number; height: number};
   t?: Translator;
+  material?: Material;
+  opticalPatch?: HyaliteOptions;
+  controlsDisabled?: boolean;
 }) {
   const surface = useRef<HTMLDivElement>(null),
     position = useRef<HTMLDivElement>(null);
@@ -32,6 +41,7 @@ export function SceneView({
     ...api.DEFAULTS,
     ...QUALITY_PRESETS[scene.quality],
     ...scene.opts,
+    ...opticalPatch,
   });
   const latest = useRef(options());
   latest.current = options();
@@ -40,6 +50,12 @@ export function SceneView({
     setBuilds(count.current);
   }).current;
   const drag = useDrag(position, scene, onPosition, canvas);
+  // Presentation attributes only; never dependencies of the engine bindings.
+  const skin = t ? {
+    "data-lg-material": material,
+    "data-lg-theme": scene.background === "light" ? "light" : "dark",
+    "data-lg-decorate": "",
+  } : {};
   useLayoutEffect(() => {
     setSupported(api.force(scene.fallback ? false : null));
     bindings.current = Array.from(
@@ -56,19 +72,23 @@ export function SceneView({
     bindings.current.forEach((b) =>
       b.setOptions({ ...latest.current, onBuild }),
     );
-  }, [scene.opts, scene.quality, onBuild]);
+  }, [scene.opts, scene.quality, opticalPatch, onBuild]);
   useEffect(() => {
     window.__scene = scene;
   }, [scene]);
   return (
-    <div className={`scene-shell${t ? " public-scene" : ""}`}>
+    <div
+      className={`scene-shell${t ? " public-scene" : ""}`}
+      data-material={t ? material : undefined}
+      data-tone={t && scene.background === "light" ? "light" : undefined}
+    >
       <div
         id="scene"
         ref={surface}
         className={`scene ${scene.background}`}
         style={{
           ...(t ? {width: canvas.width, height: canvas.height} : {}),
-          ...(scene.background === "grid" ? {} : {backgroundImage: `url("${scene.background === "forest" ? forest : scene.image}")`}),
+          ...(["grid", "light", "dark"].includes(scene.background) ? {} : {backgroundImage: `url("${scene.background === "forest" ? forest : scene.image}")`}),
         }}
       >
         {Array.from({ length: scene.instances }, (_, i) => (
@@ -89,7 +109,8 @@ export function SceneView({
           >
             <div
               id={i === 0 ? "card" : undefined}
-              className={`glass card ${scene.opts.self ? "self" : ""}`}
+              className={`glass card ${scene.opts.self ? "self" : ""}${t ? " liquid-glass" : ""}`}
+              {...skin}
               style={{
                 width: scene.width,
                 height: scene.height,
@@ -129,7 +150,8 @@ export function SceneView({
                     {t ? t("inputLabel") : "输入文字"}
                     <span className="native-input-wrap">
                       <span
-                        className="glass native-input-surface"
+                        className={`glass native-input-surface${t ? " liquid-glass" : ""}`}
+                        {...skin}
                         aria-hidden="true"
                       />
                       <input
@@ -141,7 +163,9 @@ export function SceneView({
                   </label>
                   <button
                     id={i === 0 ? "native-button" : undefined}
-                    className="glass native-button"
+                    className={`glass native-button${t ? " liquid-glass" : ""}`}
+                    {...skin}
+                    disabled={t ? controlsDisabled : undefined}
                     onClick={() => setClicks((n) => n + 1)}
                   >
                     {t ? t("click", {count: clicks}) : `点击计数 ${clicks}`}

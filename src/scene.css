@@ -43,9 +43,12 @@
   backdrop-filter: var(--hyalite, blur(1px));
   -webkit-backdrop-filter: var(--hyalite, blur(1px));
   box-shadow: var(--hyalite-edge, none);
-  background: #ffffff08;
   border: 0;
   color: #fff;
+}
+/* Unskinned historical fixture/DIY baseline; public skins use materials.css. */
+.glass:not([data-lg-material]) {
+  background: #ffffff08;
 }
 .card {
   position: absolute;
@@ -178,10 +181,49 @@
   outline: 2px solid #fff;
   outline-offset: 4px;
 }
-.native-button:hover {
+.native-button:not([data-lg-material]):hover,
+.native-button[data-lg-material="clear"]:hover {
   background: #ffffff20;
 }
 .native-button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+/* Application-owned backdrops and readable foregrounds, separate from skins. */
+.public-scene .scene.light {
+  background-color: #e1e8df;
+  background-image:
+    radial-gradient(ellipse at 18% 18%, #f7ecd7 0%, transparent 53%),
+    radial-gradient(ellipse at 78% 65%, #9bbeb2 0%, transparent 55%),
+    linear-gradient(130deg, #d6e5e1, #e7d6bd);
+}
+.public-scene .scene.dark {
+  background-color: #14262b;
+  background-image:
+    radial-gradient(ellipse at 15% 16%, #4f6b62 0%, transparent 52%),
+    radial-gradient(ellipse at 85% 76%, #5d4f42 0%, transparent 50%),
+    linear-gradient(125deg, #14262b, #182329);
+}
+.public-scene[data-material]:not([data-material="clear"]) .native-button {
+  position: relative;
+}
+/* Explicit daylight backdrop, no automatic image sampling. */
+.public-scene[data-tone="light"] .glass,
+.public-scene[data-tone="light"] .native-input {
+  color: #142f34;
+  caret-color: #142f34;
+  color-scheme: light;
+}
+.public-scene[data-tone="light"] .card-copy p,
+.public-scene[data-tone="light"] .card-copy > span,
+.public-scene[data-tone="light"] .drag-handle,
+.public-scene[data-tone="light"] .native-input::placeholder {
+  color: #334e50;
+}
+.public-scene[data-tone="light"] .drag-handle {
+  background: #ffffff24;
+}
+.public-scene[data-tone="light"] :focus-visible {
+  outline-color: #244b51;
 }

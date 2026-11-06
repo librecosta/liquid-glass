@@ -1,0 +1,34 @@
+/* Optional skins. Host layout, theme, contrast and interactions belong to the app.
+   data-lg-decorate explicitly reserves an otherwise unused host ::after.
+   Supply the host's positioning context and border radius in application CSS. */
+:where(.liquid-glass)[data-lg-material="clear"] {
+  background: #ffffff08;
+}
+:where(.liquid-glass)[data-lg-material="soft"] {
+  background: rgb(179 201 189 / 7%);
+}
+:where(.liquid-glass[data-lg-theme="light"])[data-lg-material="soft"] {
+  background: rgb(101 130 115 / 6%);
+}
+:where(.liquid-glass)[data-lg-material="prismatic"] {
+  background: linear-gradient(130deg, #ffffff0d, transparent 40%, #ffffff06);
+}
+:where(.liquid-glass[data-lg-decorate])[data-lg-material="soft"]::after,
+:where(.liquid-glass[data-lg-decorate])[data-lg-material="prismatic"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+:where(.liquid-glass[data-lg-decorate])[data-lg-material="soft"]::after {
+  box-shadow: 0 5px 18px #061c1b1f, inset 0 1px 2px #ffffff17;
+}
+:where(.liquid-glass[data-lg-decorate][data-lg-theme="light"])[data-lg-material="soft"]::after {
+  box-shadow: 0 4px 15px #24403912, inset 0 1px 2px #ffffff29;
+}
+:where(.liquid-glass[data-lg-decorate])[data-lg-material="prismatic"]::after {
+  background: linear-gradient(138deg, #ffffff24, transparent 24%, transparent 76%, #ffffff0a);
+  box-shadow: 0 8px 22px #06121426, inset 1px 1px 1px #ffffff40,
+    inset -1px -1px 2px #122b301f;
+}

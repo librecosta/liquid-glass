@@ -1,0 +1,2 @@
+/* Historical M2 path: forwarding import only; all skin rules live in src/. */
+@import "../src/materials.css";
