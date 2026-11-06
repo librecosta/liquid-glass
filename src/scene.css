@@ -43,9 +43,12 @@
   backdrop-filter: var(--hyalite, blur(1px));
   -webkit-backdrop-filter: var(--hyalite, blur(1px));
   box-shadow: var(--hyalite-edge, none);
-  background: #ffffff08;
   border: 0;
   color: #fff;
+}
+/* Unskinned historical fixture/DIY baseline; public skins use materials.css. */
+.glass:not([data-lg-material]) {
+  background: #ffffff08;
 }
 .card {
   position: absolute;
@@ -178,7 +181,8 @@
   outline: 2px solid #fff;
   outline-offset: 4px;
 }
-.native-button:hover {
+.native-button:not([data-lg-material]):hover,
+.native-button[data-lg-material="clear"]:hover {
   background: #ffffff20;
 }
 .native-button:disabled {
@@ -186,8 +190,7 @@
   cursor: default;
 }
 
-/* M1 application skins only. The engine remains the sole backdrop-filter owner.
-   No rules below match the historical fixture or the Hook example page. */
+/* Application-owned backdrops and readable foregrounds, separate from skins. */
 .public-scene .scene.light {
   background-color: #e1e8df;
   background-image:
@@ -201,28 +204,6 @@
     radial-gradient(ellipse at 15% 16%, #4f6b62 0%, transparent 52%),
     radial-gradient(ellipse at 85% 76%, #5d4f42 0%, transparent 50%),
     linear-gradient(125deg, #14262b, #182329);
-}
-.public-scene[data-material="soft"] .glass {
-  background: rgb(179 201 189 / 7%);
-}
-.public-scene[data-material="prismatic"] .glass {
-  background: linear-gradient(130deg, #ffffff0d, transparent 40%, #ffffff06);
-}
-.public-scene[data-material="soft"] .glass::after,
-.public-scene[data-material="prismatic"] .glass::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-}
-.public-scene[data-material="soft"] .glass::after {
-  box-shadow: 0 5px 18px #061c1b1f, inset 0 1px 2px #ffffff17;
-}
-.public-scene[data-material="prismatic"] .glass::after {
-  background: linear-gradient(138deg, #ffffff24, transparent 24%, transparent 76%, #ffffff0a);
-  box-shadow: 0 8px 22px #06121426, inset 1px 1px 1px #ffffff40,
-    inset -1px -1px 2px #122b301f;
 }
 .public-scene[data-material]:not([data-material="clear"]) .native-button {
   position: relative;
@@ -245,10 +226,4 @@
 }
 .public-scene[data-tone="light"] :focus-visible {
   outline-color: #244b51;
-}
-.public-scene[data-tone="light"][data-material="soft"] .glass {
-  background: rgb(101 130 115 / 6%);
-}
-.public-scene[data-tone="light"][data-material="soft"] .glass::after {
-  box-shadow: 0 4px 15px #24403912, inset 0 1px 2px #ffffff29;
 }

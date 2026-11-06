@@ -95,6 +95,10 @@ for (const language of ["en", "zh-CN"] as const)
         expect(await input.evaluate((el: HTMLInputElement) => el.selectionEnd! - el.selectionStart!)).toBe(10);
         await expect(input).toBeFocused();
         const button = page.locator("#native-button");
+        if (background === "light" && name.startsWith("Soft")) {
+          await button.hover();
+          await expect(button).toHaveCSS("background-color", "rgba(101, 130, 115, 0.06)");
+        }
         const text = await button.textContent();
         await button.click();
         await expect(button).not.toHaveText(text!);
@@ -130,7 +134,7 @@ for (const language of ["en", "zh-CN"] as const)
 test("material/background URL parameters do not touch the historical fixture", async ({ page }) => {
   await page.goto("/?fixture=1&quality=Reference&material=soft&background=light&softVariant=clearer");
   await page.waitForFunction(() => window.__ready);
-  await expect(page.locator("[data-material], [data-tone], [data-soft-variant], .material-toolbar")).toHaveCount(0);
+  await expect(page.locator("[data-material], [data-tone], [data-soft-variant], [data-lg-material], [data-lg-theme], [data-lg-decorate], .material-toolbar")).toHaveCount(0);
   await expect(page.locator("#scene")).toHaveClass("scene forest");
   expect(await page.locator("#card").evaluate((el) => getComputedStyle(el, "::after").content)).toBe("none");
   expect(await page.evaluate(() => window.__scene.quality)).toBe("Reference");

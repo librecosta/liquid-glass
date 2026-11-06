@@ -11,6 +11,7 @@ import forest from "./assets/forest.jpg";
 import type { Translator } from "./i18n.ts";
 import type { Material } from "./material-presets.ts";
 import "./scene.css";
+import "./materials.css";
 
 export function SceneView({
   scene,
@@ -49,6 +50,12 @@ export function SceneView({
     setBuilds(count.current);
   }).current;
   const drag = useDrag(position, scene, onPosition, canvas);
+  // Presentation attributes only; never dependencies of the engine bindings.
+  const skin = t ? {
+    "data-lg-material": material,
+    "data-lg-theme": scene.background === "light" ? "light" : "dark",
+    "data-lg-decorate": "",
+  } : {};
   useLayoutEffect(() => {
     setSupported(api.force(scene.fallback ? false : null));
     bindings.current = Array.from(
@@ -102,7 +109,8 @@ export function SceneView({
           >
             <div
               id={i === 0 ? "card" : undefined}
-              className={`glass card ${scene.opts.self ? "self" : ""}`}
+              className={`glass card ${scene.opts.self ? "self" : ""}${t ? " liquid-glass" : ""}`}
+              {...skin}
               style={{
                 width: scene.width,
                 height: scene.height,
@@ -142,7 +150,8 @@ export function SceneView({
                     {t ? t("inputLabel") : "输入文字"}
                     <span className="native-input-wrap">
                       <span
-                        className="glass native-input-surface"
+                        className={`glass native-input-surface${t ? " liquid-glass" : ""}`}
+                        {...skin}
                         aria-hidden="true"
                       />
                       <input
@@ -154,7 +163,8 @@ export function SceneView({
                   </label>
                   <button
                     id={i === 0 ? "native-button" : undefined}
-                    className="glass native-button"
+                    className={`glass native-button${t ? " liquid-glass" : ""}`}
+                    {...skin}
                     disabled={t ? controlsDisabled : undefined}
                     onClick={() => setClicks((n) => n + 1)}
                   >

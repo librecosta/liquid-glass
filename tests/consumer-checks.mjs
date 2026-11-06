@@ -149,6 +149,62 @@ export async function verifyConsumerBrowser(
     expect(await ref("b")).toBe(b);
     expect(await page.locator('filter[id*="-m"]').count()).toBe(0);
   }
+  // Actual installed optional CSS, independent of repository imports or aliases.
+  await page.evaluate(() => {
+    window.materialNodes = [...document.querySelectorAll("#subjects .liquid-glass")];
+  });
+  for (const quality of ["Fast", "Balanced"]) {
+    await page.getByRole("button", { name: `Quality ${quality}`, exact: true }).click();
+    const filterBefore = await ref("quality");
+    const materialBefore = await page.evaluate(() => {
+      window.materialFilters = [...document.querySelectorAll("filter")];
+      return { svg: window.materialFilters.map(f => f.outerHTML), builds: window.probe.builds() };
+    });
+    for (const theme of ["dark", "light"]) {
+      await page.getByRole("button", { name: `Theme ${theme}`, exact: true }).click();
+      for (const material of ["clear", "soft", "prismatic"]) {
+        await page.getByRole("button", { name: `Material ${material}`, exact: true }).click();
+        const card = page.locator("#a");
+        await expect(card).toHaveAttribute("data-lg-material", material);
+        await expect(card).toHaveCSS("position", "relative");
+        expect(await ref("quality")).toBe(filterBefore);
+        expect(await ref("b")).toBe(b);
+        expect(await page.evaluate(() => window.materialNodes.every((el, i) => el === document.querySelectorAll("#subjects .liquid-glass")[i]))).toBe(true);
+        if (material === "soft") await expect(card).toHaveCSS("background-color", theme === "light" ? "rgba(101, 130, 115, 0.06)" : "rgba(179, 201, 189, 0.07)");
+        if (material === "clear") await expect(card).toHaveCSS("background-color", "rgba(255, 255, 255, 0.03)");
+        if (material === "prismatic") await expect(card).toHaveCSS("background-image", /linear-gradient/);
+        await expect(card).toHaveCSS("filter", "none");
+        await expect(card).toHaveCSS("backdrop-filter", /^url/);
+      }
+    }
+    expect(await page.evaluate(() => window.materialFilters.every((el, i) => el === document.querySelectorAll("filter")[i]))).toBe(true);
+    expect(await page.evaluate(() => ({ svg: [...document.querySelectorAll("filter")].map(f => f.outerHTML), builds: window.probe.builds() }))).toEqual(materialBefore);
+  }
+  await page.getByRole("button", { name: "Material clear", exact: true }).click();
+  await page.getByRole("button", { name: "Theme dark", exact: true }).click();
+  // Validate mobile native controls with the installed Soft skin, then restore.
+  await page.setViewportSize({width: 390, height: 1000});
+  await page.getByRole("button", { name: "Material soft", exact: true }).click();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  await page.locator("#controlled").fill("material@example.com");
+  await expect(page.locator("#controlled")).toHaveValue("material@example.com");
+  // Email inputs do not expose selectionStart/End; use the native search field.
+  await page.locator("#uncontrolled").fill("Material text");
+  await page.locator("#uncontrolled").press("ControlOrMeta+A");
+  expect(await page.locator("#uncontrolled").evaluate(el => el.selectionEnd - el.selectionStart)).toBe(13);
+  await page.locator("#uncontrolled").fill("initial");
+  await page.locator("#controlled").fill("");
+  await page.locator("#action").focus();
+  await expect(page.locator("#action")).toHaveCSS("outline-width", "3px");
+  const beforeDisabled = await page.locator("#action").textContent();
+  await page.getByRole("button", { name: "Toggle disabled", exact: true }).click();
+  await expect(page.locator("#action")).toBeDisabled();
+  await page.locator("#action").evaluate(el => el.click());
+  await expect(page.locator("#action")).toHaveText(beforeDisabled);
+  await page.getByRole("button", { name: "Toggle disabled", exact: true }).click();
+  await page.getByRole("button", { name: "Material clear", exact: true }).click();
+  await page.getByRole("button", { name: "Quality default", exact: true }).click();
+  await page.setViewportSize({width: 1280, height: 900});
   expect(
     await page.evaluate(() => {
       const r = window.probe.refs();
@@ -349,6 +405,10 @@ export async function verifyConsumerBrowser(
   await fp.goto(url);
   await fp.waitForFunction(() => window.probe);
   await expect(fp.locator("#a")).toHaveCSS("backdrop-filter", "blur(1px)");
+  for (const material of ["soft", "prismatic", "clear"]) {
+    await fp.getByRole("button", { name: `Material ${material}`, exact: true }).click();
+    await expect(fp.locator("#a")).toHaveCSS("backdrop-filter", "blur(1px)");
+  }
   await expect(fp.locator("filter")).toHaveCount(0);
   await fp.locator("#controlled").fill("fallback@example.com");
   await expect(fp.locator("#controlled")).toHaveValue("fallback@example.com");
@@ -367,6 +427,7 @@ export async function verifyConsumerBrowser(
       "shared cache",
       "repeat updates",
       "headless public API",
+      "installed materials.css, explicit themes, mobile native input and Quality orthogonality",
       "Balanced defaults and repeated core/Hook quality switching without remount",
       "native buttons/forms/selection",
       "refs and callback cleanup",

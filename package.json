@@ -64,10 +64,20 @@
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./materials.css": "./dist/materials.css"
   },
   "files": [
-    "dist",
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/core/*.js",
+    "dist/core/*.d.ts",
+    "dist/react/*.js",
+    "dist/react/*.d.ts",
+    "dist/quality.js",
+    "dist/quality.d.ts",
+    "dist/styles.css",
+    "dist/materials.css",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "licenses/Hyalite-MIT.txt"

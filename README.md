@@ -84,6 +84,49 @@ Define `.my-button` with your own spacing, radius, colors and focus state. `useL
 
 For inputs, bind the glass to a decorative `pointer-events:none` background layer and place a transparent native input above it. Text, caret, selection and forms remain native. See the runnable [Hook examples](https://github.com/librecosta/liquid-glass/blob/main/src/components-demo.tsx) for controlled email input, independent instances and native buttons.
 
+## Optional materials — unreleased v0.1.1 candidate
+
+The `dev` branch adds `@librecosta/liquid-glass/materials.css`. **Published v0.1.0 does not include this entry.** Install the local tarball described under [Development](#development) to try it; the candidate package version is still 0.1.0 pending release approval.
+
+Import `styles.css` for base refraction rules, then `materials.css` for optional skins. `QUALITY_PRESETS` independently controls optics; selecting Prismatic never changes Quality. Clear preserves the v0.1.0 Playground tint; Soft uses 7% tint (6% with explicit light theme); Prismatic uses neutral gradients and gloss.
+
+```html
+<div class="liquid-glass material-demo" data-lg-material="clear">Your div</div>
+<button class="liquid-glass material-demo" type="button"
+  data-lg-material="soft" data-lg-theme="light" data-lg-decorate>Save</button>
+<label>Email
+  <span class="field-stack">
+    <span class="liquid-glass field-surface" aria-hidden="true"
+      data-lg-material="prismatic" data-lg-theme="light" data-lg-decorate></span>
+    <input class="field-input" name="email" type="email" autocomplete="email">
+  </span>
+</label>
+```
+
+```css
+/* Application CSS: geometry, positioning, contrast and native control states. */
+.material-demo { position: relative; width: 280px; padding: 24px; border: 0; border-radius: 28px; font: inherit; color: inherit; }
+.field-stack { position: relative; display: inline-grid; border-radius: 12px; }
+.field-surface { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.field-input { position: relative; min-width: 0; padding: 12px; border: 0; border-radius: inherit; background: transparent; font: inherit; color: inherit; }
+.material-demo:focus-visible, .field-input:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.material-demo:disabled { opacity: .5; }
+```
+
+```ts
+import { createLiquidGlass } from "@librecosta/liquid-glass";
+import "@librecosta/liquid-glass/styles.css";
+import "@librecosta/liquid-glass/materials.css";
+
+const surfaces = Array.from(document.querySelectorAll<HTMLElement>(".material-demo, .field-surface"));
+const bindings = surfaces.map(element => createLiquidGlass(element));
+// On removal: bindings.forEach(binding => binding.destroy());
+```
+
+The same attributes work on your React elements alongside the existing Hook `ref`; there is no material JS API. Both `.liquid-glass` and `data-lg-material="clear|soft|prismatic"` are required. Set `data-lg-theme="light|dark"` **on each surface**; missing/unknown theme uses the dark tint, with no ancestor or system-theme inference. Text contrast, layout, radius, focus, disabled state, clipping and stacking remain yours.
+
+`data-lg-decorate` explicitly reserves an **unused `::after`** for Soft/Prismatic gloss and shadow. Omit it when your element already owns that pseudo-element: only the tint/gradient applies. The host must supply a positioning context; the skin never changes absolute/fixed/static positioning. Use an independent `aria-hidden` layer for native inputs as above. Host rules have one-attribute specificity, so application classes loaded later can override them. See the [candidate contract and acceptance](docs/v0.1.1-material-contract.md).
+
 ## Configuration
 
 Presets are parameter combinations for the same renderer:
@@ -98,7 +141,7 @@ Fast removes chromatic separation. Reference restores the complete original conf
 
 Any optical field can be overridden, including bevel, thickness, blur, shade and light direction. Core `setOptions` merges a local patch; Hook `options` are a complete value, so omitted fields return to defaults. Balanced/Fast explicitly set all four quality fields. Materialize plays on binding, not updates. Radius changes on the bound DOM are observed; use `refresh()` for external stylesheet/ancestor changes.
 
-Optional CSS only consumes `--hyalite` and `--hyalite-edge`; it sets no button/input layout, radius, font, padding or border. Without it, use those variables in your own `backdrop-filter` and `box-shadow` rules. Self mode instead uses `filter` (the optional stylesheet provides `[data-liquid-glass-self]` rules). The public API is core + one Hook, with no prefab components or global manager.
+The existing `styles.css` only consumes `--hyalite` and `--hyalite-edge`; it sets no button/input layout, radius, font, padding or border. Without it, use those variables in your own `backdrop-filter` and `box-shadow` rules. Self mode instead uses `filter` (the base stylesheet provides `[data-liquid-glass-self]` rules). The separate candidate `materials.css` owns optional backgrounds/decoration only. The public API is core + one Hook, with no prefab components or global manager.
 
 ## Browser Support
 

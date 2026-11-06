@@ -84,6 +84,49 @@ export function MyButton({ fast = false, disabled = false }) {
 
 输入框应将玻璃绑定到 `pointer-events:none` 的装饰背景层，再把透明原生输入框放在上方，保持文字、光标、选择与表单行为原生。可运行的 [Hook 示例](https://github.com/librecosta/liquid-glass/blob/main/src/components-demo.tsx) 展示了受控邮箱输入、独立实例与原生按钮。
 
+## 可选材质 — 尚未发布的 v0.1.1 候选
+
+`dev` 分支新增 `@librecosta/liquid-glass/materials.css`。**已发布的 v0.1.0 不包含此入口。** 请按[开发](#开发)说明安装本地 tarball 体验；候选包版本暂留 0.1.0，等待正式发行批准。
+
+先导入 `styles.css` 提供基础折射规则，再导入 `materials.css` 选择纯 CSS 皮肤。`QUALITY_PRESETS` 独立控制光学画质，选择 Prismatic 不会改变 Quality。Clear 保留 v0.1.0 Playground 着色；Soft 使用 7% 着色，显式浅色主题为 6%；Prismatic 使用中性渐变和高光。
+
+```html
+<div class="liquid-glass material-demo" data-lg-material="clear">自己的 div</div>
+<button class="liquid-glass material-demo" type="button"
+  data-lg-material="soft" data-lg-theme="light" data-lg-decorate>保存</button>
+<label>邮箱
+  <span class="field-stack">
+    <span class="liquid-glass field-surface" aria-hidden="true"
+      data-lg-material="prismatic" data-lg-theme="light" data-lg-decorate></span>
+    <input class="field-input" name="email" type="email" autocomplete="email">
+  </span>
+</label>
+```
+
+```css
+/* 应用自己的 CSS：几何、定位、文字对比度及原生控件状态。 */
+.material-demo { position: relative; width: 280px; padding: 24px; border: 0; border-radius: 28px; font: inherit; color: inherit; }
+.field-stack { position: relative; display: inline-grid; border-radius: 12px; }
+.field-surface { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.field-input { position: relative; min-width: 0; padding: 12px; border: 0; border-radius: inherit; background: transparent; font: inherit; color: inherit; }
+.material-demo:focus-visible, .field-input:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.material-demo:disabled { opacity: .5; }
+```
+
+```ts
+import { createLiquidGlass } from "@librecosta/liquid-glass";
+import "@librecosta/liquid-glass/styles.css";
+import "@librecosta/liquid-glass/materials.css";
+
+const surfaces = Array.from(document.querySelectorAll<HTMLElement>(".material-demo, .field-surface"));
+const bindings = surfaces.map(element => createLiquidGlass(element));
+// 移除元素时：bindings.forEach(binding => binding.destroy());
+```
+
+自己的 React 元素可在现有 Hook `ref` 旁使用相同属性，无需材质 JS API。必须同时提供 `.liquid-glass` 和 `data-lg-material="clear|soft|prismatic"`。在**每个装饰宿主**设置 `data-lg-theme="light|dark"`；缺省或未知主题采用深色着色，不推断祖先或系统主题。文字对比度、布局、圆角、焦点、禁用状态、裁切与层级均由应用控制。
+
+`data-lg-decorate` 显式为 Soft/Prismatic 高光和阴影保留一个**尚未使用的 `::after`**。宿主已有该伪元素时请省略它，仅应用底色/渐变。宿主自行提供定位上下文；材质不会改变 absolute/fixed/static 定位。原生 input 使用上面的独立 `aria-hidden` 装饰层。宿主规则只有一个属性选择器的特异性，后加载的应用 class 可覆盖。完整说明见[候选契约与验收](docs/v0.1.1-material-contract.md)。
+
 ## 配置
 
 画质是同一个渲染器的参数组合：
@@ -98,7 +141,7 @@ Fast 不保留彩色边缘分离。Reference 恢复完整原始配置，仅用�
 
 所有光学字段均可覆盖，包括斜面、厚度、磨砂、暗部与光线方向。核心 `setOptions` 合并局部 patch；Hook 的 `options` 是完整值，省略的字段回到默认配置。Balanced/Fast 均显式提供四项画质参数。入场材质化只在绑定时播放，更新不会重播。绑定元素上的圆角变化会被观察；外部样式表或祖先元素变化后可调用 `refresh()`。
 
-可选 CSS 只消费 `--hyalite`、`--hyalite-edge`，不会规定按钮或输入框的布局、圆角、字体、内边距和边框。不导入它时，可在自己的 `backdrop-filter` 与 `box-shadow` 中消费这些变量。Self 模式改用 `filter`，可选样式提供了 `[data-liquid-glass-self]` 规则。公开 API 保持核心加唯一 Hook，没有预制组件和全局管理器。
+现有 `styles.css` 只消费 `--hyalite`、`--hyalite-edge`，不会规定按钮或输入框的布局、圆角、字体、内边距和边框。不导入它时，可在自己的 `backdrop-filter` 与 `box-shadow` 中消费这些变量。Self 模式改用 `filter`，基础样式提供了 `[data-liquid-glass-self]` 规则。独立的候选 `materials.css` 只负责可选背景和装饰。公开 API 保持核心加唯一 Hook，没有预制组件和全局管理器。
 
 ## 浏览器支持
 
