@@ -4,7 +4,7 @@
 
 A headless liquid-glass renderer with a native TypeScript core and one React Hook. Bind real refraction to your own HTML. Keep complete control of your CSS, layout and native interactions.
 
-**Release source: v0.1.1** · [npm](https://www.npmjs.com/package/@librecosta/liquid-glass) · [Release notes](docs/v0.1.1-release-notes.md)
+**Released: v0.1.1** · [npm](https://www.npmjs.com/package/@librecosta/liquid-glass) · [Release notes](docs/v0.1.1-release-notes.md)
 
 ![The Liquid Glass Playground: an interactive glass card over a local forest, with a dark property editor](https://raw.githubusercontent.com/librecosta/liquid-glass/main/docs/playground.webp)
 
@@ -19,7 +19,7 @@ A headless liquid-glass renderer with a native TypeScript core and one React Hoo
 
 ## Installation
 
-The command below installs v0.1.1 once it is available in the [official Registry](https://registry.npmjs.org/@librecosta%2Fliquid-glass/0.1.1). A source version does not imply publication. Before Registry availability, install the local tarball described under [Development](#development); publication status and approval are tracked in the [release checklist](docs/v0.1.1-release-checklist.md).
+v0.1.1 is available from the [official Registry](https://registry.npmjs.org/@librecosta%2Fliquid-glass/0.1.1). For local source changes, use the tarball workflow under [Development](#development). See the [release verification record](docs/v0.1.1-release-checklist.md) for source and package integrity.
 
 ```sh
 npm install @librecosta/liquid-glass@0.1.1
