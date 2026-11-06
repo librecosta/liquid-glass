@@ -4,7 +4,7 @@
 
 Headless 液态玻璃渲染库，提供原生 TypeScript 核心和唯一 React Hook。把真实折射绑定到自己的 HTML，完整掌控 CSS、布局和原生交互。
 
-**发行源码 v0.1.1** · [npm](https://www.npmjs.com/package/@librecosta/liquid-glass) · [发行说明](docs/v0.1.1-release-notes.md)
+**已发布 v0.1.1** · [npm](https://www.npmjs.com/package/@librecosta/liquid-glass) · [发行说明](docs/v0.1.1-release-notes.md)
 
 ![Liquid Glass 交互舞台：本地森林上的玻璃卡片与深色属性编辑区](https://raw.githubusercontent.com/librecosta/liquid-glass/main/docs/playground.webp)
 
@@ -19,7 +19,7 @@ Headless 液态玻璃渲染库，提供原生 TypeScript 核心和唯一 React H
 
 ## 安装
 
-以下命令在 v0.1.1 实际进入[官方 Registry](https://registry.npmjs.org/@librecosta%2Fliquid-glass/0.1.1) 后可用。源码版本不等于已经发布；Registry 尚无该版本时，请按[开发](#开发)说明安装本地 tarball。[发行清单](docs/v0.1.1-release-checklist.md) 记录发布状态与批准闸门。
+v0.1.1 已在[官方 Registry](https://registry.npmjs.org/@librecosta%2Fliquid-glass/0.1.1) 发布。修改本地源码时，请按[开发](#开发)说明安装 tarball。[发行验证记录](docs/v0.1.1-release-checklist.md) 提供源码与包完整性信息。
 
 ```sh
 npm install @librecosta/liquid-glass@0.1.1

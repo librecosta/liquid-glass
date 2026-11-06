@@ -1,8 +1,8 @@
 # Changelog
 
-Versions below describe release source. Registry availability and GitHub Releases are confirmed separately; see the [v0.1.1 checklist](docs/v0.1.1-release-checklist.md).
+Published releases; see the [v0.1.1 verification record](docs/v0.1.1-release-checklist.md) for package integrity and source provenance.
 
-## 0.1.1
+## 0.1.1 — 2026-11-06
 
 - Add optional `@librecosta/liquid-glass/materials.css`: Clear, Soft (7% tint; explicit light theme 6%) and neutral Prismatic skins.
 - Keep material/theme selection in application-owned attributes, independent of optical Quality. `data-lg-decorate` explicitly reserves an unused `::after`; native inputs use a separate decorative surface.
