@@ -70,3 +70,47 @@ Result on 2026-11-06: **`npm run check` passed** — 4 Node tests, 35 browser te
 Non-Chromium coverage uses forced fallback and browser-detection tests; physical Safari/Firefox/touch-device review remains outstanding. Arbitrary uploaded photos retain their original pixels and the demo's existing white text treatment, so their contrast still needs manual review. Public M1 screenshots use only CSS-generated backgrounds; no new forest derivatives are committed. No public Pages deployment.
 
 **Awaiting owner visual review / 等待所有者视觉审查。** No main merge, npm version change, publication, tag, Release or M2 work is authorized by M1.
+
+## M1-R2 — Controlled follow-up / 受控复核
+
+Implements the [owner's R2 feedback](https://github.com/librecosta/liquid-glass/issues/10#issuecomment-6679506965). **Current remains the default; neither candidate is approved.** R1 images above are retained unchanged.
+
+### Soft A/B — only tint opacity changes
+
+| Variant | Forest / night tint | Daylight tint | Everything else |
+| --- | --- | --- | --- |
+| A · Current | `rgb(179 201 189 / 12%)` | `rgb(101 130 115 / 10%)` | R1 shadows, inner light, text and optics |
+| B · Clearer | Same hue, **7%** | Same hue, **6%** | Identical to A |
+
+Both use **Fast**, matching the quality in the owner's reviewed forest views. All R2 captures use Chrome 156.0.8078.80 on Windows, a 1440 × 1000 viewport, DPR 1, a 1010 × 618 scene, 400 × 280 glass at scene position (305,169), 42px radius, identical English text/fonts and a 600 × 420 crop. Contact sheets use JPEG quality 90; lossless originals and actual effective optics are recorded in `performance-results/m1-r2/`.
+
+![Soft daylight: Current A versus Clearer B, identical Fast optics](m1/r2/soft-light.jpg)
+
+![Soft night: Current A versus Clearer B, identical Fast optics](m1/r2/soft-dark.jpg)
+
+The forest pair is local-only: `performance-results/m1-r2/soft-forest.jpg`. It is not committed because original photo rights remain unverified. 中文观察：森林中 B 的浅灰覆盖感稍弱，背景明暗更直接；日光与深夜中的差别更细微。B 也减少了 Soft 的环境着色感。文字颜色、阴影和折射保持一致；截图未见明显可读性损失。**不预先判断 B 胜出，等待所有者选择。**
+
+### Prismatic — same skin, different optics
+
+| Column | Selected Quality | Bevel | Dispersion | Rim | Edge | Displacement channels |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Fast | 37 | 0 | 0.8 | 0 | 1 |
+| 2 | Balanced | 37 | 0.8 | 0.8 | 0 | 3 |
+| 3 | Balanced + **explicit optical trial** | 42 | 1.4 | 1.2 | 0 | 3 |
+
+![Prismatic on grid: Fast, Balanced, Balanced with the explicitly enabled optical trial](m1/r2/prismatic-grid.jpg)
+
+![Prismatic in daylight: Fast, Balanced, Balanced with the explicitly enabled optical trial](m1/r2/prismatic-light.jpg)
+
+Prismatic CSS is unchanged in every column. Columns 1→2 change Quality; 2→3 explicitly overlay the existing recommended optics. Material switching itself applies neither change. 中文观察：网格中，右列的边缘弯曲范围和光带变化更容易观察；Fast→Balanced 的色散差异较细。柔和日光的色散差异更弱，主要能看出光泽与厚度感变化。不能将这些差异归因于 Material CSS，也不据此冻结 Prismatic 风格。
+
+### Reproduce and verify
+
+- With the dev server running: `node scripts/capture-materials.mjs --r2`. This writes four new CSS-background sheets under `docs/m1/r2/` and the forest pair only under the ignored local directory. It never overwrites R1 images.
+- Open [Current A](http://127.0.0.1:5173/?lang=zh-CN&material=soft&quality=Fast&background=light&softVariant=current) / [Clearer B](http://127.0.0.1:5173/?lang=zh-CN&material=soft&quality=Fast&background=light&softVariant=clearer). The bilingual A/B buttons appear only with Soft. Missing/invalid variant and Reset restore Current. Quality, custom optics and uploaded images stay independent.
+- For Prismatic, choose Fast, then Balanced, then explicitly enable **Try recommended optics** in Advanced optics. Closing the trial restores saved optics; the trial is never activated by a shared URL.
+- R2 browser checks verify exact alpha values, unchanged shadows/inner light/text/filter, retained DOM and `scene.opts`, zero new maps/PNG encodes during A/B, normal and forced-fallback rendering, bilingual mobile native inputs/buttons, URL persistence, Reset and fixture isolation. Clear's matched public grid/forest screenshots still have **0 changed pixels** against v0.1.0.
+
+R2 validation on 2026-11-06: **`npm run check` passed** — 4 Node contracts, 38 browser tests, unchanged exact Reference/Balanced/Fast goldens, TypeScript/builds, the independent 17-file tarball consumer (SSR/StrictMode/production), and both production URL bases. Core, public API/CSS, Quality presets, package/lock version, R1 screenshots and historical goldens are unchanged.
+
+Awaiting owner selection of Soft A/B and Prismatic direction. No main merge, publication, #10 closure or M2 work.

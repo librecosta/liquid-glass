@@ -252,3 +252,10 @@
 .public-scene[data-tone="light"][data-material="soft"] .glass::after {
   box-shadow: 0 4px 15px #24403912, inset 0 1px 2px #ffffff29;
 }
+/* M1-R2 B: only tint alpha differs from Current; no other skin/optical changes. */
+.public-scene[data-material="soft"][data-soft-variant="clearer"] .glass {
+  background: rgb(179 201 189 / 7%);
+}
+.public-scene[data-tone="light"][data-material="soft"][data-soft-variant="clearer"] .glass {
+  background: rgb(101 130 115 / 6%);
+}

@@ -18,6 +18,7 @@ import {
   materialNotes,
   PRISMATIC_OPTICS,
   type Material,
+  type SoftVariant,
 } from "./material-presets.ts";
 import {
   useLanguage,
@@ -127,6 +128,7 @@ function LiveStage({
   onPosition,
   onBounds,
   material,
+  softVariant,
   opticalTrial,
   controlsDisabled,
 }: {
@@ -135,6 +137,7 @@ function LiveStage({
   onPosition: (x: number, y: number) => void;
   onBounds: (b: { width: number; height: number }) => void;
   material: Material;
+  softVariant: SoftVariant;
   opticalTrial: boolean;
   controlsDisabled: boolean;
 }) {
@@ -161,6 +164,7 @@ function LiveStage({
         canvas={canvas}
         onPosition={onPosition}
         material={material}
+        softVariant={softVariant}
         opticalPatch={opticalTrial ? PRISMATIC_OPTICS : undefined}
         controlsDisabled={controlsDisabled}
       />
@@ -175,11 +179,17 @@ function Playground() {
     return MATERIALS.find((m) => m === value) ?? "clear";
   });
   const [opticalTrial, setOpticalTrial] = useState(false);
+  const [softVariant, setSoftVariant] = useState<SoftVariant>(() =>
+    new URLSearchParams(location.search).get("softVariant") === "clearer"
+      ? "clearer" : "current",
+  );
   const [controlsDisabled, setControlsDisabled] = useState(false);
   useEffect(() => {
     const url = new URL(location.href);
     if (material !== "clear") url.searchParams.set("material", material);
     else url.searchParams.delete("material");
+    if (softVariant === "clearer") url.searchParams.set("softVariant", softVariant);
+    else url.searchParams.delete("softVariant");
     if (scene.quality !== "Balanced") url.searchParams.set("quality", scene.quality);
     else url.searchParams.delete("quality");
     if (!["image", "forest"].includes(scene.background))
@@ -194,7 +204,7 @@ function Playground() {
     ))
       url.searchParams.delete("experiment");
     history.replaceState(null, "", url);
-  }, [material, scene.quality, scene.background, scene.opts]);
+  }, [material, softVariant, scene.quality, scene.background, scene.opts]);
   const bounds = useRef({ width: 500, height: 480 }),
     firstSize = useRef(true);
   const imageURL = useRef("");
@@ -332,6 +342,22 @@ function Playground() {
               </div>
               <span className="material-badge">{t("materialExperiment")}</span>
             </div>
+            {material === "soft" && (
+              <div className="material-toolbar">
+                <span id="soft-variant-label">{t("softVariant")}</span>
+                <div className="quality-segments" role="group" aria-labelledby="soft-variant-label">
+                  {(["current", "clearer"] as const).map((value) => (
+                    <button
+                      key={value}
+                      aria-pressed={softVariant === value}
+                      onClick={() => setSoftVariant(value)}
+                    >
+                      {t(value === "current" ? "softCurrent" : "softClearer")}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="stage-frame">
               <LiveStage
                 scene={scene}
@@ -339,6 +365,7 @@ function Playground() {
                 onBounds={onBounds}
                 onPosition={(x, y) => setScene((s) => ({ ...s, x, y }))}
                 material={material}
+                softVariant={softVariant}
                 opticalTrial={opticalTrial}
                 controlsDisabled={controlsDisabled}
               />
@@ -363,6 +390,7 @@ function Playground() {
                   imageURL.current = "";
                   setImageFeedback(null);
                   setMaterial("clear");
+                  setSoftVariant("current");
                   setOpticalTrial(false);
                   setControlsDisabled(false);
                   setScene((s) =>

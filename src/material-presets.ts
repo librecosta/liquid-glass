@@ -1,6 +1,7 @@
 // Playground-only exploration. Never exported by the library entries.
 export const MATERIALS = ["clear", "soft", "prismatic"] as const;
 export type Material = (typeof MATERIALS)[number];
+export type SoftVariant = "current" | "clearer";
 export const materialKeys = {
   clear: "clearMaterial",
   soft: "softMaterial",
