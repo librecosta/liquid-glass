@@ -113,6 +113,7 @@ The distributed ESM targets ES2022. Node 24+ is required for this repository's d
 ```sh
 npm ci
 npm run dev       # http://127.0.0.1:5173
+npm run dev:stop  # Windows: verified dev/preview only; add -- --port 5174 to select one
 npm run check     # Node, types/builds, browsers, tarball apps, production root/subpath
 npm run build     # dist/ library + dist-playground/ website
 ```

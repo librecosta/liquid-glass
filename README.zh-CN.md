@@ -113,6 +113,7 @@ Chromium 提供 SVG 背景折射，其他引擎使用 CSS 模糊回退。实际 
 ```sh
 npm ci
 npm run dev       # http://127.0.0.1:5173
+npm run dev:stop  # Windows：仅停止已确认属于本仓库的 dev/preview；加 -- --port 5174 指定端口
 npm run check     # Node、类型/构建、浏览器、tarball 与生产根路径/子路径
 npm run build     # dist/ 库产物 + dist-playground/ 展示网站
 ```

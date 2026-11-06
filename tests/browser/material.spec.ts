@@ -136,73 +136,28 @@ test("material/background URL parameters do not touch the historical fixture", a
   expect(await page.evaluate(() => window.__scene.quality)).toBe("Reference");
 });
 
-test("Soft A/B changes only tint alpha without rebuilding filters or changing optics", async ({ page }) => {
-  await page.addInitScript(instrument);
-  await page.goto("/?lang=en&material=soft&quality=Fast&background=light");
-  await page.waitForFunction(() => window.__ready);
-  const group = page.getByRole("group", { name: "Soft A/B", exact: true });
-  const readSkin = () => page.locator("#card").evaluate((el) => {
-    const css = getComputedStyle(el), after = getComputedStyle(el, "::after");
-    return { tint: css.backgroundColor, color: css.color, filter: css.backdropFilter,
-      shadow: css.boxShadow, glow: after.boxShadow, sheen: after.background, pointerEvents: after.pointerEvents };
-  });
-  for (const fallback of [false, true]) {
-    await page.evaluate((fallback) => window.__configure({ fallback }), fallback);
-    for (const background of ["forest", "light", "dark"] as const) {
-      await page.getByRole("combobox", { name: "Background", exact: true }).selectOption(background);
-      await group.getByRole("button", { name: "Current · A", exact: true }).click();
-      await page.waitForTimeout(100);
-      const current = await readSkin();
-      expect(current.tint).toBe(background === "light" ? "rgba(101, 130, 115, 0.1)" : "rgba(179, 201, 189, 0.12)");
-      await page.evaluate(() => {
-        (window as any).__softBefore = { opts: window.__scene.opts, card: document.getElementById("card"),
-          filters: [...document.querySelectorAll("filter")], svg: [...document.querySelectorAll("filter")].map((f) => f.outerHTML) };
-        window.__startPerf(false);
-      });
-      const clearer = group.getByRole("button", { name: "Clearer · B", exact: true });
-      await clearer.focus();
-      await clearer.press("Space");
-      await expect(clearer).toHaveAttribute("aria-pressed", "true");
-      const next = await readSkin();
-      expect(next.tint).toBe(background === "light" ? "rgba(101, 130, 115, 0.06)" : "rgba(179, 201, 189, 0.07)");
-      expect({ ...next, tint: current.tint }).toEqual(current);
-      expect(await page.evaluate(() => {
-        const before = (window as any).__softBefore, perf = window.__stopPerf();
-        return { maps: perf.maps, png: perf.png.length, quality: window.__scene.quality,
-          optsSame: before.opts === window.__scene.opts, domSame: before.card === document.getElementById("card"),
-          filtersSame: before.filters.every((f: Element, i: number) => f === document.querySelectorAll("filter")[i]),
-          svgSame: JSON.stringify(before.svg) === JSON.stringify([...document.querySelectorAll("filter")].map((f) => f.outerHTML)) };
-      })).toEqual({ maps: 0, png: 0, quality: "Fast", optsSame: true, domSame: true, filtersSame: true, svgSame: true });
-    }
-  }
-});
-
 for (const language of ["en", "zh-CN"] as const)
-  test(`${language}: Soft variant URL, mobile controls and Reset retain Current as the default`, async ({ page }) => {
+  test(`${language}: Soft uses Clearer, removes the A/B UI and safely normalizes old URLs`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 1000 });
     const zh = language === "zh-CN";
-    await page.goto(`/?lang=${language}&material=soft&softVariant=clearer&background=light`);
-    const group = page.getByRole("group", { name: zh ? "Soft 对照" : "Soft A/B", exact: true });
-    await expect(group.getByRole("button", { name: zh ? "更清透 · B" : "Clearer · B", exact: true })).toHaveAttribute("aria-pressed", "true");
-    await page.getByRole("combobox", { name: zh ? "内容" : "Content", exact: true }).selectOption("controls");
-    await page.locator("#native-input").fill("Native A/B");
-    await group.getByRole("button", { name: zh ? "当前 · A" : "Current · A", exact: true }).click();
-    await expect(page.locator("#native-input")).toHaveValue("Native A/B");
-    await page.locator("#native-input").focus();
-    await page.locator("#native-input").press("ControlOrMeta+A");
-    expect(await page.locator("#native-input").evaluate((el: HTMLInputElement) => el.selectionEnd! - el.selectionStart!)).toBe(10);
-    await page.locator("#native-button").click();
-    await expect(page.locator("#native-button")).toContainText("1");
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
-    await page.getByRole("button", { name: zh ? "Prismatic（棱彩）" : "Prismatic", exact: true }).click();
-    await expect(group).toHaveCount(0);
+    for (const variant of ["current", "clearer", "invalid"]) {
+      await page.goto(`/?lang=${language}&material=soft&quality=Fast&background=light&softVariant=${variant}`);
+      await expect(page.locator("#card")).toHaveCSS("background-color", "rgba(101, 130, 115, 0.06)");
+      await expect(page.getByRole("group", { name: zh ? "Soft 对照" : "Soft A/B", exact: true })).toHaveCount(0);
+      await expect(page).not.toHaveURL(/softVariant=/);
+    }
+    await page.getByRole("combobox", { name: zh ? "背景" : "Background", exact: true }).selectOption("dark");
+    await expect(page.locator("#card")).toHaveCSS("background-color", "rgba(179, 201, 189, 0.07)");
     await page.getByRole("button", { name: zh ? "全部重置" : "Reset all", exact: true }).click();
+    await expect(page.locator(".public-scene")).toHaveAttribute("data-material", "clear");
     await page.getByRole("button", { name: zh ? "Soft（柔光）" : "Soft", exact: true }).click();
-    await expect(group.getByRole("button", { name: zh ? "当前 · A" : "Current · A", exact: true })).toHaveAttribute("aria-pressed", "true");
-    await page.goto(`/?lang=${language}&material=soft&softVariant=invalid`);
-    await expect(group.getByRole("button", { name: zh ? "当前 · A" : "Current · A", exact: true })).toHaveAttribute("aria-pressed", "true");
-    await group.getByRole("button", { name: zh ? "更清透 · B" : "Clearer · B", exact: true }).click();
-    await expect(page).toHaveURL(/softVariant=clearer/);
-    await page.reload();
-    await expect(page.locator(".public-scene")).toHaveAttribute("data-soft-variant", "clearer");
+    await expect(page.locator("#card")).toHaveCSS("background-color", "rgba(179, 201, 189, 0.07)");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
   });
+
+test("public instance URLs mount the requested count; fixtures ignore the new parameter", async ({ page }) => {
+  await page.goto("/?lang=en&instances=20&quality=Fast&background=grid");
+  await expect(page.locator(".card")).toHaveCount(20);
+  await page.goto("/?fixture=1&instances=20");
+  await expect(page.locator(".card")).toHaveCount(1);
+});

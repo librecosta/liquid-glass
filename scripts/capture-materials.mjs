@@ -5,6 +5,9 @@ import assert from "node:assert/strict";
 import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
 
+if (!readFileSync("src/scene.css", "utf8").includes("rgb(179 201 189 / 12%)"))
+  throw Error("Historical M1/R2 capture: use the recorded f24de02/3aca507 checkout. M2 must not overwrite those images.");
+
 const baseURL = process.env.LG_BASE_URL ?? "http://127.0.0.1:5173";
 const r2 = process.argv.includes("--r2");
 const output = r2 ? "docs/m1/r2" : "docs/m1";

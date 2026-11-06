@@ -9,7 +9,7 @@ import type { Scene } from "./scene.ts";
 import { useDrag } from "./drag.ts";
 import forest from "./assets/forest.jpg";
 import type { Translator } from "./i18n.ts";
-import type { Material, SoftVariant } from "./material-presets.ts";
+import type { Material } from "./material-presets.ts";
 import "./scene.css";
 
 export function SceneView({
@@ -18,7 +18,6 @@ export function SceneView({
   canvas = {width: 500, height: 480},
   t,
   material,
-  softVariant,
   opticalPatch,
   controlsDisabled = false,
 }: {
@@ -27,7 +26,6 @@ export function SceneView({
   canvas?: {width: number; height: number};
   t?: Translator;
   material?: Material;
-  softVariant?: SoftVariant;
   opticalPatch?: HyaliteOptions;
   controlsDisabled?: boolean;
 }) {
@@ -75,7 +73,6 @@ export function SceneView({
     <div
       className={`scene-shell${t ? " public-scene" : ""}`}
       data-material={t ? material : undefined}
-      data-soft-variant={t && material === "soft" ? softVariant : undefined}
       data-tone={t && scene.background === "light" ? "light" : undefined}
     >
       <div
