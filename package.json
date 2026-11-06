@@ -1,6 +1,6 @@
 {
   "name": "@librecosta/liquid-glass",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "description": "Headless SVG liquid-glass refraction for native HTML, with a TypeScript core and one React Hook.",
