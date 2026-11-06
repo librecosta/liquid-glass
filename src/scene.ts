@@ -4,7 +4,7 @@ import type { LiquidGlassQuality } from "./quality.ts";
 
 export interface Scene {
   opts: HyaliteOptions;
-  background: "forest" | "grid" | "image";
+  background: "forest" | "grid" | "image" | "light" | "dark";
   image: string;
   width: number;
   height: number;

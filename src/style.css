@@ -322,6 +322,33 @@ body {
 .stage-caption span:last-child {
   color: #849ba6;
 }
+.material-toolbar {
+  display: flex;
+  min-height: 44px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.material-toolbar > span:first-child {
+  color: var(--text);
+}
+.material-badge {
+  font-size: 11px;
+}
+.stage-caption strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+}
+@media (max-width: 520px) {
+  .material-toolbar { gap: 8px; }
+  .material-segments { width: 100%; order: 3; }
+  .material-segments button { flex: 1; }
+  .material-badge { margin-left: auto; }
+}
 .properties {
   background: var(--panel);
   border: 1px solid var(--line);
